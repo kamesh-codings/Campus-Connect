@@ -190,7 +190,7 @@ const Login = () => {
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400" />
 
             {/* Header */}
-            <div className="mb-6">
+            <div className="mb-5">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-['Outfit']">Sign In to Campus</h2>
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
@@ -201,6 +201,17 @@ const Login = () => {
               <p className="text-xs sm:text-sm text-slate-400 mt-1.5 leading-relaxed">
                 Select your campus role to load credentials and sign in
               </p>
+            </div>
+
+            {/* ⚠️ DEMO LOGIN DISCLAIMER BANNER */}
+            <div className="mb-5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-2.5 text-xs text-amber-200/90 shadow-sm">
+              <Sparkles size={16} className="text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold text-amber-300">Demo Login Mode Active: </span>
+                <span>
+                  This evaluation portal includes pre-configured credentials for all 4 campus roles. Select any role below to test role-specific features and permissions.
+                </span>
+              </div>
             </div>
 
             {/* 4 Role Selector Buttons */}
