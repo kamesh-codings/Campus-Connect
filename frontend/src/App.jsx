@@ -11,7 +11,6 @@ import Profile from './pages/Profile';
 import Analytics from './pages/Analytics';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import { Toaster } from 'react-hot-toast';
 
 // Private Route Guard
@@ -37,7 +36,7 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   return children;
 };
 
-// Public Route Guard (prevents logged in users from seeing login/register)
+// Public Route Guard (prevents logged in users from seeing login)
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
@@ -73,7 +72,7 @@ function App() {
       />
 
       <Routes>
-        {/* Public Routes */}
+        {/* Public Login Route */}
         <Route
           path="/login"
           element={
@@ -82,14 +81,7 @@ function App() {
             </PublicRoute>
           }
         />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
+        <Route path="/register" element={<Navigate to="/login" replace />} />
 
         {/* Authenticated Application Layout */}
         <Route
