@@ -186,7 +186,7 @@ const Events = () => {
 
       {/* ── 2. FEATURED EVENT BANNER ──────────────────────── */}
       {featuredEvent && (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-950/80 via-slate-900 to-slate-900 border border-indigo-500/30 p-6 sm:p-8 shadow-2xl">
+        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-950/80 via-slate-900 to-slate-900 border border-indigo-500/30 p-6 sm:p-7 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             {/* Left: Info */}
             <div className="lg:col-span-8 space-y-3">
@@ -325,13 +325,13 @@ const Events = () => {
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
       ) : filteredEvents.length === 0 ? (
-        <div className="glass p-12 text-center rounded-3xl border border-white/10">
-          <Calendar size={48} className="mx-auto text-slate-600 mb-3 opacity-50" />
-          <h3 className="text-lg font-bold text-white">No events found</h3>
+        <div className="p-10 text-center rounded-xl bg-[#0D111A] border border-white/10">
+          <Calendar size={40} className="mx-auto text-slate-600 mb-3 opacity-50" />
+          <h3 className="text-base font-semibold text-white">No events found</h3>
           <p className="text-slate-400 text-xs mt-1">Try adjusting your search terms or category filters.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredEvents.map((ev) => {
             const isRegistered = ev.registeredUsers?.some(
               (r) => r.user?._id === user?._id || r.user === user?._id
@@ -342,12 +342,12 @@ const Events = () => {
             return (
               <div
                 key={ev._id}
-                className="glass p-5 rounded-3xl border border-white/10 hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-indigo-500/10 flex flex-col justify-between group"
+                className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-indigo-500/40 transition-all duration-200 shadow-sm flex flex-col justify-between group"
               >
                 <div>
                   {/* Top category & club */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
                       {ev.category}
                     </span>
                     <span className="text-xs text-slate-400 truncate max-w-[150px]">
@@ -355,16 +355,16 @@ const Events = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white group-hover:text-indigo-300 transition-colors line-clamp-1 mb-1.5">
+                  <h3 className="text-sm font-semibold text-white group-hover:text-indigo-300 transition-colors line-clamp-1 mb-1">
                     {ev.title}
                   </h3>
 
-                  <p className="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
+                  <p className="text-xs text-slate-300 line-clamp-2 mb-3 leading-relaxed">
                     {ev.description}
                   </p>
 
                   {/* Metadata */}
-                  <div className="space-y-2 text-xs text-slate-400 mb-4 border-t border-white/5 pt-3">
+                  <div className="space-y-1.5 text-xs text-slate-400 mb-3 border-t border-white/5 pt-2.5">
                     <div className="flex items-center gap-2">
                       <Clock size={13} className="text-indigo-400" />
                       <span>{eventDate.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
@@ -384,16 +384,16 @@ const Events = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Users size={13} className="text-emerald-400" />
-                      <span>{ev.registeredUsers?.length || 0} / {ev.maxCapacity} seats</span>
+                      <span>{ev.registeredUsers?.length || 0} / {ev.maxCapacity} seats filled</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Bottom Action Row */}
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <div className="pt-2.5 border-t border-white/5 flex items-center justify-between gap-2">
                   <button
                     onClick={() => setSelectedEvent(ev)}
-                    className="text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="text-xs font-medium text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     Details
                   </button>
@@ -402,18 +402,18 @@ const Events = () => {
                     {isRegistered ? (
                       <button
                         onClick={() => setSelectedEvent(ev)}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-400 text-xs font-bold border border-emerald-500/30 cursor-pointer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-400 text-xs font-semibold border border-emerald-500/30 cursor-pointer"
                       >
-                        <CheckCircle2 size={13} /> Ticket Ready
+                        <CheckCircle2 size={12} /> Pass Ready
                       </button>
                     ) : (
                       <button
                         onClick={() => handleRegister(ev._id)}
                         disabled={isFull}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                           isFull
                             ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                            : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/20'
+                            : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm'
                         }`}
                       >
                         {isFull ? 'Full' : 'RSVP'}
@@ -426,10 +426,10 @@ const Events = () => {
                           e.stopPropagation();
                           setCheckInModalEvent(ev);
                         }}
-                        className="p-1.5 rounded-xl bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 border border-amber-500/30 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                        className="p-1 rounded-md bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 border border-amber-500/30 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                         title="Check-in station for club organizers"
                       >
-                        <Ticket size={14} />
+                        <Ticket size={13} />
                       </button>
                     )}
                   </div>
@@ -547,7 +547,7 @@ const Events = () => {
       {/* ── 6. CREATE EVENT MODAL ────────────────────────── */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="glass max-w-xl w-full rounded-3xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+          <div className="glass max-w-xl w-full rounded-xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
             <button
               onClick={() => setShowCreateModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
@@ -555,7 +555,7 @@ const Events = () => {
               <X size={18} />
             </button>
 
-            <h2 className="text-2xl font-black text-white mb-1 font-['Outfit']">Host New Campus Event</h2>
+            <h2 className="text-xl font-bold text-white mb-1 font-['Outfit']">Host New Campus Event</h2>
             <p className="text-xs text-slate-400 mb-6">
               Create an event under a registered student club or department.
             </p>
@@ -671,13 +671,13 @@ const Events = () => {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-medium hover:bg-slate-700 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium shadow-sm cursor-pointer"
                 >
                   Publish Event
                 </button>
@@ -690,7 +690,7 @@ const Events = () => {
       {/* ── 7. MODAL: DIGITAL QR EVENT PASS ─────────────── */}
       {registeredTicket && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in-up">
-          <div className="w-full max-w-md rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-indigo-500/30 p-6 shadow-2xl relative text-center">
+          <div className="w-full max-w-md rounded-xl bg-gradient-to-b from-slate-900 to-slate-950 border border-indigo-500/30 p-6 shadow-2xl relative text-center">
             <button
               onClick={() => setRegisteredTicket(null)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
@@ -698,11 +698,11 @@ const Events = () => {
               <X size={18} />
             </button>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-3">
               <CheckCircle2 size={14} /> Official Verified Campus Ticket
             </div>
 
-            <h3 className="text-xl font-black text-white mb-1 font-['Outfit']">
+            <h3 className="text-lg font-bold text-white mb-1">
               {registeredTicket.eventTitle}
             </h3>
             <p className="text-xs text-slate-400 mb-4">
@@ -710,35 +710,35 @@ const Events = () => {
             </p>
 
             {/* QR Code */}
-            <div className="p-4 bg-white rounded-2xl inline-block shadow-xl my-2 border-4 border-indigo-500/20">
+            <div className="p-4 bg-white rounded-xl inline-block shadow-xl my-2 border border-indigo-500/20">
               <img
                 src={registeredTicket.qrCode}
                 alt="Event Ticket QR"
-                className="w-48 h-48 object-contain mx-auto"
+                className="w-44 h-44 object-contain mx-auto"
               />
             </div>
 
-            <div className="mt-3 p-3 rounded-xl bg-slate-800/80 border border-white/10 font-mono text-center">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Ticket ID</span>
-              <span className="text-base font-extrabold text-indigo-300 tracking-widest">
+            <div className="mt-3 p-3 rounded-lg bg-slate-800/80 border border-white/10 font-mono text-center">
+              <span className="text-xs text-slate-400 uppercase tracking-wider block">Ticket ID</span>
+              <span className="text-sm font-bold text-indigo-300 tracking-widest">
                 {registeredTicket.ticketCode}
               </span>
             </div>
 
-            <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+            <p className="text-xs text-slate-400 mt-3 leading-relaxed">
               Show this QR pass at the venue entrance. Club organizers will scan it to verify entry and award <strong className="text-amber-400">+25 Reputation Points</strong>.
             </p>
 
             <div className="mt-5 flex gap-3">
               <button
                 onClick={() => window.print()}
-                className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Printer size={14} /> Print Pass
               </button>
               <button
                 onClick={() => setRegisteredTicket(null)}
-                className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/20 cursor-pointer"
+                className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition-colors cursor-pointer"
               >
                 Done
               </button>
@@ -750,7 +750,7 @@ const Events = () => {
       {/* ── 8. MODAL: CLUB ADMIN CHECK-IN STATION ───────── */}
       {checkInModalEvent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in-up">
-          <div className="w-full max-w-lg rounded-3xl bg-slate-900 border border-amber-500/30 p-6 shadow-2xl relative">
+          <div className="w-full max-w-lg rounded-xl bg-slate-900 border border-amber-500/30 p-6 shadow-2xl relative">
             <button
               onClick={() => {
                 setCheckInModalEvent(null);
@@ -762,16 +762,16 @@ const Events = () => {
             </button>
 
             <div className="flex items-center gap-2 mb-2">
-              <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+              <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
                 <Ticket size={18} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Attendee Check-In Station</h3>
+                <h3 className="text-base font-bold text-white">Attendee Check-In Station</h3>
                 <p className="text-xs text-slate-400">{checkInModalEvent.title}</p>
               </div>
             </div>
 
-            <form onSubmit={handleCheckIn} className="mt-5 space-y-4">
+            <form onSubmit={handleCheckIn} className="mt-4 space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                   Enter or Scan Ticket Code (e.g., CC-XXXXXXXX)
@@ -783,12 +783,12 @@ const Events = () => {
                     placeholder="CC-XXXXXX"
                     value={checkInCode}
                     onChange={(e) => setCheckInCode(e.target.value.toUpperCase())}
-                    className="font-mono text-base uppercase font-bold tracking-wider bg-slate-950 border border-white/15 focus:border-amber-400 rounded-xl px-4 py-2.5 w-full text-white"
+                    className="font-mono text-sm uppercase font-bold tracking-wider bg-slate-950 border border-white/15 focus:border-amber-400 rounded-lg px-3 py-2 w-full text-white"
                   />
                   <button
                     type="submit"
                     disabled={checkInLoading || !checkInCode.trim()}
-                    className="bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-5 rounded-xl shrink-0 transition-all cursor-pointer"
+                    className="bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold px-4 rounded-lg shrink-0 transition-colors cursor-pointer"
                   >
                     {checkInLoading ? 'Validating...' : 'Verify'}
                   </button>
@@ -798,31 +798,31 @@ const Events = () => {
               {/* Registered Attendees List */}
               <div className="mt-4 pt-4 border-t border-white/10">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-slate-300">
+                  <span className="text-xs font-semibold text-slate-300">
                     Registered Attendees ({checkInModalEvent.registeredUsers?.length || 0})
                   </span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-xs text-slate-400">
                     {checkInModalEvent.registeredUsers?.filter((r) => r.attended).length || 0} Checked In
                   </span>
                 </div>
 
-                <div className="max-h-48 overflow-y-auto space-y-1.5 divide-y divide-white/5 pr-1">
+                <div className="max-h-48 overflow-y-auto space-y-1 divide-y divide-white/5 pr-1">
                   {checkInModalEvent.registeredUsers?.length === 0 ? (
                     <p className="text-xs text-slate-500 py-3 text-center">No attendees registered yet.</p>
                   ) : (
                     checkInModalEvent.registeredUsers?.map((reg) => (
                       <div
                         key={reg.ticketCode || Math.random()}
-                        className="flex items-center justify-between py-2 text-xs"
+                        className="flex items-center justify-between py-1.5 text-xs"
                       >
                         <div>
-                          <span className="font-mono text-slate-300 font-bold mr-2">{reg.ticketCode}</span>
-                          <span className="text-[11px] text-slate-400">
+                          <span className="font-mono text-slate-300 font-semibold mr-2">{reg.ticketCode}</span>
+                          <span className="text-slate-400">
                             {new Date(reg.registeredAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                           </span>
                         </div>
                         {reg.attended ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
                             <CheckCircle2 size={11} /> Attended (+25 pts)
                           </span>
                         ) : (
@@ -831,7 +831,7 @@ const Events = () => {
                             onClick={() => {
                               setCheckInCode(reg.ticketCode);
                             }}
-                            className="text-[10px] text-amber-400 hover:underline cursor-pointer"
+                            className="text-xs text-amber-400 hover:underline cursor-pointer"
                           >
                             Quick Check-In
                           </button>

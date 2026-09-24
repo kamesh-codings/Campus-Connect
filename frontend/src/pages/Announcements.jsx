@@ -170,13 +170,13 @@ const Announcements = () => {
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-amber-500"></div>
         </div>
       ) : filteredAnnouncements.length === 0 ? (
-        <div className="glass p-12 text-center rounded-3xl border border-white/10">
-          <Megaphone size={48} className="mx-auto text-slate-600 mb-3 opacity-50" />
-          <h3 className="text-lg font-bold text-white">No announcements found</h3>
+        <div className="p-10 text-center rounded-xl bg-[#0D111A] border border-white/10">
+          <Megaphone size={40} className="mx-auto text-slate-600 mb-3 opacity-50" />
+          <h3 className="text-base font-semibold text-white">No announcements found</h3>
           <p className="text-slate-400 text-xs mt-1">Try adjusting your category or priority filter.</p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {filteredAnnouncements.map((ann) => {
             const isCritical = ann.priority === 'critical';
             const isUrgent = ann.priority === 'urgent';
@@ -184,23 +184,23 @@ const Announcements = () => {
             return (
               <div
                 key={ann._id}
-                className={`glass p-6 rounded-3xl transition-all duration-300 hover:-translate-y-0.5 shadow-lg relative overflow-hidden ${
+                className={`p-5 rounded-xl bg-[#0D111A] transition-all duration-200 hover:border-amber-500/40 shadow-sm relative overflow-hidden ${
                   isCritical
-                    ? 'border-rose-500/40 bg-rose-950/15'
+                    ? 'border border-rose-500/40 bg-rose-950/10'
                     : isUrgent
-                    ? 'border-amber-500/40 bg-amber-950/15'
-                    : 'border-white/10 hover:border-amber-500/30'
+                    ? 'border border-amber-500/40 bg-amber-950/10'
+                    : 'border border-white/10'
                 }`}
               >
                 {/* Critical Top Pulse Indicator */}
                 {isCritical && (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-red-500 to-rose-500" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-red-500" />
                 )}
 
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2.5">
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                      className={`text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border ${
                         isCritical
                           ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
                           : isUrgent
@@ -211,7 +211,7 @@ const Announcements = () => {
                       {ann.priority} priority
                     </span>
 
-                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-white/5">
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-white/5">
                       {ann.category}
                     </span>
                   </div>
@@ -225,25 +225,25 @@ const Announcements = () => {
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-2 font-['Outfit']">
+                <h3 className="text-sm font-semibold text-white mb-1.5">
                   {ann.title}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line mb-4">
+                <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line mb-3">
                   {ann.content}
                 </p>
 
                 {/* Footer / Author info */}
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
+                <div className="pt-2.5 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center font-bold text-[10px] text-white">
+                    <div className="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-white">
                       {ann.author?.name?.charAt(0) || 'A'}
                     </div>
                     <span className="text-slate-300 font-medium">
                       {ann.author?.name || 'Campus Administration'}
                     </span>
                     {ann.author?.department && (
-                      <span className="text-slate-400 text-[11px]">
+                      <span className="text-slate-400">
                         • {ann.author.department}
                       </span>
                     )}
@@ -268,7 +268,7 @@ const Announcements = () => {
       {/* ── 4. BROADCAST MODAL ───────────────────────────── */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="glass max-w-lg w-full rounded-3xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+          <div className="glass max-w-lg w-full rounded-xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
             <button
               onClick={() => setShowCreateModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
@@ -276,7 +276,7 @@ const Announcements = () => {
               <X size={18} />
             </button>
 
-            <h2 className="text-2xl font-black text-white mb-1 font-['Outfit']">Broadcast Campus Circular</h2>
+            <h2 className="text-xl font-bold text-white mb-1 font-['Outfit']">Broadcast Campus Circular</h2>
             <p className="text-xs text-slate-400 mb-6">
               Publish official announcements to student departments or campus-wide.
             </p>

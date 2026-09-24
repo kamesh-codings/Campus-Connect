@@ -180,7 +180,7 @@ const Login = () => {
 
         {/* ── RIGHT PANEL: CLEAN, SLEEK LOGIN CARD ──────────────────────── */}
         <div className="lg:col-span-6">
-          <div className="glass p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
+          <div className="glass p-6 sm:p-8 rounded-xl border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
             {/* Top Gradient Accent Border */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500" />
 

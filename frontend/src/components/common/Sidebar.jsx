@@ -90,16 +90,16 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
   const currentGradient = roleGradients[user?.role] || roleGradients.student;
 
   const content = (
-    <div className="flex flex-col h-full py-4 px-3.5 space-y-4">
-      {/* Tamil Nadu Campus / Dept Tag */}
-      <div className="px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-white/10 flex items-center justify-between shadow-sm">
+    <div className="flex flex-col h-full py-4 px-3.5 space-y-4 font-sans">
+      {/* Campus / Dept Tag */}
+      <div className="px-3.5 py-2.5 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-2 min-w-0">
           <Sparkles size={14} className="text-indigo-400 shrink-0" />
           <span className="text-xs font-semibold text-slate-200 truncate">
             {user?.department || 'Campus'} Dept
           </span>
         </div>
-        <span className="text-[10px] text-slate-400 font-mono shrink-0 ml-1">
+        <span className="text-xs text-slate-400 font-mono shrink-0 ml-1">
           {user?.yearOfStudy ? `Yr ${user.yearOfStudy}` : 'Staff'}
         </span>
       </div>
@@ -117,26 +117,26 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
               onClick={() => {
                 if (!isDesktop) onClose();
               }}
-              className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group
+              className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-colors duration-150 group
                 ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
                     : 'text-slate-400 hover:text-slate-100 hover:bg-white/5'
                 }`}
             >
-              <div className="flex items-center gap-3 min-w-0">
+              <div className="flex items-center gap-2.5 min-w-0">
                 <Icon
-                  size={18}
-                  className={`shrink-0 transition-transform ${
+                  size={16}
+                  className={`shrink-0 transition-colors ${
                     isActive ? 'text-white' : 'text-slate-400 group-hover:text-indigo-400'
                   }`}
                 />
-                <span className="truncate tracking-wide">{item.label}</span>
+                <span className="truncate">{item.label}</span>
               </div>
 
               {item.badge && (
                 <span
-                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md shrink-0 ml-1 ${
+                  className={`text-xs font-semibold px-1.5 py-0.5 rounded-md shrink-0 ml-1 ${
                     typeof item.badge === 'number'
                       ? 'bg-rose-500 text-white'
                       : isActive
@@ -153,13 +153,13 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
       </nav>
 
       {/* Muthamil Mandram Spotlight Card */}
-      <div className="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/20 shadow-inner">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider">
+      <div className="p-3 rounded-xl bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/20 shadow-sm">
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs uppercase font-semibold text-amber-400 tracking-wider">
             🏛️ Muthamil Mandram
           </span>
         </div>
-        <p className="text-[11px] text-slate-300 leading-snug">
+        <p className="text-xs text-slate-300 leading-snug">
           Pongal Thiruvizha & Tamil Debate 2026 is live on campus!
         </p>
         <NavLink
@@ -167,7 +167,7 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
           onClick={() => {
             if (!isDesktop) onClose();
           }}
-          className="mt-2.5 inline-flex items-center gap-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
+          className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
         >
           View Events <ChevronRight size={13} />
         </NavLink>
@@ -180,18 +180,18 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
           onClick={() => {
             if (!isDesktop) onClose();
           }}
-          className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors group"
+          className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors group"
         >
           <div
-            className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${currentGradient} flex items-center justify-center font-bold text-white text-xs shadow-md shrink-0`}
+            className={`w-8 h-8 rounded-lg bg-gradient-to-tr ${currentGradient} flex items-center justify-center font-bold text-white text-xs shadow-md shrink-0`}
           >
             {user?.name?.charAt(0)?.toUpperCase() || 'U'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-slate-100 truncate group-hover:text-indigo-400 transition-colors">
+            <p className="text-xs font-semibold text-slate-100 truncate group-hover:text-indigo-400 transition-colors">
               {user?.name}
             </p>
-            <p className="text-[10px] text-slate-400 truncate capitalize">
+            <p className="text-xs text-slate-400 truncate capitalize">
               {user?.role?.replace('_', ' ')} • {user?.department}
             </p>
           </div>
@@ -210,16 +210,13 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 transition-opacity"
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden"
           onClick={onClose}
-          aria-hidden="true"
         />
       )}
-
       <aside
-        className={`fixed top-16 left-0 bottom-0 w-64 bg-slate-950/95 backdrop-blur-2xl border-r border-white/10 z-50 transition-transform duration-300 ease-in-out shadow-2xl flex flex-col justify-between ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 bottom-0 w-64 bg-[#080B12] border-r border-white/10 z-50 transform transition-transform duration-300 ease-in-out lg:hidden
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         {content}
       </aside>

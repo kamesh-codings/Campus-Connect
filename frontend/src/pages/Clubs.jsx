@@ -209,60 +209,58 @@ const Clubs = () => {
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
       ) : filteredClubs.length === 0 ? (
-        <div className="glass p-12 text-center rounded-3xl border border-white/10">
-          <Users size={48} className="mx-auto text-slate-600 mb-3 opacity-50" />
-          <h3 className="text-lg font-bold text-white">No communities found</h3>
+        <div className="p-10 text-center rounded-xl bg-[#0D111A] border border-white/10">
+          <Users size={40} className="mx-auto text-slate-600 mb-3 opacity-50" />
+          <h3 className="text-base font-semibold text-white">No communities found</h3>
           <p className="text-slate-400 text-xs mt-1">Try another category or search keyword.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredClubs.map((club) => {
             const isMember = club.members?.some(
               (m) => m.user?._id === user?._id || m.user === user?._id
             );
-            const CatIcon = categoryIcons[club.category] || Users;
-            const gradientStyle = categoryGradients[club.category] || 'from-indigo-600/30 to-slate-900 border-indigo-500/30 text-indigo-400';
 
             return (
               <div
                 key={club._id}
-                className="glass p-6 rounded-3xl border border-white/10 hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-indigo-500/10 flex flex-col justify-between group"
+                className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-indigo-500/40 transition-all duration-200 shadow-sm flex flex-col justify-between group"
               >
                 <div>
                   {/* Top: Avatar & Category */}
-                  <div className="flex items-start justify-between gap-3 mb-4">
-                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${gradientStyle} flex items-center justify-center font-bold text-lg text-white shadow-md`}>
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center font-bold text-base text-white">
                       {club.name.charAt(0)}
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-800 text-indigo-300 border border-indigo-500/20">
+                    <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-800 text-indigo-300 border border-indigo-500/20">
                       {club.category}
                     </span>
                   </div>
 
                   {/* Title & Tagline */}
-                  <h3 className="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors line-clamp-1 mb-1 font-['Outfit']">
+                  <h3 className="text-sm font-semibold text-white group-hover:text-indigo-300 transition-colors line-clamp-1 mb-1">
                     {club.name}
                   </h3>
 
                   {club.tagline && (
-                    <p className="text-xs text-cyan-400 font-medium mb-3 italic">
+                    <p className="text-xs text-cyan-400 font-medium mb-2 italic">
                       "{club.tagline}"
                     </p>
                   )}
 
-                  <p className="text-xs text-slate-300 line-clamp-3 mb-4 leading-relaxed">
+                  <p className="text-xs text-slate-300 line-clamp-2 mb-3 leading-relaxed">
                     {club.description}
                   </p>
 
                   {/* Metadata */}
-                  <div className="flex items-center gap-4 text-xs text-slate-400 border-t border-white/5 pt-3 mb-4">
+                  <div className="flex items-center gap-4 text-xs text-slate-400 border-t border-white/5 pt-2.5 mb-3">
                     <div className="flex items-center gap-1.5">
-                      <Users size={13} className="text-indigo-400" />
+                      <Users size={12} className="text-indigo-400" />
                       <span>{club.members?.length || 0} Members</span>
                     </div>
                     {club.facultyAdvisor && (
                       <div className="flex items-center gap-1.5 truncate">
-                        <Award size={13} className="text-amber-400" />
+                        <Award size={12} className="text-amber-400" />
                         <span className="truncate">Faculty Guided</span>
                       </div>
                     )}
@@ -270,10 +268,10 @@ const Clubs = () => {
                 </div>
 
                 {/* Bottom Row */}
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <div className="pt-2.5 border-t border-white/5 flex items-center justify-between gap-2">
                   <button
                     onClick={() => setSelectedClub(club)}
-                    className="text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="text-xs font-medium text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     View Workspace
                   </button>
@@ -281,16 +279,16 @@ const Clubs = () => {
                   {isMember ? (
                     <button
                       onClick={() => handleLeave(club._id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-rose-500/20 text-emerald-400 hover:text-rose-300 border border-emerald-500/30 text-xs font-bold transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/15 hover:bg-rose-500/20 text-emerald-400 hover:text-rose-300 border border-emerald-500/30 text-xs font-semibold transition-colors cursor-pointer"
                     >
-                      <UserCheck size={13} /> Joined
+                      <UserCheck size={12} /> Joined
                     </button>
                   ) : (
                     <button
                       onClick={() => handleJoin(club._id)}
-                      className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/20 cursor-pointer"
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition-colors cursor-pointer shadow-sm"
                     >
-                      <UserPlus size={13} /> Join Club
+                      <UserPlus size={12} /> Join Club
                     </button>
                   )}
                 </div>
@@ -303,7 +301,7 @@ const Clubs = () => {
       {/* ── 4. CLUB DETAIL / WORKSPACE MODAL ─────────────── */}
       {selectedClub && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="glass max-w-lg w-full rounded-3xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+          <div className="glass max-w-lg w-full rounded-xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
             <button
               onClick={() => setSelectedClub(null)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
@@ -312,24 +310,24 @@ const Clubs = () => {
             </button>
 
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center font-bold text-lg text-white">
+              <div className="w-10 h-10 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center font-bold text-base text-white">
                 {selectedClub.name.charAt(0)}
               </div>
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
+                <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
                   {selectedClub.category}
                 </span>
-                <h2 className="text-xl font-bold text-white mt-1 font-['Outfit']">{selectedClub.name}</h2>
+                <h2 className="text-lg font-bold text-white mt-1">{selectedClub.name}</h2>
               </div>
             </div>
 
             {selectedClub.tagline && (
-              <p className="text-xs text-cyan-400 font-medium italic mb-4">
+              <p className="text-xs text-cyan-400 font-medium italic mb-3">
                 "{selectedClub.tagline}"
               </p>
             )}
 
-            <div className="bg-slate-900/80 p-4 rounded-2xl border border-white/5 text-xs space-y-2 mb-4">
+            <div className="bg-slate-900/80 p-3.5 rounded-lg border border-white/5 text-xs space-y-1.5 mb-3">
               <p className="text-slate-300">
                 <strong className="text-white">Active Members:</strong> {selectedClub.members?.length || 0} students
               </p>
@@ -341,22 +339,22 @@ const Clubs = () => {
               )}
             </div>
 
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-1.5">About this Organization</h4>
-            <p className="text-slate-300 text-xs leading-relaxed mb-6 whitespace-pre-line">
+            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-1.5">About this Organization</h4>
+            <p className="text-slate-300 text-xs leading-relaxed mb-4 whitespace-pre-line">
               {selectedClub.description}
             </p>
 
             {/* Social Links */}
             {selectedClub.socialLinks && Object.values(selectedClub.socialLinks).some(Boolean) && (
-              <div className="mb-6 border-t border-white/5 pt-4">
-                <h5 className="text-xs font-bold text-white mb-2">Club Links & Repos</h5>
+              <div className="mb-4 border-t border-white/5 pt-3">
+                <h5 className="text-xs font-semibold text-white mb-2">Club Links & Repos</h5>
                 <div className="flex flex-wrap gap-2 text-xs">
                   {selectedClub.socialLinks.website && (
                     <a
                       href={selectedClub.socialLinks.website}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 rounded-xl text-indigo-300 border border-white/5 flex items-center gap-1.5"
+                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-md text-indigo-300 border border-white/5 flex items-center gap-1.5"
                     >
                       <Globe size={12} /> Website
                     </a>
@@ -366,7 +364,7 @@ const Clubs = () => {
                       href={selectedClub.socialLinks.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 rounded-xl text-indigo-300 border border-white/5 flex items-center gap-1.5"
+                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-md text-indigo-300 border border-white/5 flex items-center gap-1.5"
                     >
                       <Github size={12} /> GitHub
                     </a>
@@ -376,7 +374,7 @@ const Clubs = () => {
                       href={selectedClub.socialLinks.linkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 rounded-xl text-indigo-300 border border-white/5 flex items-center gap-1.5"
+                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-md text-indigo-300 border border-white/5 flex items-center gap-1.5"
                     >
                       <Linkedin size={12} /> LinkedIn
                     </a>
@@ -388,7 +386,7 @@ const Clubs = () => {
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setSelectedClub(null)}
-                className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
+                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-medium hover:bg-slate-700 cursor-pointer"
               >
                 Close
               </button>
@@ -397,14 +395,14 @@ const Clubs = () => {
               ) ? (
                 <button
                   onClick={() => handleLeave(selectedClub._id)}
-                  className="px-4 py-2 rounded-xl bg-rose-600/20 text-rose-300 border border-rose-500/30 text-xs font-bold hover:bg-rose-600/30 cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-rose-600/20 text-rose-300 border border-rose-500/30 text-xs font-semibold hover:bg-rose-600/30 cursor-pointer"
                 >
                   Leave Club
                 </button>
               ) : (
                 <button
                   onClick={() => handleJoin(selectedClub._id)}
-                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium shadow-sm cursor-pointer"
                 >
                   Join Club
                 </button>
@@ -417,7 +415,7 @@ const Clubs = () => {
       {/* ── 5. CHARTER CLUB MODAL ───────────────────────── */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="glass max-w-lg w-full rounded-3xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+          <div className="glass max-w-lg w-full rounded-xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
             <button
               onClick={() => setShowCreateModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
@@ -425,7 +423,7 @@ const Clubs = () => {
               <X size={18} />
             </button>
 
-            <h2 className="text-2xl font-black text-white mb-1 font-['Outfit']">Charter a New Club</h2>
+            <h2 className="text-xl font-bold text-white mb-1 font-['Outfit']">Charter a New Club</h2>
             <p className="text-xs text-slate-400 mb-6">
               Establish a new official campus community.
             </p>

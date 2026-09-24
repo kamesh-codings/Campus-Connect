@@ -7,25 +7,16 @@ import {
   Users,
   Megaphone,
   TrendingUp,
-  ArrowRight,
   Clock,
   MapPin,
-  AlertTriangle,
-  Zap,
   Sparkles,
   Award,
   MessageSquare,
-  QrCode,
   CheckCircle2,
   ChevronRight,
-  Flame,
   UserCheck,
   UserPlus,
   ThumbsUp,
-  Tag,
-  Shield,
-  Layers,
-  GraduationCap,
   Building,
   Ticket,
 } from 'lucide-react';
@@ -122,20 +113,19 @@ const Feed = () => {
 
   if (loading) {
     return (
-      <div className="space-y-8 animate-pulse pb-12">
-        <div className="h-44 bg-slate-900/60 rounded-3xl border border-white/5" />
+      <div className="space-y-6 animate-pulse pb-12">
+        <div className="h-40 bg-slate-900/60 rounded-xl border border-white/5" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="h-28 bg-slate-900/60 rounded-2xl border border-white/5" />
+            <div key={n} className="h-24 bg-slate-900/60 rounded-xl border border-white/5" />
           ))}
         </div>
-        <div className="h-72 bg-slate-900/60 rounded-3xl border border-white/5" />
-        <div className="h-72 bg-slate-900/60 rounded-3xl border border-white/5" />
+        <div className="h-64 bg-slate-900/60 rounded-xl border border-white/5" />
       </div>
     );
   }
 
-  // Critical announcements first
+  // Priority sorted announcements
   const sortedAnnouncements = [...announcements].sort((a, b) => {
     if (a.priority === 'critical') return -1;
     if (b.priority === 'critical') return 1;
@@ -151,179 +141,173 @@ const Feed = () => {
   };
 
   return (
-    <div className="space-y-10 animate-fade-in-up pb-16">
+    <div className="space-y-8 animate-fade-in-up pb-16 font-sans">
       
-      {/* ══════════════════════════════════════════════════════════════
-          1. HERO BANNER: PERSONALIZED STUDENT PULSE
-      ══════════════════════════════════════════════════════════════ */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-white/10 p-6 sm:p-8 shadow-2xl">
+      {/* ── 1. HEADER: PERSONALIZED STUDENT PULSE ────────────────────────── */}
+      <div className="relative overflow-hidden rounded-xl bg-[#0D111A] border border-white/10 p-6 sm:p-7 shadow-xl">
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
+          <div className="space-y-2.5 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
-                <Sparkles size={13} className="text-indigo-400" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-medium">
+                <Sparkles size={12} className="text-indigo-400" />
                 {currentDateFormatted}
               </span>
-              <span className="inline-flex items-center gap-1 text-xs font-mono text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/20">
+              <span className="inline-flex items-center gap-1 text-xs font-mono text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-cyan-500/20">
                 <Building size={12} /> {user?.department || 'CSE'} Department
               </span>
-              <span className="inline-flex items-center gap-1 text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+              <span className="inline-flex items-center gap-1 text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
                 <CheckCircle2 size={12} /> {user?.role === 'club_admin' ? 'Club Lead' : user?.role || 'Student'}
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight font-['Outfit']">
-              {getGreeting()}, {user?.name?.split(' ')[0] || 'Scholar'} 👋
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              {getGreeting()}, {user?.name?.split(' ')[0] || 'Student'} 👋
             </h1>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Your centralized digital campus ecosystem. Access your verified QR passes, explore upcoming hackathons, participate in peer Q&A, and read departmental circulars.
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Your centralized digital campus portal. Access your verified QR passes, explore upcoming hackathons, participate in peer Q&A, and read departmental circulars.
             </p>
 
-            {/* Quick Action Pills */}
-            <div className="flex flex-wrap items-center gap-2.5 pt-2">
+            {/* Quick Action Buttons */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
               <Link
                 to="/events"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/20"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition-colors shadow-sm"
               >
-                <Calendar size={14} /> Explore Events
+                <Calendar size={13} /> Explore Events
               </Link>
               <Link
                 to="/clubs"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-medium transition-colors"
               >
-                <Users size={14} /> Join a Club
+                <Users size={13} /> Join a Club
               </Link>
               <Link
                 to="/discussions"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-medium transition-colors"
               >
-                <MessageSquare size={14} /> Ask Community
+                <MessageSquare size={13} /> Ask Community
               </Link>
               <Link
                 to="/announcements"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-medium transition-colors"
               >
-                <Megaphone size={14} /> Circulars
+                <Megaphone size={13} /> Circulars
               </Link>
             </div>
           </div>
 
-          {/* Right: Quick Student Stats Card */}
-          <div className="glass p-5 rounded-2xl border border-white/10 flex flex-col justify-between space-y-3 min-w-[240px] bg-slate-900/90 shadow-xl">
+          {/* Right: Quick Student Reputation Tile */}
+          <div className="p-4 rounded-xl border border-white/10 flex flex-col justify-between space-y-2.5 min-w-[220px] bg-[#080B12]/80 shadow-lg">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">My Reputation</span>
-              <Award size={18} className="text-amber-400" />
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">My Reputation</span>
+              <Award size={16} className="text-amber-400" />
             </div>
             <div>
-              <span className="text-3xl font-black text-white font-['Outfit']">{user?.points || 75}</span>
-              <span className="text-xs text-indigo-300 font-mono ml-1.5">pts</span>
-              <p className="text-[11px] text-slate-400 mt-0.5">Tier 2 Campus Contributor</p>
+              <span className="text-2xl font-bold text-white">{user?.points || 75}</span>
+              <span className="text-xs text-indigo-300 font-mono ml-1.5 font-medium">pts</span>
+              <p className="text-xs text-slate-400 mt-0.5">Tier 2 Campus Contributor</p>
             </div>
             <Link
               to="/profile"
-              className="w-full text-center py-1.5 rounded-lg bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition-colors"
+              className="w-full text-center py-1.5 rounded-md bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 text-xs font-medium transition-colors"
             >
-              View Student Profile & Passes &rarr;
+              View Profile & Passes &rarr;
             </Link>
           </div>
         </div>
 
-        {/* Ambient Glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Subtle Ambient Glow */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          2. KEY METRIC STAT CARDS
-      ══════════════════════════════════════════════════════════════ */}
+      {/* ── 2. KEY METRIC STAT CARDS ──────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Stat 1: Events */}
+        {/* Events */}
         <Link
           to="/events"
-          className="glass p-5 rounded-3xl border border-white/10 hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg group flex items-center justify-between"
+          className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-indigo-500/40 transition-all shadow-md group flex items-center justify-between"
         >
           <div>
-            <span className="text-xs font-semibold text-slate-400">Campus Events</span>
-            <p className="text-3xl font-extrabold text-white mt-1 font-['Outfit'] group-hover:text-indigo-300 transition-colors">
+            <span className="text-xs font-medium text-slate-400">Campus Events</span>
+            <p className="text-2xl font-bold text-white mt-0.5 group-hover:text-indigo-300 transition-colors">
               {events.length}
             </p>
-            <span className="text-[11px] text-indigo-400 font-medium mt-1 inline-block">
-              +4 this week &rarr;
+            <span className="text-xs text-indigo-400 font-medium mt-1 inline-block">
+              +4 upcoming &rarr;
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/25 flex items-center justify-center shrink-0">
-            <Calendar size={22} />
+          <div className="w-10 h-10 rounded-lg bg-indigo-500/15 text-indigo-400 border border-indigo-500/25 flex items-center justify-center shrink-0">
+            <Calendar size={18} />
           </div>
         </Link>
 
-        {/* Stat 2: Clubs */}
+        {/* Clubs */}
         <Link
           to="/clubs"
-          className="glass p-5 rounded-3xl border border-white/10 hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg group flex items-center justify-between"
+          className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-cyan-500/40 transition-all shadow-md group flex items-center justify-between"
         >
           <div>
-            <span className="text-xs font-semibold text-slate-400">Student Clubs</span>
-            <p className="text-3xl font-extrabold text-white mt-1 font-['Outfit'] group-hover:text-cyan-300 transition-colors">
+            <span className="text-xs font-medium text-slate-400">Student Clubs</span>
+            <p className="text-2xl font-bold text-white mt-0.5 group-hover:text-cyan-300 transition-colors">
               {clubs.length}
             </p>
-            <span className="text-[11px] text-cyan-400 font-medium mt-1 inline-block">
+            <span className="text-xs text-cyan-400 font-medium mt-1 inline-block">
               Active communities &rarr;
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 flex items-center justify-center shrink-0">
-            <Users size={22} />
+          <div className="w-10 h-10 rounded-lg bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 flex items-center justify-center shrink-0">
+            <Users size={18} />
           </div>
         </Link>
 
-        {/* Stat 3: Announcements */}
+        {/* Announcements */}
         <Link
           to="/announcements"
-          className="glass p-5 rounded-3xl border border-white/10 hover:border-amber-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg group flex items-center justify-between"
+          className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-amber-500/40 transition-all shadow-md group flex items-center justify-between"
         >
           <div>
-            <span className="text-xs font-semibold text-slate-400">Official Circulars</span>
-            <p className="text-3xl font-extrabold text-white mt-1 font-['Outfit'] group-hover:text-amber-300 transition-colors">
+            <span className="text-xs font-medium text-slate-400">Official Circulars</span>
+            <p className="text-2xl font-bold text-white mt-0.5 group-hover:text-amber-300 transition-colors">
               {announcements.length}
             </p>
-            <span className="text-[11px] text-amber-400 font-medium mt-1 inline-block">
+            <span className="text-xs text-amber-400 font-medium mt-1 inline-block">
               Verified broadcasts &rarr;
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center shrink-0">
-            <Megaphone size={22} />
+          <div className="w-10 h-10 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center shrink-0">
+            <Megaphone size={18} />
           </div>
         </Link>
 
-        {/* Stat 4: Discussions */}
+        {/* Discussions */}
         <Link
           to="/discussions"
-          className="glass p-5 rounded-3xl border border-white/10 hover:border-emerald-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg group flex items-center justify-between"
+          className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-emerald-500/40 transition-all shadow-md group flex items-center justify-between"
         >
           <div>
-            <span className="text-xs font-semibold text-slate-400">Forum Discussions</span>
-            <p className="text-3xl font-extrabold text-white mt-1 font-['Outfit'] group-hover:text-emerald-300 transition-colors">
+            <span className="text-xs font-medium text-slate-400">Forum Discussions</span>
+            <p className="text-2xl font-bold text-white mt-0.5 group-hover:text-emerald-300 transition-colors">
               {discussions.length}
             </p>
-            <span className="text-[11px] text-emerald-400 font-medium mt-1 inline-block">
+            <span className="text-xs text-emerald-400 font-medium mt-1 inline-block">
               Peer Q&A threads &rarr;
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 flex items-center justify-center shrink-0">
-            <MessageSquare size={22} />
+          <div className="w-10 h-10 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 flex items-center justify-center shrink-0">
+            <MessageSquare size={18} />
           </div>
         </Link>
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          3. SECTION A: IMPORTANT CAMPUS CIRCULARS & ALERTS
-      ══════════════════════════════════════════════════════════════ */}
-      <div className="space-y-4">
+      {/* ── 3. SECTION A: IMPORTANT CAMPUS CIRCULARS & ALERTS ─────────────── */}
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30">
-              <Megaphone size={18} />
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-md bg-amber-500/15 text-amber-400 border border-amber-500/30">
+              <Megaphone size={16} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white font-['Outfit']">
+              <h2 className="text-base font-semibold text-white">
                 Campus Circulars & Official Broadcasts
               </h2>
               <p className="text-xs text-slate-400">Exam timetables, placement notifications & urgent alerts</p>
@@ -331,9 +315,9 @@ const Feed = () => {
           </div>
           <Link
             to="/announcements"
-            className="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors"
+            className="text-xs font-medium text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors"
           >
-            View All Circulars ({announcements.length}) <ChevronRight size={14} />
+            View All ({announcements.length}) <ChevronRight size={14} />
           </Link>
         </div>
 
@@ -345,50 +329,50 @@ const Feed = () => {
             return (
               <div
                 key={ann._id}
-                className={`glass p-5 rounded-3xl transition-all duration-300 hover:-translate-y-1 shadow-lg flex flex-col justify-between relative overflow-hidden ${
+                className={`p-4 rounded-xl bg-[#0D111A] border transition-all duration-200 hover:border-amber-500/40 shadow-sm flex flex-col justify-between relative overflow-hidden ${
                   isCritical
-                    ? 'border-rose-500/40 bg-rose-950/15'
+                    ? 'border-rose-500/40 bg-rose-950/10'
                     : isUrgent
-                    ? 'border-amber-500/40 bg-amber-950/15'
-                    : 'border-white/10 hover:border-amber-500/30'
+                    ? 'border-amber-500/40 bg-amber-950/10'
+                    : 'border-white/10'
                 }`}
               >
                 {isCritical && (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-red-500 to-rose-500" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-red-500" />
                 )}
 
                 <div>
                   {/* Top Badges */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
                     <span
-                      className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                      className={`text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border ${
                         priorityBadgeStyles[ann.priority] || priorityBadgeStyles.normal
                       }`}
                     >
-                      {ann.priority} priority
+                      {ann.priority}
                     </span>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-white/5">
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-white/5">
                       {ann.category}
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-sm font-bold text-white line-clamp-2 mb-2 font-['Outfit']">
+                  <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1.5">
                     {ann.title}
                   </h3>
 
                   {/* Body Preview */}
-                  <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed mb-4">
+                  <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed mb-3">
                     {ann.content}
                   </p>
                 </div>
 
                 {/* Footer / Author */}
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
-                  <span className="truncate max-w-[160px] text-[11px]">
+                <div className="pt-2.5 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
+                  <span className="truncate max-w-[150px]">
                     By {ann.author?.name || 'Dean Office'}
                   </span>
-                  <span className="text-[10px] font-mono">
+                  <span className="font-mono text-slate-400">
                     {new Date(ann.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                   </span>
                 </div>
@@ -398,17 +382,15 @@ const Feed = () => {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          4. SECTION B: UPCOMING CAMPUS EVENTS & HACKATHONS
-      ══════════════════════════════════════════════════════════════ */}
-      <div className="space-y-4">
+      {/* ── 4. SECTION B: UPCOMING CAMPUS EVENTS & WORKSHOPS ────────────────── */}
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
-              <Calendar size={18} />
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-md bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
+              <Calendar size={16} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white font-['Outfit']">
+              <h2 className="text-base font-semibold text-white">
                 Upcoming Events & Technical Workshops
               </h2>
               <p className="text-xs text-slate-400">Reserve spot, get 1-tap QR passes & earn reputation points</p>
@@ -416,13 +398,13 @@ const Feed = () => {
           </div>
           <Link
             to="/events"
-            className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
+            className="text-xs font-medium text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
           >
-            Explore All Events ({events.length}) <ChevronRight size={14} />
+            Explore Events ({events.length}) <ChevronRight size={14} />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events.slice(0, 3).map((ev) => {
             const isRegistered = ev.registeredUsers?.some(
               (r) => r.user?._id === user?._id || r.user === user?._id
@@ -433,12 +415,12 @@ const Feed = () => {
             return (
               <div
                 key={ev._id}
-                className="glass p-5 rounded-3xl border border-white/10 hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg flex flex-col justify-between group"
+                className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-indigo-500/40 transition-all duration-200 shadow-sm flex flex-col justify-between group"
               >
                 <div>
                   {/* Category & Club */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
                       {ev.category}
                     </span>
                     <span className="text-xs text-slate-400 truncate max-w-[150px]">
@@ -447,17 +429,17 @@ const Feed = () => {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-base font-bold text-white group-hover:text-indigo-300 transition-colors line-clamp-1 mb-1.5 font-['Outfit']">
+                  <h3 className="text-sm font-semibold text-white group-hover:text-indigo-300 transition-colors line-clamp-1 mb-1.5">
                     {ev.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
+                  <p className="text-xs text-slate-300 line-clamp-2 mb-3 leading-relaxed">
                     {ev.description}
                   </p>
 
                   {/* Metadata */}
-                  <div className="space-y-2 text-xs text-slate-400 mb-4 border-t border-white/5 pt-3">
+                  <div className="space-y-1.5 text-xs text-slate-400 mb-3 border-t border-white/5 pt-2.5">
                     <div className="flex items-center gap-2">
                       <Clock size={13} className="text-indigo-400" />
                       <span>{eventDate.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
@@ -473,9 +455,9 @@ const Feed = () => {
                   </div>
 
                   {/* Capacity Bar */}
-                  <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden mb-4 border border-white/5">
+                  <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden mb-3 border border-white/5">
                     <div
-                      className="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full rounded-full"
+                      className="bg-indigo-500 h-full rounded-full"
                       style={{
                         width: `${Math.min(
                           100,
@@ -487,26 +469,26 @@ const Feed = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <div className="pt-2.5 border-t border-white/5 flex items-center justify-between gap-2">
                   <Link
                     to="/events"
-                    className="text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+                    className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
                   >
                     View Details
                   </Link>
 
                   {isRegistered ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 bg-emerald-500/15 px-3 py-1.5 rounded-xl border border-emerald-500/30">
-                      <CheckCircle2 size={13} /> Pass Ready
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 bg-emerald-500/15 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                      <CheckCircle2 size={12} /> Pass Ready
                     </span>
                   ) : (
                     <button
                       onClick={() => handleRSVP(ev._id)}
                       disabled={isFull}
-                      className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      className={`px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                         isFull
                           ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                          : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/20'
+                          : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm'
                       }`}
                     >
                       {isFull ? 'Full' : '1-Tap RSVP'}
@@ -519,17 +501,15 @@ const Feed = () => {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          5. SECTION C: TRENDING CLUBS & STUDENT SOCIETIES
-      ══════════════════════════════════════════════════════════════ */}
-      <div className="space-y-4">
+      {/* ── 5. SECTION C: TRENDING CLUBS & STUDENT SOCIETIES ──────────────── */}
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
-              <Users size={18} />
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-md bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+              <Users size={16} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white font-['Outfit']">
+              <h2 className="text-base font-semibold text-white">
                 Featured Clubs & Student Chapters
               </h2>
               <p className="text-xs text-slate-400">Join technical teams, Tamil mandrams, sports squads & cultural clubs</p>
@@ -537,13 +517,13 @@ const Feed = () => {
           </div>
           <Link
             to="/clubs"
-            className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors"
+            className="text-xs font-medium text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors"
           >
-            Browse All Clubs ({clubs.length}) <ChevronRight size={14} />
+            Browse All ({clubs.length}) <ChevronRight size={14} />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {clubs.slice(0, 3).map((club) => {
             const isMember = club.members?.some(
               (m) => m.user?._id === user?._id || m.user === user?._id
@@ -552,51 +532,51 @@ const Feed = () => {
             return (
               <div
                 key={club._id}
-                className="glass p-6 rounded-3xl border border-white/10 hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg flex flex-col justify-between group"
+                className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-cyan-500/40 transition-all duration-200 shadow-sm flex flex-col justify-between group"
               >
                 <div>
                   {/* Avatar & Category */}
-                  <div className="flex items-start justify-between gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center font-bold text-lg text-white shadow-md">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center font-bold text-base text-white">
                       {club.name.charAt(0)}
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 border border-cyan-500/20">
+                    <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-800 text-cyan-300 border border-cyan-500/20">
                       {club.category}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-1 mb-1 font-['Outfit']">
+                  <h3 className="text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors line-clamp-1 mb-1">
                     {club.name}
                   </h3>
 
                   {club.tagline && (
-                    <p className="text-xs text-cyan-400 font-medium mb-3 italic">
+                    <p className="text-xs text-cyan-400 font-medium mb-2 italic">
                       "{club.tagline}"
                     </p>
                   )}
 
-                  <p className="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
+                  <p className="text-xs text-slate-300 line-clamp-2 mb-3 leading-relaxed">
                     {club.description}
                   </p>
 
-                  <div className="flex items-center gap-4 text-xs text-slate-400 border-t border-white/5 pt-3 mb-4">
+                  <div className="flex items-center gap-4 text-xs text-slate-400 border-t border-white/5 pt-2.5 mb-3">
                     <span className="flex items-center gap-1.5">
-                      <Users size={13} className="text-cyan-400" />
+                      <Users size={12} className="text-cyan-400" />
                       {club.members?.length || 0} Members
                     </span>
                     {club.facultyAdvisor && (
                       <span className="truncate flex items-center gap-1">
-                        <Award size={13} className="text-amber-400" /> Faculty Guided
+                        <Award size={12} className="text-amber-400" /> Faculty Guided
                       </span>
                     )}
                   </div>
                 </div>
 
                 {/* Bottom Join / Leave */}
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <div className="pt-2.5 border-t border-white/5 flex items-center justify-between gap-2">
                   <Link
                     to="/clubs"
-                    className="text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+                    className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
                   >
                     Workspace
                   </Link>
@@ -604,16 +584,16 @@ const Feed = () => {
                   {isMember ? (
                     <button
                       onClick={() => handleLeaveClub(club._id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-rose-500/20 text-emerald-400 hover:text-rose-300 border border-emerald-500/30 text-xs font-bold transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/15 hover:bg-rose-500/20 text-emerald-400 hover:text-rose-300 border border-emerald-500/30 text-xs font-semibold transition-colors cursor-pointer"
                     >
-                      <UserCheck size={13} /> Joined
+                      <UserCheck size={12} /> Joined
                     </button>
                   ) : (
                     <button
                       onClick={() => handleJoinClub(club._id)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all shadow-md shadow-cyan-600/20 cursor-pointer"
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-medium transition-colors cursor-pointer shadow-sm"
                     >
-                      <UserPlus size={13} /> Join Club
+                      <UserPlus size={12} /> Join Club
                     </button>
                   )}
                 </div>
@@ -623,17 +603,15 @@ const Feed = () => {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          6. SECTION D: ACTIVE COMMUNITY DISCUSSIONS & Q&A
-      ══════════════════════════════════════════════════════════════ */}
-      <div className="space-y-4">
+      {/* ── 6. SECTION D: ACTIVE COMMUNITY DISCUSSIONS & Q&A ──────────────── */}
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-              <MessageSquare size={18} />
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              <MessageSquare size={16} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white font-['Outfit']">
+              <h2 className="text-base font-semibold text-white">
                 Active Peer Q&A & Discussions
               </h2>
               <p className="text-xs text-slate-400">Ask academic questions, collaborate on projects, and get faculty advice</p>
@@ -641,54 +619,54 @@ const Feed = () => {
           </div>
           <Link
             to="/discussions"
-            className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors"
+            className="text-xs font-medium text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors"
           >
             Open Forum ({discussions.length}) <ChevronRight size={14} />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {discussions.slice(0, 3).map((disc) => (
             <div
               key={disc._id}
-              className="glass p-5 rounded-3xl border border-white/10 hover:border-emerald-500/40 transition-all duration-300 hover:-translate-y-1 shadow-lg flex flex-col justify-between"
+              className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-emerald-500/40 transition-all duration-200 shadow-sm flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center font-bold text-[10px] text-white">
+                <div className="flex items-center justify-between gap-2 mb-2.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-white">
                       {disc.author?.name?.charAt(0) || 'U'}
                     </div>
-                    <span className="text-xs font-bold text-slate-300 truncate max-w-[130px]">
+                    <span className="text-xs font-medium text-slate-300 truncate max-w-[130px]">
                       {disc.author?.name || 'Student'}
                     </span>
                   </div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-emerald-300 border border-emerald-500/20">
+                  <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-800 text-emerald-300 border border-emerald-500/20">
                     {disc.category}
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-white line-clamp-2 mb-2 font-['Outfit']">
+                <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1.5">
                   {disc.title}
                 </h3>
 
-                <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed mb-4">
+                <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed mb-3">
                   {disc.body}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <div className="pt-2.5 border-t border-white/5 flex items-center justify-between text-xs">
                 <button
                   onClick={() => handleUpvote(disc._id)}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-emerald-300 border border-white/5 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-emerald-300 border border-white/5 transition-colors cursor-pointer"
                 >
                   <ThumbsUp size={12} className="text-emerald-400" />
-                  <span className="font-bold">{disc.upvotes || 0}</span>
+                  <span className="font-semibold">{disc.upvotes || 0}</span>
                 </button>
 
                 <Link
                   to="/discussions"
-                  className="text-[11px] text-slate-400 hover:text-white flex items-center gap-1"
+                  className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
                 >
                   <MessageSquare size={12} className="text-cyan-400" />
                   {disc.replies?.length || 0} Replies
@@ -699,59 +677,57 @@ const Feed = () => {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          7. SECTION E: QUICK ACCESS COMMAND TILES
-      ══════════════════════════════════════════════════════════════ */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+      {/* ── 7. SECTION E: QUICK ACCESS COMMAND TILES ─────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
         <Link
           to="/profile"
-          className="glass p-4 rounded-2xl border border-white/10 hover:border-indigo-500/40 flex items-center gap-3 transition-all group"
+          className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10 hover:border-indigo-500/40 flex items-center gap-3 transition-all group shadow-sm"
         >
-          <div className="p-2.5 rounded-xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/20 shrink-0">
-            <Ticket size={20} />
+          <div className="p-2 rounded-lg bg-indigo-500/15 text-indigo-400 border border-indigo-500/20 shrink-0">
+            <Ticket size={18} />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-white group-hover:text-indigo-300 transition-colors">My Event Passes</h4>
-            <p className="text-[11px] text-slate-400">View QR tickets</p>
+            <h4 className="text-xs font-semibold text-white group-hover:text-indigo-300 transition-colors">My Event Passes</h4>
+            <p className="text-xs text-slate-400">View QR tickets</p>
           </div>
         </Link>
 
         <Link
           to="/clubs"
-          className="glass p-4 rounded-2xl border border-white/10 hover:border-cyan-500/40 flex items-center gap-3 transition-all group"
+          className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10 hover:border-cyan-500/40 flex items-center gap-3 transition-all group shadow-sm"
         >
-          <div className="p-2.5 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 shrink-0">
-            <Users size={20} />
+          <div className="p-2 rounded-lg bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 shrink-0">
+            <Users size={18} />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">Club Workspaces</h4>
-            <p className="text-[11px] text-slate-400">Join communities</p>
+            <h4 className="text-xs font-semibold text-white group-hover:text-cyan-300 transition-colors">Club Workspaces</h4>
+            <p className="text-xs text-slate-400">Join communities</p>
           </div>
         </Link>
 
         <Link
           to="/announcements"
-          className="glass p-4 rounded-2xl border border-white/10 hover:border-amber-500/40 flex items-center gap-3 transition-all group"
+          className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10 hover:border-amber-500/40 flex items-center gap-3 transition-all group shadow-sm"
         >
-          <div className="p-2.5 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/20 shrink-0">
-            <Megaphone size={20} />
+          <div className="p-2 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/20 shrink-0">
+            <Megaphone size={18} />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">Post Notice</h4>
-            <p className="text-[11px] text-slate-400">Broadcast circular</p>
+            <h4 className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">Post Notice</h4>
+            <p className="text-xs text-slate-400">Broadcast circular</p>
           </div>
         </Link>
 
         <Link
           to="/discussions"
-          className="glass p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 flex items-center gap-3 transition-all group"
+          className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10 hover:border-emerald-500/40 flex items-center gap-3 transition-all group shadow-sm"
         >
-          <div className="p-2.5 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 shrink-0">
-            <MessageSquare size={20} />
+          <div className="p-2 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 shrink-0">
+            <MessageSquare size={18} />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">Ask Faculty & Peers</h4>
-            <p className="text-[11px] text-slate-400">Start new Q&A thread</p>
+            <h4 className="text-xs font-semibold text-white group-hover:text-emerald-300 transition-colors">Ask Faculty & Peers</h4>
+            <p className="text-xs text-slate-400">Start new Q&A thread</p>
           </div>
         </Link>
       </div>

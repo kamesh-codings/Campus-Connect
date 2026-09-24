@@ -6,13 +6,10 @@ import {
   Megaphone,
   MessageCircle,
   TrendingUp,
-  Award,
   Activity,
-  Layers,
   Sparkles,
   BarChart3,
   PieChart as PieIcon,
-  Flame,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -65,7 +62,7 @@ const Analytics = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -145,17 +142,17 @@ const Analytics = () => {
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in-up pb-10">
+    <div className="space-y-6 animate-fade-in-up pb-12 font-sans">
       {/* ── 1. HEADER ────────────────────────────────────── */}
       <div>
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-2">
-          <Sparkles size={13} className="text-indigo-400" />
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-2">
+          <Sparkles size={12} className="text-indigo-400" />
           <span>Executive Intelligence & Student Engagement</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-['Outfit']">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
           Campus Analytics
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
           Real-time metrics on student participation, event registrations, and departmental activity.
         </p>
       </div>
@@ -167,17 +164,17 @@ const Analytics = () => {
           return (
             <div
               key={kpi.title}
-              className="glass p-5 rounded-3xl border border-white/10 hover:border-indigo-500/30 transition-all shadow-lg flex items-center justify-between"
+              className="p-4 rounded-xl bg-[#0D111A] border border-white/10 hover:border-indigo-500/30 transition-all shadow-md flex items-center justify-between"
             >
               <div>
-                <p className="text-xs font-semibold text-slate-400">{kpi.title}</p>
-                <p className="text-3xl font-black text-white mt-1 font-['Outfit']">{kpi.value}</p>
-                <p className="text-[11px] text-emerald-400 mt-1 flex items-center gap-1">
+                <p className="text-xs font-medium text-slate-400">{kpi.title}</p>
+                <p className="text-2xl font-bold text-white mt-0.5">{kpi.value}</p>
+                <p className="text-xs text-emerald-400 mt-1 flex items-center gap-1 font-medium">
                   <TrendingUp size={12} /> {kpi.change}
                 </p>
               </div>
-              <div className={`w-12 h-12 rounded-2xl ${kpi.bg} border flex items-center justify-center shrink-0`}>
-                <Icon size={22} className={kpi.color} />
+              <div className={`w-10 h-10 rounded-lg ${kpi.bg} border flex items-center justify-center shrink-0`}>
+                <Icon size={18} className={kpi.color} />
               </div>
             </div>
           );
@@ -185,19 +182,17 @@ const Analytics = () => {
       </div>
 
       {/* ── 3. CHARTS GRID ───────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Area Chart: Weekly Active Users (8 cols) */}
-        <div className="lg:col-span-8 glass p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2 font-['Outfit']">
-                <Activity size={18} className="text-indigo-400" /> Weekly Engagement & Traffic
-              </h3>
-              <p className="text-xs text-slate-400">Daily active student visits and event registrations</p>
-            </div>
+        <div className="lg:col-span-8 p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-3">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Activity size={16} className="text-indigo-400" /> Weekly Engagement & Traffic
+            </h3>
+            <p className="text-xs text-slate-400">Daily active student visits and event registrations</p>
           </div>
 
-          <div className="h-72 w-full pt-2">
+          <div className="h-64 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={activityData}>
                 <defs>
@@ -217,7 +212,7 @@ const Analytics = () => {
                   contentStyle={{
                     backgroundColor: '#080B12',
                     borderColor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '12px',
+                    borderRadius: '8px',
                     fontSize: '12px',
                     color: '#fff',
                   }}
@@ -246,23 +241,23 @@ const Analytics = () => {
         </div>
 
         {/* Donut Chart: Club Distribution (4 cols) */}
-        <div className="lg:col-span-4 glass p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+        <div className="lg:col-span-4 p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-3">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2 font-['Outfit']">
-              <PieIcon size={18} className="text-cyan-400" /> Club Category Share
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <PieIcon size={16} className="text-cyan-400" /> Club Category Share
             </h3>
             <p className="text-xs text-slate-400">Distribution by student memberships</p>
           </div>
 
-          <div className="h-56 w-full flex items-center justify-center">
+          <div className="h-48 w-full flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={clubPieData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={50}
-                  outerRadius={75}
+                  innerRadius={45}
+                  outerRadius={68}
                   paddingAngle={4}
                   dataKey="value"
                 >
@@ -274,7 +269,7 @@ const Analytics = () => {
                   contentStyle={{
                     backgroundColor: '#080B12',
                     borderColor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '12px',
+                    borderRadius: '8px',
                     fontSize: '12px',
                     color: '#fff',
                   }}
@@ -283,10 +278,10 @@ const Analytics = () => {
             </ResponsiveContainer>
           </div>
 
-          <div className="flex flex-wrap gap-2 pt-2 justify-center">
+          <div className="flex flex-wrap gap-2 pt-1 justify-center">
             {clubPieData.map((entry, idx) => (
-              <span key={entry.name} className="flex items-center gap-1.5 text-[11px] text-slate-300">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
+              <span key={entry.name} className="flex items-center gap-1.5 text-xs text-slate-300">
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
                 {entry.name}
               </span>
             ))}
@@ -295,15 +290,15 @@ const Analytics = () => {
       </div>
 
       {/* ── 4. BAR CHART: EVENT RSVPs BY CATEGORY ───────── */}
-      <div className="glass p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+      <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-3">
         <div>
-          <h3 className="text-base font-bold text-white flex items-center gap-2 font-['Outfit']">
-            <BarChart3 size={18} className="text-amber-400" /> Event Participation by Category
+          <h3 className="text-sm font-bold text-white flex items-center gap-2">
+            <BarChart3 size={16} className="text-amber-400" /> Event Participation by Category
           </h3>
           <p className="text-xs text-slate-400">Total verified ticket registrations across workshop types</p>
         </div>
 
-        <div className="h-64 w-full pt-2">
+        <div className="h-56 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={eventCategoryData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
@@ -313,12 +308,12 @@ const Analytics = () => {
                 contentStyle={{
                   backgroundColor: '#080B12',
                   borderColor: 'rgba(255,255,255,0.1)',
-                  borderRadius: '12px',
+                  borderRadius: '8px',
                   fontSize: '12px',
                   color: '#fff',
                 }}
               />
-              <Bar dataKey="registrations" fill="#6366f1" radius={[8, 8, 0, 0]} barSize={36} />
+              <Bar dataKey="registrations" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={32} />
             </BarChart>
           </ResponsiveContainer>
         </div>
