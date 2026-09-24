@@ -9,6 +9,9 @@ import {
   Building,
   Search,
   ShieldAlert,
+  Flag,
+  Check,
+  AlertTriangle,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -16,10 +19,11 @@ const AdminDashboard = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [clubs, setClubs] = useState([]);
+  const [reportedDiscussions, setReportedDiscussions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userSearch, setUserSearch] = useState('');
   const [clubSearch, setClubSearch] = useState('');
-  const [activeTab, setActiveTab] = useState('users'); // users, clubs
+  const [activeTab, setActiveTab] = useState('users'); // users, clubs, moderation
 
   useEffect(() => {
     fetchAdminData();
@@ -28,12 +32,14 @@ const AdminDashboard = () => {
   const fetchAdminData = async () => {
     try {
       setLoading(true);
-      const [usersRes, clubsRes] = await Promise.all([
+      const [usersRes, clubsRes, repRes] = await Promise.all([
         API.get('/users'),
         API.get('/clubs'),
+        API.get('/discussions/reported'),
       ]);
       setUsers(usersRes.data);
       setClubs(clubsRes.data);
+      setReportedDiscussions(Array.isArray(repRes.data) ? repRes.data : []);
     } catch (err) {
       toast.error('Failed to load administration data');
     } finally {
@@ -77,6 +83,27 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDismissReport = async (discussionId) => {
+    try {
+      await API.put(`/discussions/${discussionId}/dismiss-report`);
+      toast.success('Report dismissed, content approved');
+      setReportedDiscussions((prev) => prev.filter((d) => d._id !== discussionId));
+    } catch (err) {
+      toast.error('Failed to dismiss report');
+    }
+  };
+
+  const handleDeleteReportedDiscussion = async (discussionId) => {
+    if (!window.confirm('Are you sure you want to permanently delete this reported discussion thread?')) return;
+    try {
+      await API.delete(`/discussions/${discussionId}`);
+      toast.success('Inappropriate content removed');
+      setReportedDiscussions((prev) => prev.filter((d) => d._id !== discussionId));
+    } catch (err) {
+      toast.error('Failed to delete discussion');
+    }
+  };
+
   const filteredUsers = users.filter(
     (u) =>
       u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
@@ -112,20 +139,20 @@ const AdminDashboard = () => {
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-semibold mb-2">
             <ShieldAlert size={12} className="text-rose-400" />
-            <span>Root Governance & Access Control</span>
+            <span>Root Governance & Content Moderation</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             Administrator Hub
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-            Manage user roles, moderate student clubs, audit permissions, and control campus operations.
+            Manage user roles, moderate student clubs, review flagged community content, and audit campus activity.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('users')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border ${
               activeTab === 'users'
                 ? 'bg-rose-600 text-white border-rose-500 shadow-sm'
                 : 'bg-slate-900 text-slate-400 hover:text-white border-white/10'
@@ -135,7 +162,7 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('clubs')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border ${
               activeTab === 'clubs'
                 ? 'bg-rose-600 text-white border-rose-500 shadow-sm'
                 : 'bg-slate-900 text-slate-400 hover:text-white border-white/10'
@@ -143,11 +170,22 @@ const AdminDashboard = () => {
           >
             Clubs ({clubs.length})
           </button>
+          <button
+            onClick={() => setActiveTab('moderation')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border flex items-center gap-1.5 ${
+              activeTab === 'moderation'
+                ? 'bg-amber-600 text-white border-amber-500 shadow-sm'
+                : 'bg-slate-900 text-slate-400 hover:text-white border-white/10'
+            }`}
+          >
+            <Flag size={12} />
+            Moderation ({reportedDiscussions.length})
+          </button>
         </div>
       </div>
 
       {/* ── 2. STAT CARDS ────────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between shadow-md">
           <div>
             <p className="text-xs font-medium text-slate-400">Total Campus Users</p>
@@ -165,6 +203,16 @@ const AdminDashboard = () => {
           </div>
           <div className="w-10 h-10 rounded-lg bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 flex items-center justify-center">
             <Building size={18} />
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between shadow-md">
+          <div>
+            <p className="text-xs font-medium text-slate-400">Reported Content</p>
+            <p className="text-2xl font-bold text-amber-400 mt-0.5">{reportedDiscussions.length}</p>
+          </div>
+          <div className="w-10 h-10 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center">
+            <Flag size={18} />
           </div>
         </div>
 
@@ -318,6 +366,84 @@ const AdminDashboard = () => {
               </tbody>
             </table>
           </div>
+        </div>
+      )}
+
+      {/* ── 5. TAB 3: CONTENT MODERATION ─────────────────── */}
+      {activeTab === 'moderation' && (
+        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Flag size={16} className="text-amber-400" />
+                Reported Content & Discussions Queue
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Review flagged posts to ensure campus safety, academic integrity, and community standards.
+              </p>
+            </div>
+            <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20">
+              {reportedDiscussions.length} items flagged
+            </span>
+          </div>
+
+          {reportedDiscussions.length === 0 ? (
+            <div className="py-12 text-center text-xs text-slate-400 bg-slate-900/40 rounded-xl border border-white/5 space-y-2">
+              <CheckCircle size={32} className="mx-auto text-emerald-400 opacity-60" />
+              <p className="font-semibold text-white">All clear! No pending reports</p>
+              <p className="text-slate-500">All discussion threads are compliant with campus community guidelines.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {reportedDiscussions.map((item) => (
+                <div
+                  key={item._id}
+                  className="p-4 rounded-xl bg-slate-900 border border-amber-500/30 space-y-2.5"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                          Flagged
+                        </span>
+                        <h4 className="text-sm font-bold text-white">{item.title}</h4>
+                      </div>
+                      <p className="text-xs text-amber-300/90 mt-1 flex items-center gap-1.5 font-medium">
+                        <AlertTriangle size={13} />
+                        Reason: {item.reportReason || 'Off-topic or non-compliant content'}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => handleDismissReport(item._id)}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors cursor-pointer"
+                        title="Approve post and dismiss report"
+                      >
+                        <Check size={13} /> Approve Content
+                      </button>
+                      <button
+                        onClick={() => handleDeleteReportedDiscussion(item._id)}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer"
+                        title="Delete offending discussion"
+                      >
+                        <Trash2 size={13} /> Delete Thread
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-300 whitespace-pre-line bg-slate-950 p-3 rounded-lg border border-white/5">
+                    {item.body}
+                  </p>
+
+                  <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+                    <span>Author: {item.author?.name} ({item.author?.department} Dept)</span>
+                    <span className="font-mono">Thread #{item._id?.slice(-6)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

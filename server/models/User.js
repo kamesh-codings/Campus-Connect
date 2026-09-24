@@ -55,6 +55,12 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 50,
     },
+    extracurricularActivities: [{ type: String }],
+    academicInfo: {
+      gpa: { type: String, default: '8.8 / 10' },
+      specialization: { type: String, default: 'Full Stack & AI' },
+      semester: { type: Number, default: 6 },
+    },
     achievements: [
       {
         title: { type: String, required: true },

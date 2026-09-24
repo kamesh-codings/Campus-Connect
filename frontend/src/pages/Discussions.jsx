@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronUp,
   Building,
+  Flag,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -76,6 +77,18 @@ const Discussions = () => {
       toast.success('Reply posted!');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to submit reply');
+    }
+  };
+
+  const handleReportDiscussion = async (discussionId) => {
+    const reason = window.prompt('Please provide a reason for flagging this discussion to campus administrators:');
+    if (!reason) return;
+    try {
+      await API.post(`/discussions/${discussionId}/report`, { reason });
+      toast.success('Discussion reported for administrative review');
+      fetchDiscussions();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to report discussion');
     }
   };
 
@@ -258,6 +271,15 @@ const Discussions = () => {
                       <MessageCircle size={13} className="text-cyan-400" />
                       <span>{replyCount} Replies</span>
                       {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                    </button>
+
+                    <button
+                      onClick={() => handleReportDiscussion(disc._id)}
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors text-xs cursor-pointer"
+                      title="Report thread to admin"
+                    >
+                      <Flag size={12} />
+                      <span>{disc.isReported ? 'Reported' : 'Report'}</span>
                     </button>
                   </div>
 

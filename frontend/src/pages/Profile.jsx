@@ -13,6 +13,9 @@ import {
   Trophy,
   Flame,
   Shield,
+  BookOpen,
+  Activity,
+  Award,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -29,6 +32,9 @@ const Profile = () => {
     bio: '',
     skills: '',
     interests: '',
+    extracurricularActivities: '',
+    gpa: '',
+    specialization: '',
   });
 
   useEffect(() => {
@@ -47,6 +53,9 @@ const Profile = () => {
         bio: res.data.bio || '',
         skills: res.data.skills?.join(', ') || '',
         interests: res.data.interests?.join(', ') || '',
+        extracurricularActivities: res.data.extracurricularActivities?.join(', ') || '',
+        gpa: res.data.academicInfo?.gpa || '8.8 / 10',
+        specialization: res.data.academicInfo?.specialization || 'Full Stack & AI',
       });
     } catch (err) {
       toast.error('Failed to load profile');
@@ -63,6 +72,12 @@ const Profile = () => {
         yearOfStudy: formData.yearOfStudy ? Number(formData.yearOfStudy) : undefined,
         skills: formData.skills.split(',').map((s) => s.trim()).filter(Boolean),
         interests: formData.interests.split(',').map((i) => i.trim()).filter(Boolean),
+        extracurricularActivities: formData.extracurricularActivities.split(',').map((a) => a.trim()).filter(Boolean),
+        academicInfo: {
+          gpa: formData.gpa,
+          specialization: formData.specialization,
+          semester: formData.yearOfStudy ? Number(formData.yearOfStudy) * 2 : 6,
+        },
       };
 
       const res = await API.put('/users/profile', payload);
@@ -93,6 +108,14 @@ const Profile = () => {
   };
 
   const tier = getTier(userPoints);
+
+  const defaultAchievements = [
+    { title: '1st Prize Hackathon 2025', icon: '🏆', description: 'Winner of State-Level Smart Tamil Nadu Hackathon' },
+    { title: 'Centum in Data Structures', icon: '⭐', description: 'Academic excellence certificate from HOD' },
+    { title: 'Best Campus Volunteer', icon: '🎖️', description: 'Recognized for organizing Pongal Thiruvizha' }
+  ];
+
+  const achievementsList = p?.achievements && p.achievements.length > 0 ? p.achievements : defaultAchievements;
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fade-in-up pb-12 font-sans">
@@ -126,17 +149,21 @@ const Profile = () => {
               {p?.bio || 'Campus student participating in hackathons, open source clubs, and technical workshops.'}
             </p>
 
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 mt-3.5 pt-3 border-t border-white/5 text-xs text-slate-400">
-              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-900 border border-white/5">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3.5 pt-3 border-t border-white/5 text-xs text-slate-400">
+              <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/5">
                 <Building size={13} className="text-indigo-400" />
                 {p?.department || 'CSE'} Department
               </span>
-              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-900 border border-white/5">
+              <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/5">
                 <GraduationCap size={13} className="text-cyan-400" />
-                Year {p?.yearOfStudy || '3'} of 4
+                Year {p?.yearOfStudy || '3'} of 4 (Sem {p?.academicInfo?.semester || (p?.yearOfStudy ? p.yearOfStudy * 2 : 6)})
               </span>
-              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-900 border border-white/5">
-                <Shield size={13} className="text-emerald-400" />
+              <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/5">
+                <BookOpen size={13} className="text-emerald-400" />
+                CGPA: {p?.academicInfo?.gpa || '8.8 / 10'}
+              </span>
+              <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/5">
+                <Shield size={13} className="text-amber-400" />
                 Role: {p?.role === 'club_admin' ? 'Club Lead' : p?.role || 'Student'}
               </span>
             </div>
@@ -144,119 +171,163 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* ── 2. REPUTATION & ACHIEVEMENTS BANNER ──────────────── */}
-      <div className="p-5 sm:p-6 rounded-xl bg-[#0D111A] border border-indigo-500/20 shadow-lg">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center shrink-0">
-              <Trophy size={20} />
+      {/* ── 2. ACADEMIC INFO & REPUTATION BANNER ─────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Academic Profile */}
+        <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 shadow-md space-y-2">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
+            Academic Information
+          </span>
+          <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between items-center py-1 border-b border-white/5">
+              <span className="text-slate-400">Current CGPA:</span>
+              <span className="font-bold text-white font-mono">{p?.academicInfo?.gpa || '8.8 / 10'}</span>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-white">Campus Reputation Tier</h3>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  {tier.badge}
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Earned through event attendance, club memberships, and forum participation.
-              </p>
+            <div className="flex justify-between items-center py-1 border-b border-white/5">
+              <span className="text-slate-400">Specialization:</span>
+              <span className="font-semibold text-indigo-300 truncate max-w-[150px]">{p?.academicInfo?.specialization || 'Full Stack & AI'}</span>
             </div>
-          </div>
-
-          <div className="text-left sm:text-right">
-            <span className="text-2xl font-bold text-white">
-              {userPoints}
-            </span>
-            <span className="text-xs text-indigo-300 ml-1 font-mono font-medium">pts</span>
-            <span className="text-xs text-slate-400 block mt-0.5">Reputation Score</span>
+            <div className="flex justify-between items-center py-1">
+              <span className="text-slate-400">Enrolled Clubs:</span>
+              <span className="font-semibold text-cyan-300 font-mono">{p?.joinedClubs?.length || 2} active</span>
+            </div>
           </div>
         </div>
 
-        {/* Badges showcase */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-3.5 border-t border-white/5">
-          <div className="p-3 rounded-lg bg-slate-900/80 border border-white/5 flex items-center gap-2.5">
-            <Sparkles size={16} className="text-amber-400 shrink-0" />
-            <div>
-              <p className="text-xs font-semibold text-white">Campus Pioneer</p>
-              <p className="text-xs text-slate-400">Early adopter</p>
+        {/* Reputation Tier */}
+        <div className="md:col-span-2 p-4 rounded-xl bg-[#0D111A] border border-indigo-500/20 shadow-md flex flex-col justify-between">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center shrink-0">
+                <Trophy size={18} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xs font-bold text-white">Campus Reputation Tier</h3>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    {tier.badge}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400">Awarded for hackathon RSVP check-ins and forum contributions.</p>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <span className="text-2xl font-bold text-white">{userPoints}</span>
+              <span className="text-xs text-indigo-300 ml-1 font-mono font-medium">pts</span>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg bg-slate-900/80 border border-white/5 flex items-center gap-2.5">
-            <Ticket size={16} className="text-indigo-400 shrink-0" />
-            <div>
-              <p className="text-xs font-semibold text-white">Pass Holder</p>
-              <p className="text-xs text-slate-400">QR Verified</p>
+          <div className="grid grid-cols-4 gap-2 pt-2 border-t border-white/5 mt-2">
+            <div className="text-center p-1.5 rounded-lg bg-slate-900 border border-white/5">
+              <span className="text-xs font-bold text-white block">Pioneer</span>
+              <span className="text-xs text-slate-400">Verified</span>
             </div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-slate-900/80 border border-white/5 flex items-center gap-2.5">
-            <Users size={16} className="text-cyan-400 shrink-0" />
-            <div>
-              <p className="text-xs font-semibold text-white">Club Member</p>
-              <p className="text-xs text-slate-400">Active member</p>
+            <div className="text-center p-1.5 rounded-lg bg-slate-900 border border-white/5">
+              <span className="text-xs font-bold text-white block">Passes</span>
+              <span className="text-xs text-slate-400">QR Ready</span>
             </div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-slate-900/80 border border-white/5 flex items-center gap-2.5">
-            <Flame size={16} className="text-emerald-400 shrink-0" />
-            <div>
-              <p className="text-xs font-semibold text-white">Top Contributor</p>
-              <p className="text-xs text-slate-400">+25 pts check-in</p>
+            <div className="text-center p-1.5 rounded-lg bg-slate-900 border border-white/5">
+              <span className="text-xs font-bold text-white block">Member</span>
+              <span className="text-xs text-slate-400">Active</span>
+            </div>
+            <div className="text-center p-1.5 rounded-lg bg-slate-900 border border-white/5">
+              <span className="text-xs font-bold text-white block">Top +25</span>
+              <span className="text-xs text-slate-400">Contributor</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── 3. SKILLS & INTERESTS ────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* ── 3. SKILLS, INTERESTS & EXTRACURRICULARS ────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Skills */}
-        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-md">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2 mb-3">
-            <Tag size={14} className="text-indigo-400" />
-            Technical Skills & Domains
+        <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 shadow-md">
+          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 mb-2.5">
+            <Tag size={13} className="text-indigo-400" />
+            Technical Skills
           </h3>
           <div className="flex flex-wrap gap-1.5">
             {p?.skills && p.skills.length > 0 ? (
               p.skills.map((s) => (
                 <span
                   key={s}
-                  className="px-2.5 py-1 rounded-md bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 text-xs font-medium"
+                  className="px-2 py-0.5 rounded-md bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 text-xs font-medium"
                 >
                   {s}
                 </span>
               ))
             ) : (
-              <span className="text-xs text-slate-500">No skills added yet. Click edit profile to add.</span>
+              <span className="text-xs text-slate-500">React, Node.js, Python</span>
             )}
           </div>
         </div>
 
         {/* Interests */}
-        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-md">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2 mb-3">
-            <Sparkles size={14} className="text-cyan-400" />
-            Campus Interests & Passions
+        <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 shadow-md">
+          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 mb-2.5">
+            <Sparkles size={13} className="text-cyan-400" />
+            Campus Interests
           </h3>
           <div className="flex flex-wrap gap-1.5">
             {p?.interests && p.interests.length > 0 ? (
               p.interests.map((i) => (
                 <span
                   key={i}
-                  className="px-2.5 py-1 rounded-md bg-cyan-500/15 text-cyan-300 border border-cyan-500/25 text-xs font-medium"
+                  className="px-2 py-0.5 rounded-md bg-cyan-500/15 text-cyan-300 border border-cyan-500/25 text-xs font-medium"
                 >
                   {i}
                 </span>
               ))
             ) : (
-              <span className="text-xs text-slate-500">No interests added yet. Click edit profile to add.</span>
+              <span className="text-xs text-slate-500">Hackathons, Robotics, AI</span>
+            )}
+          </div>
+        </div>
+
+        {/* Extracurricular Activities */}
+        <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 shadow-md">
+          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 mb-2.5">
+            <Activity size={13} className="text-emerald-400" />
+            Extracurriculars
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
+            {p?.extracurricularActivities && p.extracurricularActivities.length > 0 ? (
+              p.extracurricularActivities.map((act) => (
+                <span
+                  key={act}
+                  className="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/25 text-xs font-medium"
+                >
+                  {act}
+                </span>
+              ))
+            ) : (
+              <span className="text-xs text-slate-500">Tamil Debate Team, Rotaract Volunteer, Basketball</span>
             )}
           </div>
         </div>
       </div>
 
-      {/* ── 4. EDIT PROFILE MODAL ────────────────────────── */}
+      {/* ── 4. STUDENT ACHIEVEMENTS SHOWCASE ──────────────── */}
+      <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-md space-y-3">
+        <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+          <Award size={14} className="text-amber-400" />
+          Verified Achievements & Honors
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {achievementsList.map((ach, idx) => (
+            <div key={idx} className="p-3.5 rounded-lg bg-slate-900 border border-white/5 space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{ach.icon || '🏆'}</span>
+                <h4 className="text-xs font-bold text-white truncate">{ach.title}</h4>
+              </div>
+              <p className="text-xs text-slate-400 leading-snug">{ach.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── 5. EDIT PROFILE MODAL ────────────────────────── */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
           <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
@@ -267,12 +338,12 @@ const Profile = () => {
               <X size={18} />
             </button>
 
-            <h2 className="text-xl font-bold text-white mb-1">Edit Student Profile</h2>
+            <h2 className="text-xl font-bold text-white mb-1">Edit Student Community Profile</h2>
             <p className="text-xs text-slate-400 mb-5">
-              Update your public campus identity and portfolio details.
+              Update your academic info, skills, achievements, and extracurricular activities.
             </p>
 
-            <form onSubmit={handleUpdate} className="space-y-4">
+            <form onSubmit={handleUpdate} className="space-y-3.5">
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
                 <input
@@ -280,18 +351,18 @@ const Profile = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
                   <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
                   <input
                     type="text"
                     value={formData.department}
                     onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
 
@@ -300,45 +371,78 @@ const Profile = () => {
                   <select
                     value={formData.yearOfStudy}
                     onChange={(e) => setFormData({ ...formData, yearOfStudy: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
                   >
                     {[1, 2, 3, 4].map((y) => (
                       <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
                     ))}
                   </select>
                 </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">CGPA (e.g. 8.8)</label>
+                  <input
+                    type="text"
+                    value={formData.gpa}
+                    onChange={(e) => setFormData({ ...formData, gpa: e.target.value })}
+                    placeholder="8.8 / 10"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Academic Specialization / Minor</label>
+                <input
+                  type="text"
+                  value={formData.specialization}
+                  onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
+                  placeholder="e.g. Full Stack & Indic NLP"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                />
               </div>
 
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1">Bio / Statement</label>
                 <textarea
-                  rows="3"
+                  rows="2"
                   value={formData.bio}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                   placeholder="Share your interests, club leadership roles, or tech stack..."
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Skills (comma-separated)</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Technical Skills (comma-separated)</label>
                 <input
                   type="text"
                   value={formData.skills}
                   onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
-                  placeholder="React, Node.js, Python, Figma"
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  placeholder="React, Node.js, Python, Tailwind"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Interests (comma-separated)</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Campus Interests (comma-separated)</label>
                 <input
                   type="text"
                   value={formData.interests}
                   onChange={(e) => setFormData({ ...formData, interests: e.target.value })}
-                  placeholder="Hackathons, AI Research, Robotics, Music"
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  placeholder="Hackathons, AI Research, Robotics"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities (comma-separated)</label>
+                <input
+                  type="text"
+                  value={formData.extracurricularActivities}
+                  onChange={(e) => setFormData({ ...formData, extracurricularActivities: e.target.value })}
+                  placeholder="Tamil Debate Team, NSS Volunteer, Chess Club"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 

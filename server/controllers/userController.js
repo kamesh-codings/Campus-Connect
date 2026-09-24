@@ -24,7 +24,7 @@ const getUserProfile = async (req, res) => {
 // @access  Private
 const updateProfile = async (req, res) => {
   try {
-    const { name, bio, skills, interests, avatar, department, yearOfStudy } = req.body;
+    const { name, bio, skills, interests, avatar, department, yearOfStudy, extracurricularActivities, academicInfo, achievements } = req.body;
 
     const user = await User.findById(req.user._id);
     if (!user) {
@@ -35,6 +35,9 @@ const updateProfile = async (req, res) => {
     if (bio !== undefined) user.bio = bio;
     if (skills) user.skills = skills;
     if (interests) user.interests = interests;
+    if (extracurricularActivities) user.extracurricularActivities = extracurricularActivities;
+    if (academicInfo) user.academicInfo = { ...user.academicInfo, ...academicInfo };
+    if (achievements) user.achievements = achievements;
     if (avatar) user.avatar = avatar;
     if (department) user.department = department;
     if (yearOfStudy) user.yearOfStudy = yearOfStudy;
@@ -112,4 +115,31 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUserProfile, updateProfile, getAllUsers, updateUserRole, deleteUser };
+// @desc    Get campus public directory (search peers/faculty)
+// @route   GET /api/users/directory
+// @access  Private
+const getDirectory = async (req, res) => {
+  try {
+    const { search, role, department } = req.query;
+    let query = {};
+    if (role) query.role = role;
+    if (department) query.department = department;
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { department: { $regex: search, $options: 'i' } },
+        { studentId: { $regex: search, $options: 'i' } },
+        { skills: { $in: [new RegExp(search, 'i')] } },
+      ];
+    }
+    const users = await User.find(query)
+      .select('name role department studentId avatar skills interests achievements extracurricularActivities points')
+      .populate('joinedClubs', 'name category')
+      .limit(50);
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { getUserProfile, updateProfile, getAllUsers, getDirectory, updateUserRole, deleteUser };

@@ -18,6 +18,7 @@ import {
   BarChart3,
   Shield,
   ExternalLink,
+  UserCheck,
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import API from '../../services/api';
@@ -86,11 +87,12 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
       setIsSearching(true);
       try {
         const q = searchQuery.toLowerCase();
-        const [evRes, clRes, anRes, dsRes] = await Promise.all([
+        const [evRes, clRes, anRes, dsRes, usRes] = await Promise.all([
           API.get('/events'),
           API.get('/clubs'),
           API.get('/announcements'),
           API.get('/discussions'),
+          API.get('/users/directory'),
         ]);
 
         const matchedEvents = (evRes.data || [])
@@ -105,13 +107,17 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
         const matchedDisc = (dsRes.data || [])
           .filter((d) => d.title?.toLowerCase().includes(q) || d.tags?.some((t) => t.toLowerCase().includes(q)))
           .slice(0, 3);
+        const matchedUsers = (usRes.data || [])
+          .filter((u) => u.name?.toLowerCase().includes(q) || u.department?.toLowerCase().includes(q) || u.role?.toLowerCase().includes(q))
+          .slice(0, 3);
 
         setSearchResults({
           events: matchedEvents,
           clubs: matchedClubs,
           announcements: matchedAnn,
           discussions: matchedDisc,
-          total: matchedEvents.length + matchedClubs.length + matchedAnn.length + matchedDisc.length,
+          users: matchedUsers,
+          total: matchedEvents.length + matchedClubs.length + matchedAnn.length + matchedDisc.length + matchedUsers.length,
         });
         setShowSearchDropdown(true);
       } catch (err) {
@@ -216,7 +222,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
 
           {/* Search Results Dropdown */}
           {showSearchDropdown && searchResults && (
-            <div className="absolute left-0 right-0 top-full mt-2 glass-neu-card rounded-2xl p-3 shadow-2xl z-50 max-h-96 overflow-y-auto border border-white/15 animate-fade-in-up">
+            <div className="absolute left-0 right-0 top-full mt-2 bg-[#0D111A] rounded-xl p-3 shadow-2xl z-50 max-h-96 overflow-y-auto border border-white/10 animate-fade-in-up">
               {searchResults.total === 0 ? (
                 <div className="py-6 text-center text-text-muted text-xs">
                   No matching events, clubs, or discussions found for "{searchQuery}"
@@ -226,7 +232,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   {/* Events */}
                   {searchResults.events.length > 0 && (
                     <div>
-                      <div className="text-[11px] font-semibold text-primary-light uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
+                      <div className="text-xs font-semibold text-primary-light uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
                         <Calendar size={12} /> Events ({searchResults.events.length})
                       </div>
                       {searchResults.events.map((ev) => (
@@ -234,10 +240,10 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                           key={ev._id}
                           to="/events"
                           onClick={() => setShowSearchDropdown(false)}
-                          className="flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-white/5 text-xs text-text-primary transition-colors group"
+                          className="flex items-center justify-between px-2.5 py-1.5 rounded-md hover:bg-white/5 text-xs text-text-primary transition-colors group"
                         >
                           <span className="font-medium truncate group-hover:text-primary-light">{ev.title}</span>
-                          <span className="text-[10px] text-text-muted shrink-0 ml-2">{ev.venue}</span>
+                          <span className="text-xs text-text-muted shrink-0 ml-2">{ev.venue}</span>
                         </Link>
                       ))}
                     </div>
@@ -246,7 +252,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   {/* Clubs */}
                   {searchResults.clubs.length > 0 && (
                     <div>
-                      <div className="text-[11px] font-semibold text-cyan-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
+                      <div className="text-xs font-semibold text-cyan-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
                         <Users size={12} /> Clubs ({searchResults.clubs.length})
                       </div>
                       {searchResults.clubs.map((cl) => (
@@ -254,10 +260,10 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                           key={cl._id}
                           to="/clubs"
                           onClick={() => setShowSearchDropdown(false)}
-                          className="flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-white/5 text-xs text-text-primary transition-colors group"
+                          className="flex items-center justify-between px-2.5 py-1.5 rounded-md hover:bg-white/5 text-xs text-text-primary transition-colors group"
                         >
                           <span className="font-medium truncate group-hover:text-cyan-400">{cl.name}</span>
-                          <span className="text-[10px] text-text-muted shrink-0 ml-2">{cl.category}</span>
+                          <span className="text-xs text-text-muted shrink-0 ml-2">{cl.category}</span>
                         </Link>
                       ))}
                     </div>
@@ -266,7 +272,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   {/* Discussions */}
                   {searchResults.discussions.length > 0 && (
                     <div>
-                      <div className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
+                      <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
                         <MessageCircle size={12} /> Discussions ({searchResults.discussions.length})
                       </div>
                       {searchResults.discussions.map((ds) => (
@@ -274,10 +280,10 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                           key={ds._id}
                           to="/discussions"
                           onClick={() => setShowSearchDropdown(false)}
-                          className="flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-white/5 text-xs text-text-primary transition-colors group"
+                          className="flex items-center justify-between px-2.5 py-1.5 rounded-md hover:bg-white/5 text-xs text-text-primary transition-colors group"
                         >
                           <span className="font-medium truncate group-hover:text-emerald-400">{ds.title}</span>
-                          <span className="text-[10px] text-text-muted shrink-0 ml-2">{ds.category}</span>
+                          <span className="text-xs text-text-muted shrink-0 ml-2">{ds.category}</span>
                         </Link>
                       ))}
                     </div>
@@ -286,7 +292,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   {/* Announcements */}
                   {searchResults.announcements.length > 0 && (
                     <div>
-                      <div className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
+                      <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
                         <Megaphone size={12} /> Announcements ({searchResults.announcements.length})
                       </div>
                       {searchResults.announcements.map((an) => (
@@ -294,10 +300,37 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                           key={an._id}
                           to="/announcements"
                           onClick={() => setShowSearchDropdown(false)}
-                          className="flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-white/5 text-xs text-text-primary transition-colors group"
+                          className="flex items-center justify-between px-2.5 py-1.5 rounded-md hover:bg-white/5 text-xs text-text-primary transition-colors group"
                         >
                           <span className="font-medium truncate group-hover:text-amber-400">{an.title}</span>
-                          <span className="text-[10px] text-text-muted shrink-0 ml-2">{an.category}</span>
+                          <span className="text-xs text-text-muted shrink-0 ml-2">{an.category}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Students & Faculty Directory */}
+                  {searchResults.users && searchResults.users.length > 0 && (
+                    <div>
+                      <div className="text-xs font-semibold text-indigo-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1.5">
+                        <UserCheck size={12} /> Students & Faculty ({searchResults.users.length})
+                      </div>
+                      {searchResults.users.map((u) => (
+                        <Link
+                          key={u._id}
+                          to="/profile"
+                          onClick={() => setShowSearchDropdown(false)}
+                          className="flex items-center justify-between px-2.5 py-1.5 rounded-md hover:bg-white/5 text-xs text-text-primary transition-colors group"
+                        >
+                          <div className="flex items-center gap-2 truncate">
+                            <span className="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-indigo-300 shrink-0">
+                              {u.name?.charAt(0)}
+                            </span>
+                            <span className="font-medium truncate group-hover:text-indigo-300">{u.name}</span>
+                          </div>
+                          <span className="text-xs text-text-muted shrink-0 ml-2 capitalize">
+                            {u.role?.replace('_', ' ')} • {u.department}
+                          </span>
                         </Link>
                       ))}
                     </div>

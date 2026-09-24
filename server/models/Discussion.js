@@ -48,6 +48,19 @@ const discussionSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isReported: {
+      type: Boolean,
+      default: false,
+    },
+    reportReason: {
+      type: String,
+      default: '',
+    },
+    reportedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    isModerated: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

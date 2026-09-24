@@ -12,6 +12,7 @@ import {
   UserCircle,
   Sparkles,
   ChevronRight,
+  FileText,
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
@@ -54,6 +55,13 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
       label: 'Discussions & Help',
       roles: ['student', 'club_admin', 'faculty', 'admin'],
       badge: null,
+    },
+    {
+      path: '/resources',
+      icon: FileText,
+      label: 'Files & Resources',
+      roles: ['student', 'club_admin', 'faculty', 'admin'],
+      badge: 'Hub',
     },
     {
       path: '/profile',

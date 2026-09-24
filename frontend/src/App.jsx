@@ -6,6 +6,7 @@ import Events from './pages/Events';
 import Clubs from './pages/Clubs';
 import Announcements from './pages/Announcements';
 import Discussions from './pages/Discussions';
+import Resources from './pages/Resources';
 import Profile from './pages/Profile';
 import Analytics from './pages/Analytics';
 import AdminDashboard from './pages/AdminDashboard';
@@ -104,6 +105,7 @@ function App() {
           <Route path="clubs" element={<Clubs />} />
           <Route path="announcements" element={<Announcements />} />
           <Route path="discussions" element={<Discussions />} />
+          <Route path="resources" element={<Resources />} />
           <Route path="profile" element={<Profile />} />
           <Route
             path="analytics"

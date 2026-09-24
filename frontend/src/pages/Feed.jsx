@@ -19,6 +19,7 @@ import {
   ThumbsUp,
   Building,
   Ticket,
+  FileText,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -192,6 +193,12 @@ const Feed = () => {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-medium transition-colors"
               >
                 <Megaphone size={13} /> Circulars
+              </Link>
+              <Link
+                to="/resources"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-white/10 text-xs font-medium transition-colors"
+              >
+                <FileText size={13} /> Campus Files
               </Link>
             </div>
           </div>

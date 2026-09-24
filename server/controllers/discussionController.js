@@ -157,6 +157,67 @@ const deleteDiscussion = async (req, res) => {
   }
 };
 
+// @desc    Report inappropriate discussion (content moderation)
+// @route   POST /api/discussions/:id/report
+// @access  Private
+const reportDiscussion = async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const discussion = await Discussion.findById(req.params.id);
+    if (!discussion) {
+      return res.status(404).json({ message: 'Discussion not found' });
+    }
+
+    discussion.isReported = true;
+    discussion.reportReason = reason || 'Inappropriate or violates campus community guidelines';
+    if (!discussion.reportedBy.includes(req.user._id)) {
+      discussion.reportedBy.push(req.user._id);
+    }
+
+    await discussion.save();
+    res.json({ message: 'Discussion thread flagged for moderation review', discussion });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// @desc    Get reported discussions for Admin Content Moderation
+// @route   GET /api/discussions/reported
+// @access  Private/Admin
+const getReportedDiscussions = async (req, res) => {
+  try {
+    const discussions = await Discussion.find({ isReported: true })
+      .populate('author', 'name email department avatar role')
+      .populate('reportedBy', 'name email')
+      .sort({ updatedAt: -1 });
+
+    res.json(discussions);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// @desc    Dismiss report (Admin approves discussion)
+// @route   PUT /api/discussions/:id/dismiss-report
+// @access  Private/Admin
+const dismissReport = async (req, res) => {
+  try {
+    const discussion = await Discussion.findById(req.params.id);
+    if (!discussion) {
+      return res.status(404).json({ message: 'Discussion not found' });
+    }
+
+    discussion.isReported = false;
+    discussion.isModerated = true;
+    discussion.reportReason = '';
+    await discussion.save();
+
+    res.json({ message: 'Report dismissed, content approved', discussion });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
 module.exports = {
   getDiscussions,
   getDiscussion,
@@ -164,4 +225,7 @@ module.exports = {
   addReply,
   toggleUpvote,
   deleteDiscussion,
+  reportDiscussion,
+  getReportedDiscussions,
+  dismissReport,
 };
