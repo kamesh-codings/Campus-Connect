@@ -16,6 +16,7 @@ node_modules/
 dist/
 dist-ssr/
 build/
+.vite/
 *.local
 
 # Environment variables & secrets
