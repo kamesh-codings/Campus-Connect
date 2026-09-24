@@ -10,6 +10,7 @@ lerna-debug.log*
 # Node dependencies
 node_modules/
 */node_modules/
+**/node_modules/
 
 # Build artifacts
 dist/
@@ -17,13 +18,13 @@ dist-ssr/
 build/
 *.local
 
-# Environment variables
+# Environment variables & secrets
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+*.env
 server/.env
+backend/.env
+frontend/.env
 
 # Editor directories and files
 .vscode/*
@@ -43,3 +44,4 @@ server/.env
 .Trashes
 ehthumbs.db
 Thumbs.db
+
