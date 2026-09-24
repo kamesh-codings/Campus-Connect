@@ -1,0 +1,1676 @@
+{
+  "users": [
+    {
+      "name": "Dr. S. K. Jayaraman",
+      "email": "admin@campus.edu",
+      "password": "Admin@123",
+      "role": "admin",
+      "department": "Administration",
+      "bio": "Dean of Student Affairs & Platform Administrator. Fostering excellence across academic and cultural campus life.",
+      "skills": [
+        "Campus Administration",
+        "Student Welfare",
+        "Curriculum Planning",
+        "Institution Governance"
+      ],
+      "interests": [
+        "Tamil Heritage",
+        "Higher Education Reforms",
+        "Smart Campus Initiatives"
+      ]
+    },
+    {
+      "name": "Dr. P. Sundaramoorthy",
+      "email": "coe.admin@campus.edu",
+      "password": "Admin@123",
+      "role": "admin",
+      "department": "Administration",
+      "bio": "Controller of Examinations (COE). Managing academic evaluations, Anna University credits, and semester results.",
+      "skills": [
+        "Exam Management",
+        "Data Governance",
+        "Academic Audit"
+      ],
+      "interests": [
+        "Digital Evaluation",
+        "Policy Planning"
+      ]
+    },
+    {
+      "name": "Dr. K. Radhakrishnan",
+      "email": "radhakrishnan.cse@campus.edu",
+      "password": "Faculty@123",
+      "role": "faculty",
+      "department": "CSE",
+      "bio": "Professor & Head of CSE. Faculty Advisor of Muthamil Mandram. Research: Tamil Natural Language Processing & Indic NLP.",
+      "skills": [
+        "Tamil Computing",
+        "Natural Language Processing",
+        "Python",
+        "Deep Learning",
+        "Compiler Design"
+      ],
+      "interests": [
+        "Tamil Classical Literature",
+        "Indic Language AI",
+        "Student Mentorship"
+      ]
+    },
+    {
+      "name": "Dr. Meenakshi Sundaram",
+      "email": "meenakshi.aids@campus.edu",
+      "password": "Faculty@123",
+      "role": "faculty",
+      "department": "AI&DS",
+      "bio": "Associate Professor, AI & DS. Faculty Advisor for Namma Chennai Coders Club. SaaS architecture & Cloud specialist.",
+      "skills": [
+        "Machine Learning",
+        "Data Engineering",
+        "Cloud Computing",
+        "Research Methodology"
+      ],
+      "interests": [
+        "AI for Agriculture",
+        "SaaS Ecosystem in Tamil Nadu",
+        "Student Research"
+      ]
+    },
+    {
+      "name": "Dr. V. Chandrasekaran",
+      "email": "chandru.mech@campus.edu",
+      "password": "Faculty@123",
+      "role": "faculty",
+      "department": "MECH",
+      "bio": "Professor, Mechanical Engineering. Advisor for Formula SAE Electric Vehicle and Robotics Club.",
+      "skills": [
+        "Thermodynamics",
+        "EV Powertrain",
+        "Finite Element Analysis",
+        "Robotics"
+      ],
+      "interests": [
+        "Sustainable Mobility",
+        "Renewable Energy",
+        "Automotive Innovation"
+      ]
+    },
+    {
+      "name": "Dr. Revathi Murugan",
+      "email": "revathi.ece@campus.edu",
+      "password": "Faculty@123",
+      "role": "faculty",
+      "department": "ECE",
+      "bio": "Associate Professor, Electronics & Communication. Research: IoT Sensor Networks & VLSI Design.",
+      "skills": [
+        "VLSI",
+        "Embedded Systems",
+        "IoT",
+        "Digital Signal Processing"
+      ],
+      "interests": [
+        "Smart City Sensors",
+        "Healthcare IoT",
+        "Women in Tech"
+      ]
+    },
+    {
+      "name": "Dr. K. Sivakumar",
+      "email": "sivakumar.civil@campus.edu",
+      "password": "Faculty@123",
+      "role": "faculty",
+      "department": "CIVIL",
+      "bio": "Professor in Structural Engineering. NSS Coordinator & Sustainable Green Campus Leader.",
+      "skills": [
+        "Structural Analysis",
+        "GIS Mapping",
+        "Green Building Design",
+        "Disaster Management"
+      ],
+      "interests": [
+        "Rainwater Harvesting",
+        "Rural Infrastructure",
+        "Tamil Architecture History"
+      ]
+    },
+    {
+      "name": "Karthikeyan Natarajan",
+      "email": "karthik.lead@campus.edu",
+      "password": "Lead@123",
+      "role": "club_admin",
+      "department": "IT",
+      "yearOfStudy": 3,
+      "studentId": "IT21042",
+      "bio": "Muthamil Mandram President | Full-Stack Web Developer | Winner of State-level Tamil Pattimandram debate.",
+      "skills": [
+        "Public Speaking",
+        "Tamil Oratory",
+        "React.js",
+        "Node.js",
+        "MongoDB",
+        "Event Management"
+      ],
+      "interests": [
+        "Tamil Debating",
+        "Open Source Software",
+        "SaaS Development"
+      ]
+    },
+    {
+      "name": "Dharani Selvakumar",
+      "email": "dharani.lead@campus.edu",
+      "password": "Lead@123",
+      "role": "club_admin",
+      "department": "CSE",
+      "yearOfStudy": 3,
+      "studentId": "CS21019",
+      "bio": "Lead at Namma Chennai Coders Club | Google Summer of Code (GSoC) Contributor | Zoho Young Creator Awardee.",
+      "skills": [
+        "Go",
+        "React",
+        "Docker",
+        "System Design",
+        "Microservices",
+        "PostgreSQL"
+      ],
+      "interests": [
+        "Competitive Coding",
+        "Tamil Computing Tools",
+        "Hackathons"
+      ]
+    },
+    {
+      "name": "Tharun Sivanesan",
+      "email": "tharun.lead@campus.edu",
+      "password": "Lead@123",
+      "role": "club_admin",
+      "department": "MECH",
+      "yearOfStudy": 4,
+      "studentId": "ME20008",
+      "bio": "Captain - Formula SAE Electric Motorsports Team | CAD & Powertrain Lead.",
+      "skills": [
+        "SolidWorks",
+        "ANSYS",
+        "Battery Management Systems",
+        "CNC Machining"
+      ],
+      "interests": [
+        "Formula 1",
+        "EV Technology",
+        "Aerodynamics"
+      ]
+    },
+    {
+      "name": "Subhashini Rajendran",
+      "email": "subha.lead@campus.edu",
+      "password": "Lead@123",
+      "role": "club_admin",
+      "department": "ECE",
+      "yearOfStudy": 3,
+      "studentId": "EC21044",
+      "bio": "President of Natya & Isai Cultural Guild | Graded Bharatanatyam Artist | Veena Player.",
+      "skills": [
+        "Bharatanatyam",
+        "Carnatic Music",
+        "Choreography",
+        "Stage Management"
+      ],
+      "interests": [
+        "Classical Arts of Tamil Nadu",
+        "Cultural Exchange",
+        "Acoustics"
+      ]
+    },
+    {
+      "name": "Manoj Kumaravel",
+      "email": "manoj.lead@campus.edu",
+      "password": "Lead@123",
+      "role": "club_admin",
+      "department": "AI&DS",
+      "yearOfStudy": 3,
+      "studentId": "AD21005",
+      "bio": "Lead - Cauvery Delta AgriTech & Rural Innovation Society | Smart IoT builder.",
+      "skills": [
+        "IoT",
+        "Python",
+        "Computer Vision",
+        "Drone Technology"
+      ],
+      "interests": [
+        "Precision Agriculture",
+        "Rural Empowerment",
+        "Sensor Networks"
+      ]
+    },
+    {
+      "name": "Balaji Senthilnathan",
+      "email": "balaji.lead@campus.edu",
+      "password": "Lead@123",
+      "role": "club_admin",
+      "department": "EEE",
+      "yearOfStudy": 4,
+      "studentId": "EE20014",
+      "bio": "President - IEEE Student Branch & Robotics Club | Embedded Firmware Developer.",
+      "skills": [
+        "Robotics",
+        "C++",
+        "ROS",
+        "Power Electronics",
+        "PCB Fabrication"
+      ],
+      "interests": [
+        "Autonomous Drones",
+        "Renewable Energy",
+        "Line Follower Bots"
+      ]
+    },
+    {
+      "name": "Kaviya Ramasamy",
+      "email": "kaviya.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "AI&DS",
+      "yearOfStudy": 2,
+      "studentId": "AD22018",
+      "bio": "2nd Year AI & Data Science student. Working on Computer Vision for crop disease detection in Thanjavur delta.",
+      "skills": [
+        "Python",
+        "OpenCV",
+        "TensorFlow",
+        "Bharatanatyam",
+        "Carnatic Vocal"
+      ],
+      "interests": [
+        "AgriTech",
+        "Classical Dance",
+        "Data Science Hackathons"
+      ]
+    },
+    {
+      "name": "Vigneshwaran Ponnusamy",
+      "email": "vignesh.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "ECE",
+      "yearOfStudy": 3,
+      "studentId": "EC21088",
+      "bio": "ECE student enthusiast building IoT edge devices for Tamil Nadu smart water distribution systems.",
+      "skills": [
+        "Embedded C",
+        "ESP32",
+        "LoRaWAN",
+        "PCB Design",
+        "MATLAB"
+      ],
+      "interests": [
+        "Robotics",
+        "IoT for Rural India",
+        "Cricket",
+        "Kavithai Writing"
+      ]
+    },
+    {
+      "name": "Ananya Subramanian",
+      "email": "ananya.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "CSE",
+      "yearOfStudy": 4,
+      "studentId": "CS20005",
+      "bio": "Final Year CSE preparing for Zoho & Freshworks SDE drives. Core member of Natya & Isai Cultural Club.",
+      "skills": [
+        "Java",
+        "Data Structures & Algorithms",
+        "Spring Boot",
+        "MySQL",
+        "Carnatic Veena"
+      ],
+      "interests": [
+        "Product Development",
+        "Indian Classical Music",
+        "Placement Prep"
+      ]
+    },
+    {
+      "name": "Saravanan Murugan",
+      "email": "saravanan.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "MECH",
+      "yearOfStudy": 4,
+      "studentId": "ME20045",
+      "bio": "Mechanical Engineering final year. Captain of collegiate Formula SAE Electric vehicle team and Silambam practitioner.",
+      "skills": [
+        "SolidWorks",
+        "ANSYS FEA",
+        "EV Battery Pack Design",
+        "3D Printing",
+        "Silambam"
+      ],
+      "interests": [
+        "Electric Mobility",
+        "Traditional Tamil Martial Arts",
+        "Automotive Design"
+      ]
+    },
+    {
+      "name": "Praveen Kumar",
+      "email": "praveen.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "IT",
+      "yearOfStudy": 2,
+      "studentId": "IT22030",
+      "bio": "Passionate about React Native, Flutter, and building Tamil language educational apps.",
+      "skills": [
+        "React Native",
+        "Flutter",
+        "JavaScript",
+        "Firebase"
+      ],
+      "interests": [
+        "Mobile App Dev",
+        "Tamil Typography",
+        "Badminton"
+      ]
+    },
+    {
+      "name": "Divya Bharathi",
+      "email": "divya.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "CSE",
+      "yearOfStudy": 3,
+      "studentId": "CS21056",
+      "bio": "Competitive programmer with 1800+ rating on LeetCode. Preparing for Google and Microsoft internships.",
+      "skills": [
+        "C++",
+        "Algorithms",
+        "Graph Theory",
+        "Dynamic Programming"
+      ],
+      "interests": [
+        "Competitive Coding",
+        "Hackathons",
+        "Anime"
+      ]
+    },
+    {
+      "name": "Aravind Swaminathan",
+      "email": "aravind.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "EEE",
+      "yearOfStudy": 3,
+      "studentId": "EE21012",
+      "bio": "Electrical student working on Smart Inverters and Microgrid systems for solar installations.",
+      "skills": [
+        "MATLAB Simulink",
+        "Power Electronics",
+        "Microcontrollers",
+        "Arduino"
+      ],
+      "interests": [
+        "Clean Energy",
+        "Circuit Design",
+        "Chess"
+      ]
+    },
+    {
+      "name": "Soundarya Pandian",
+      "email": "soundarya.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "CIVIL",
+      "yearOfStudy": 2,
+      "studentId": "CE22015",
+      "bio": "Civil engineering student enthusiastic about heritage temple restoration and GIS surveying in Madurai.",
+      "skills": [
+        "AutoCAD",
+        "Revit",
+        "GIS",
+        "Total Station Surveying"
+      ],
+      "interests": [
+        "Temple Architecture",
+        "Heritage Conservation",
+        "Tamil History"
+      ]
+    },
+    {
+      "name": "Gokulnath Selvam",
+      "email": "gokul.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "AI&DS",
+      "yearOfStudy": 1,
+      "studentId": "AD23040",
+      "bio": "First year fresher excited about machine learning, robotics, and campus photography.",
+      "skills": [
+        "Python Basics",
+        "C Programming",
+        "Photography",
+        "Video Editing"
+      ],
+      "interests": [
+        "AI Enthusiast",
+        "Club Activities",
+        "Table Tennis"
+      ]
+    },
+    {
+      "name": "Nithya Kalyani",
+      "email": "nithya.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "ECE",
+      "yearOfStudy": 4,
+      "studentId": "EC20033",
+      "bio": "Placed at TCS Digital. Volunteering as campus placement coordinator and technical mentor for juniors.",
+      "skills": [
+        "Java",
+        "SQL",
+        "Verilog",
+        "Aptitude Training"
+      ],
+      "interests": [
+        "Mentorship",
+        "Volunteering",
+        "Carnatic Flute"
+      ]
+    },
+    {
+      "name": "Santhosh Velmurugan",
+      "email": "santhosh.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "MECH",
+      "yearOfStudy": 3,
+      "studentId": "ME21060",
+      "bio": "Passionate about 3D printing, CNC machining, and building autonomous agricultural rovers.",
+      "skills": [
+        "Fusion 360",
+        "3D Slicing",
+        "Machining",
+        "Welding"
+      ],
+      "interests": [
+        "RoboWars",
+        "Motorsports",
+        "Kabaddi"
+      ]
+    },
+    {
+      "name": "Keerthana Sridhar",
+      "email": "keerthana.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "IT",
+      "yearOfStudy": 4,
+      "studentId": "IT20025",
+      "bio": "Cloud Engineer in training. Certified AWS Cloud Practitioner & active member of Rotaract youth club.",
+      "skills": [
+        "AWS",
+        "Terraform",
+        "Linux",
+        "Python",
+        "DevOps"
+      ],
+      "interests": [
+        "Cloud Architecture",
+        "Community Service",
+        "Travelling"
+      ]
+    },
+    {
+      "name": "Mugilan Elangovan",
+      "email": "mugilan.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "CSE",
+      "yearOfStudy": 2,
+      "studentId": "CS22072",
+      "bio": "Cybersecurity student passionate about CTF challenges, Linux kernel, and network security.",
+      "skills": [
+        "Linux",
+        "Wireshark",
+        "Python",
+        "Bash Scripting",
+        "Cryptography"
+      ],
+      "interests": [
+        "Ethical Hacking",
+        "Bug Bounty",
+        "Cyber Defense"
+      ]
+    },
+    {
+      "name": "Bhavani Sankaran",
+      "email": "bhavani.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "ECE",
+      "yearOfStudy": 2,
+      "studentId": "EC22055",
+      "bio": "Interested in DSP algorithms and biomedical instrumentation for affordable rural healthcare.",
+      "skills": [
+        "Bio-sensors",
+        "Arduino",
+        "Signal Processing",
+        "C++"
+      ],
+      "interests": [
+        "MedTech",
+        "Classical Dance",
+        "Reading Tamil Novels"
+      ]
+    },
+    {
+      "name": "Vijay Anand",
+      "email": "vijay.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "CIVIL",
+      "yearOfStudy": 4,
+      "studentId": "CE20010",
+      "bio": "Preparing for GATE Civil Engineering 2026. President of Rotaract Youth Outreach wing.",
+      "skills": [
+        "Structural Design",
+        "Soil Mechanics",
+        "Hydraulics",
+        "Public Speaking"
+      ],
+      "interests": [
+        "GATE Prep",
+        "Social Welfare",
+        "Marathon Running"
+      ]
+    },
+    {
+      "name": "Janani Thirunavukkarasu",
+      "email": "janani.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "AI&DS",
+      "yearOfStudy": 3,
+      "studentId": "AD21028",
+      "bio": "Exploring Large Language Models for Indian regional languages and speech emotion recognition.",
+      "skills": [
+        "PyTorch",
+        "Transformers",
+        "HuggingFace",
+        "FastAPI"
+      ],
+      "interests": [
+        "Generative AI",
+        "Tamil NLP",
+        "Debating"
+      ]
+    },
+    {
+      "name": "Hariharan Chelladurai",
+      "email": "hari.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "EEE",
+      "yearOfStudy": 2,
+      "studentId": "EE22041",
+      "bio": "Robotics enthusiast working on quadcopter flight controllers and autonomous obstacle avoidance.",
+      "skills": [
+        "Quadcopter Dynamics",
+        "ESP32",
+        "C++",
+        "Control Systems"
+      ],
+      "interests": [
+        "Drones",
+        "Aeromodelling",
+        "Badminton"
+      ]
+    },
+    {
+      "name": "Deepika Ramanathan",
+      "email": "deepika.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "IT",
+      "yearOfStudy": 3,
+      "studentId": "IT21015",
+      "bio": "UI/UX Designer & Frontend Developer. Designing accessible web interfaces with Tamil language support.",
+      "skills": [
+        "Figma",
+        "React",
+        "TailwindCSS",
+        "User Research",
+        "Design Systems"
+      ],
+      "interests": [
+        "Product Design",
+        "Accessibility",
+        "Digital Art"
+      ]
+    },
+    {
+      "name": "Kishore Vignesh",
+      "email": "kishore.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "MECH",
+      "yearOfStudy": 2,
+      "studentId": "ME22019",
+      "bio": "Formula student team chassis fabricator and University Volleyball player.",
+      "skills": [
+        "TIG Welding",
+        "Sheet Metal Fabrication",
+        "Chassis Design"
+      ],
+      "interests": [
+        "Motorsports",
+        "Volleyball",
+        "Fitness"
+      ]
+    },
+    {
+      "name": "Madhumitha Kannan",
+      "email": "madhu.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "CSE",
+      "yearOfStudy": 1,
+      "studentId": "CS23012",
+      "bio": "First year coding enthusiast enthusiastic about hackathons and Tamil Mandram elocution competitions.",
+      "skills": [
+        "C",
+        "Python",
+        "Tamil Elocution",
+        "Creative Writing"
+      ],
+      "interests": [
+        "Coding",
+        "Elocution",
+        "Tamil Poetry"
+      ]
+    },
+    {
+      "name": "Raghavan Gurusamy",
+      "email": "raghavan.student@campus.edu",
+      "password": "Student@123",
+      "role": "student",
+      "department": "ECE",
+      "yearOfStudy": 3,
+      "studentId": "EC21002",
+      "bio": "Ham Radio operator & Satellite tracking ground station team lead at campus.",
+      "skills": [
+        "RF Circuits",
+        "SDR",
+        "Antenna Design",
+        "Signal Processing"
+      ],
+      "interests": [
+        "Amateur Radio",
+        "Space Tech",
+        "Trekking"
+      ]
+    }
+  ],
+  "clubs": [
+    {
+      "name": "Muthamil Mandram (முத்தமிழ் மன்றம்)",
+      "category": "Cultural",
+      "tagline": "செம்மொழித் தமிழ் வளர்ப்போம்! பண்பாடு காப்போம்!",
+      "description": "The premier Tamil cultural and literary society of the campus celebrating Iyal (Literature), Isai (Music), and Nadagam (Drama). We organize state-wide Pattimandrams (பட்டிமன்றம்), Thirukkural recitations, Kaviyarangam, and promote modern Tamil computing and font standardization.",
+      "logo": "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1544717305-2782549b5136?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "radhakrishnan.cse@campus.edu",
+      "leadEmail": "karthik.lead@campus.edu",
+      "socialLinks": {
+        "instagram": "https://instagram.com/muthamil_mandram_campus",
+        "linkedin": "https://linkedin.com/company/muthamil-mandram",
+        "website": "https://muthamilmandram.campus.edu"
+      }
+    },
+    {
+      "name": "Namma Chennai Coders Club",
+      "category": "Technical",
+      "tagline": "Building SaaS & Open Source for India from Tamil Nadu",
+      "description": "The premier developer and open-source ecosystem inspired by the thriving SaaS capital of India (Chennai). We run weekly code sprints, organize hackathons with top tech companies (Zoho, Freshworks, Kissflow), and mentor juniors in Data Structures & System Design.",
+      "logo": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "meenakshi.aids@campus.edu",
+      "leadEmail": "dharani.lead@campus.edu",
+      "socialLinks": {
+        "github": "https://github.com/namma-chennai-coders",
+        "linkedin": "https://linkedin.com/company/chennai-coders-club",
+        "website": "https://chennaicoders.campus.edu"
+      }
+    },
+    {
+      "name": "Natya & Isai Cultural Guild",
+      "category": "Cultural",
+      "tagline": "Preserving the Classical Rhythms & Folk Traditions of South India",
+      "description": "Home to Bharatanatyam dancers, Carnatic vocalists, Mridangam & Veena instrumentalists, as well as energetic folk artists specializing in Parai Isai, Karagattam, and Oyilattam. We represent the university at inter-collegiate fests (Saarang, Festember, Milan).",
+      "logo": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "radhakrishnan.cse@campus.edu",
+      "leadEmail": "subha.lead@campus.edu",
+      "socialLinks": {
+        "instagram": "https://instagram.com/natyaisai_campus",
+        "youtube": "https://youtube.com/@natyaisai"
+      }
+    },
+    {
+      "name": "Cauvery Delta AgriTech & Rural Innovation Society",
+      "category": "Social & Outreach",
+      "tagline": "Empowering Tamil Nadu Farmers with IoT, AI & Engineering Innovation",
+      "description": "An interdisciplinary engineering club combining AI, IoT, and Mechanical Engineering to build low-cost agricultural machinery, automated drip irrigation systems, and crop disease detection apps for farmers across Thanjavur, Trichy, and Madurai regions.",
+      "logo": "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "meenakshi.aids@campus.edu",
+      "leadEmail": "manoj.lead@campus.edu",
+      "socialLinks": {
+        "linkedin": "https://linkedin.com/company/agritech-cauvery",
+        "website": "https://agritech.campus.edu"
+      }
+    },
+    {
+      "name": "Formula SAE Electric Motorsports Team (Team Agni)",
+      "category": "Technical",
+      "tagline": "Designing & Racing High Performance Student Electric Racecars",
+      "description": "Designing, simulating, manufacturing, and testing open-wheel electric formula racing cars. Competing at Formula Bharat and Formula Student Germany.",
+      "logo": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1541348263662-e0c82661200e?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "chandru.mech@campus.edu",
+      "leadEmail": "tharun.lead@campus.edu",
+      "socialLinks": {
+        "instagram": "https://instagram.com/team_agni_fsae",
+        "linkedin": "https://linkedin.com/company/team-agni-motorsports"
+      }
+    },
+    {
+      "name": "IEEE Student Branch & Robotics Guild",
+      "category": "Technical",
+      "tagline": "Advancing Technology for Humanity through Robotics & Automation",
+      "description": "Official IEEE chapter providing hands-on robotics bootcamps, autonomous drone design, ROS workshops, and IEEE paper publication mentorship.",
+      "logo": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "revathi.ece@campus.edu",
+      "leadEmail": "balaji.lead@campus.edu",
+      "socialLinks": {
+        "linkedin": "https://linkedin.com/company/ieee-campus-sb",
+        "website": "https://ieee.campus.edu"
+      }
+    },
+    {
+      "name": "Rotaract & NSS Youth Outreach Wing",
+      "category": "Social & Outreach",
+      "tagline": "Service Above Self - Youth Leadership for Community Impact",
+      "description": "Volunteering in Tamil Nadu rural villages for blood donation camps, digital literacy training for government school kids, lake cleanups in Chennai, and tree plantation drives.",
+      "logo": "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "sivakumar.civil@campus.edu",
+      "leadEmail": "karthik.lead@campus.edu",
+      "socialLinks": {
+        "instagram": "https://instagram.com/rotaract_campus",
+        "website": "https://nss.campus.edu"
+      }
+    },
+    {
+      "name": "Silambam & Traditional Martial Arts Academy",
+      "category": "Sports",
+      "tagline": "Reviving Ancient Tamil Warrior Arts & Self Defense",
+      "description": "Training students in Silambam (stick fighting), Maankombu, Surul Vaal, and Kalaripayattu. Fostering discipline, fitness, and state championship participation.",
+      "logo": "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "chandru.mech@campus.edu",
+      "leadEmail": "tharun.lead@campus.edu",
+      "socialLinks": {
+        "instagram": "https://instagram.com/silambam_academy_campus"
+      }
+    },
+    {
+      "name": "Campus Lens: Photography & Short Film Society",
+      "category": "Cultural",
+      "tagline": "Storytelling through the Lens of Tamil Nadu Heritage",
+      "description": "Capturing campus life, documenting historic architecture across Tamil Nadu, hosting film screenings, and producing student short films and documentaries.",
+      "logo": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "revathi.ece@campus.edu",
+      "leadEmail": "dharani.lead@campus.edu",
+      "socialLinks": {
+        "instagram": "https://instagram.com/campuslens_official"
+      }
+    },
+    {
+      "name": "GATE & Higher Studies Aspirants Circle",
+      "category": "Academic",
+      "tagline": "Collaborative Excellence for GATE, GRE & Public Sector (PSU) Exams",
+      "description": "Peer study groups, weekly mock tests, faculty mentoring, and guidance for admissions to IITs, IISc, NITs, and top global universities.",
+      "logo": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&h=200&fit=crop",
+      "coverImage": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&h=400&fit=crop",
+      "facultyAdvisorEmail": "radhakrishnan.cse@campus.edu",
+      "leadEmail": "karthik.lead@campus.edu",
+      "socialLinks": {
+        "website": "https://gatecircle.campus.edu"
+      }
+    }
+  ],
+  "events": [
+    {
+      "title": "Pongal Thiruvizha & Pattimandram 2026 (பொங்கல் திருவிழா)",
+      "clubName": "Muthamil Mandram (முத்தமிழ் மன்றம்)",
+      "description": "The signature grand cultural celebration! Traditional Pongal cooking in clay pots, Uriyadi, Kolam contest, Silambam martial arts display, and the Mega Pattimandram on \"தொழில்நுட்ப வளர்ச்சி: மனித உறவுகளை இணைக்கிறதா? பிரிக்கிறதா?\". Traditional South Indian attire encouraged!",
+      "category": "Cultural Fest",
+      "venue": "Open Air Theatre (OAT) & Main Campus Grounds",
+      "isOnline": false,
+      "startDate": "2026-01-13T08:30:00.000Z",
+      "endDate": "2026-01-13T18:00:00.000Z",
+      "maxCapacity": 1000,
+      "registrationDeadline": "2026-01-12T23:59:00.000Z",
+      "organizerEmail": "karthik.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1544717305-2782549b5136?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Zoho & SaaS Product Hackathon: Namma Code 2026",
+      "clubName": "Namma Chennai Coders Club",
+      "description": "A 36-hour intense hackathon focusing on building SaaS tools for small businesses, Tamil voice assistants, and cloud architectures. Mentors & jury from Zoho Corporation and Freshworks Chennai. Cash prizes worth ₹1,50,000!",
+      "category": "Hackathon",
+      "venue": "Dr. APJ Abdul Kalam IT Block, Labs 1-4",
+      "isOnline": false,
+      "startDate": "2026-02-20T09:00:00.000Z",
+      "endDate": "2026-02-21T21:00:00.000Z",
+      "maxCapacity": 300,
+      "registrationDeadline": "2026-02-18T18:00:00.000Z",
+      "organizerEmail": "dharani.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Parai Isai & Folk Percussion Workshop (பறை இசை பயிலரங்கம்)",
+      "clubName": "Natya & Isai Cultural Guild",
+      "description": "Learn the ancient traditional percussion art of Parai Isai directly from master folk artists of Thanjavur. Covers fundamental rhythmic strokes, body dynamics, and ensemble performance.",
+      "category": "Workshop",
+      "venue": "Student Activity Centre (SAC) Amphitheatre",
+      "isOnline": false,
+      "startDate": "2026-03-05T15:30:00.000Z",
+      "endDate": "2026-03-05T19:00:00.000Z",
+      "maxCapacity": 150,
+      "registrationDeadline": "2026-03-04T12:00:00.000Z",
+      "organizerEmail": "subha.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Smart Farming & IoT in Cauvery Delta: Seminar & Project Expo",
+      "clubName": "Cauvery Delta AgriTech & Rural Innovation Society",
+      "description": "A technical seminar showcasing student-built solar powered drip irrigation controllers, drone-based pest monitoring, and mobile apps in Tamil for soil health analysis. Keynote address by TNAU agricultural scientists.",
+      "category": "Seminar",
+      "venue": "Sir C. V. Raman Auditorium",
+      "isOnline": false,
+      "startDate": "2026-03-18T10:00:00.000Z",
+      "endDate": "2026-03-18T16:30:00.000Z",
+      "maxCapacity": 350,
+      "registrationDeadline": "2026-03-16T23:59:00.000Z",
+      "organizerEmail": "manoj.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "EV Powertrain & Battery Pack Design Masterclass",
+      "clubName": "Formula SAE Electric Motorsports Team (Team Agni)",
+      "description": "Hands-on training on Li-ion battery pack assembly, active thermal management, and BMS circuit simulation using MATLAB Simulink and ANSYS Fluent.",
+      "category": "Workshop",
+      "venue": "Automotive CAD Lab & Motorsports Garage",
+      "isOnline": false,
+      "startDate": "2026-03-25T09:30:00.000Z",
+      "endDate": "2026-03-26T17:00:00.000Z",
+      "maxCapacity": 80,
+      "registrationDeadline": "2026-03-24T18:00:00.000Z",
+      "organizerEmail": "tharun.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1541348263662-e0c82661200e?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "RoboSumo & Line Follower Championship 2026",
+      "clubName": "IEEE Student Branch & Robotics Guild",
+      "description": "Annual inter-college robotics combat and autonomous line follower race. Showcase your micro-mouse and heavy-weight fighting bots for prizes worth ₹50,000!",
+      "category": "Competition",
+      "venue": "Indoor Sports Complex Arena",
+      "isOnline": false,
+      "startDate": "2026-04-02T10:00:00.000Z",
+      "endDate": "2026-04-02T18:00:00.000Z",
+      "maxCapacity": 200,
+      "registrationDeadline": "2026-03-31T23:59:00.000Z",
+      "organizerEmail": "balaji.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Blood Donation & Free Medical Checkup Camp",
+      "clubName": "Rotaract & NSS Youth Outreach Wing",
+      "description": "Organized in association with Government Rajiv Gandhi Hospital Blood Bank Chennai. Free health screening, eye checkup, and donor certificates provided.",
+      "category": "Cultural Fest",
+      "venue": "University Medical Centre & Auditorium Foyer",
+      "isOnline": false,
+      "startDate": "2026-04-08T09:00:00.000Z",
+      "endDate": "2026-04-08T15:00:00.000Z",
+      "maxCapacity": 500,
+      "registrationDeadline": "2026-04-07T20:00:00.000Z",
+      "organizerEmail": "karthik.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "State Level Silambam Championship & Self-Defense Expo",
+      "clubName": "Silambam & Traditional Martial Arts Academy",
+      "description": "Featuring 200+ competitors from across Tamil Nadu demonstrating stick combat, sword fighting, and self-defense for women.",
+      "category": "Sports Meet",
+      "venue": "University Main Playground",
+      "isOnline": false,
+      "startDate": "2026-04-15T07:30:00.000Z",
+      "endDate": "2026-04-15T17:30:00.000Z",
+      "maxCapacity": 400,
+      "registrationDeadline": "2026-04-13T18:00:00.000Z",
+      "organizerEmail": "tharun.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Tamil Short Film & Documentary Showcase: \"Nizhal 2026\"",
+      "clubName": "Campus Lens: Photography & Short Film Society",
+      "description": "Screening 12 student-directed short films and documentaries exploring social themes, village traditions, and youth aspirations. Jury: Leading Tamil Cinema directors.",
+      "category": "Cultural Fest",
+      "venue": "Silver Jubilee Mini Auditorium",
+      "isOnline": false,
+      "startDate": "2026-04-22T14:00:00.000Z",
+      "endDate": "2026-04-22T20:00:00.000Z",
+      "maxCapacity": 250,
+      "registrationDeadline": "2026-04-21T12:00:00.000Z",
+      "organizerEmail": "dharani.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "GATE 2027 Strategy, Subject Weightage & PSU Opportunities",
+      "clubName": "GATE & Higher Studies Aspirants Circle",
+      "description": "Guidance by AIR 24 & AIR 68 GATE toppers from Tamil Nadu. Deep dive on engineering mathematics, aptitude scoring, and PSU recruitment procedures (NTPC, ISRO, ONGC).",
+      "category": "Seminar",
+      "venue": "Tagore Hall, Central Library 3rd Floor",
+      "isOnline": false,
+      "startDate": "2026-04-28T10:00:00.000Z",
+      "endDate": "2026-04-28T13:00:00.000Z",
+      "maxCapacity": 200,
+      "registrationDeadline": "2026-04-27T18:00:00.000Z",
+      "organizerEmail": "karthik.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Tamil Kaviyarangam & Poetry Recitation (கவியரங்கம்)",
+      "clubName": "Muthamil Mandram (முத்தமிழ் மன்றம்)",
+      "description": "A soulful evening of Tamil poetry and spontaneous rhyme under the banyan tree. Topic: \"விடியலைத் தேடும் விதை\". Certificate and cash prizes for top 3 poets.",
+      "category": "Cultural Fest",
+      "venue": "Campus Banyan Tree Square",
+      "isOnline": false,
+      "startDate": "2026-05-05T16:30:00.000Z",
+      "endDate": "2026-05-05T19:30:00.000Z",
+      "maxCapacity": 200,
+      "registrationDeadline": "2026-05-04T12:00:00.000Z",
+      "organizerEmail": "karthik.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1544717305-2782549b5136?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Microservices & Distributed Systems with Go Bootcamp",
+      "clubName": "Namma Chennai Coders Club",
+      "description": "Building high throughput REST & gRPC APIs with Golang and PostgreSQL. Deploying on Kubernetes clusters.",
+      "category": "Workshop",
+      "venue": "Server Room Lab, CSE Department",
+      "isOnline": false,
+      "startDate": "2026-05-12T09:00:00.000Z",
+      "endDate": "2026-05-13T17:00:00.000Z",
+      "maxCapacity": 90,
+      "registrationDeadline": "2026-05-10T23:59:00.000Z",
+      "organizerEmail": "dharani.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Carnatic Veena & Flute Symphony Concert",
+      "clubName": "Natya & Isai Cultural Guild",
+      "description": "Classical concert featuring student maestros performing traditional ragas (Kalyani, Shankarabharanam, Mohanam) with Mridangam and Ghatam accompaniment.",
+      "category": "Cultural Fest",
+      "venue": "Main University Auditorium",
+      "isOnline": false,
+      "startDate": "2026-05-19T18:00:00.000Z",
+      "endDate": "2026-05-19T21:00:00.000Z",
+      "maxCapacity": 600,
+      "registrationDeadline": "2026-05-18T18:00:00.000Z",
+      "organizerEmail": "subha.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "AI Drone Mapping for Rural Land Surveying",
+      "clubName": "Cauvery Delta AgriTech & Rural Innovation Society",
+      "description": "Flight planning, autonomous GPS waypoint missions, and photogrammetry for land boundary extraction using OpenCV.",
+      "category": "Workshop",
+      "venue": "Aviation Hangar & Open Ground 2",
+      "isOnline": false,
+      "startDate": "2026-05-26T09:00:00.000Z",
+      "endDate": "2026-05-26T16:00:00.000Z",
+      "maxCapacity": 70,
+      "registrationDeadline": "2026-05-25T12:00:00.000Z",
+      "organizerEmail": "manoj.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Aerodynamics Simulation with ANSYS Fluent Workshop",
+      "clubName": "Formula SAE Electric Motorsports Team (Team Agni)",
+      "description": "Simulating front wing, rear diffuser downforce, and drag coefficient for high-speed student racing cars.",
+      "category": "Workshop",
+      "venue": "Mechanical High Performance Compute Lab",
+      "isOnline": false,
+      "startDate": "2026-06-02T10:00:00.000Z",
+      "endDate": "2026-06-02T17:00:00.000Z",
+      "maxCapacity": 60,
+      "registrationDeadline": "2026-06-01T15:00:00.000Z",
+      "organizerEmail": "tharun.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Embedded Firmware Development on STM32 ARM Cortex",
+      "clubName": "IEEE Student Branch & Robotics Guild",
+      "description": "Direct register programming, FreeRTOS task scheduling, and CAN bus communication for industrial automation.",
+      "category": "Workshop",
+      "venue": "ECE Hardware Lab 4",
+      "isOnline": false,
+      "startDate": "2026-06-09T09:30:00.000Z",
+      "endDate": "2026-06-10T16:30:00.000Z",
+      "maxCapacity": 75,
+      "registrationDeadline": "2026-06-08T18:00:00.000Z",
+      "organizerEmail": "balaji.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Lake Restoration & Tree Planting at Madhavaram",
+      "clubName": "Rotaract & NSS Youth Outreach Wing",
+      "description": "Planting 1000 native saplings (Neem, Pungan, Marudham) and cleaning plastic debris from Madhavaram lake bund.",
+      "category": "Cultural Fest",
+      "venue": "Madhavaram Lake, Chennai (Buses depart from campus gate at 6:30 AM)",
+      "isOnline": false,
+      "startDate": "2026-06-16T06:30:00.000Z",
+      "endDate": "2026-06-16T13:00:00.000Z",
+      "maxCapacity": 300,
+      "registrationDeadline": "2026-06-14T20:00:00.000Z",
+      "organizerEmail": "karthik.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Inter-Department Cricket Premier League (CPL 2026)",
+      "clubName": "Silambam & Traditional Martial Arts Academy",
+      "description": "Annual 10-over tennis ball cricket tournament between CSE, ECE, MECH, CIVIL, IT, and AI&DS departments.",
+      "category": "Sports Meet",
+      "venue": "University Cricket Pavilion Ground",
+      "isOnline": false,
+      "startDate": "2026-06-23T08:00:00.000Z",
+      "endDate": "2026-06-25T18:00:00.000Z",
+      "maxCapacity": 450,
+      "registrationDeadline": "2026-06-21T18:00:00.000Z",
+      "organizerEmail": "tharun.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Photography Walk: Heritage of Mahabalipuram & Shore Temple",
+      "clubName": "Campus Lens: Photography & Short Film Society",
+      "description": "Weekend architecture photowalk documenting 7th-century Pallava rock sculptures, bas-reliefs, and coastal scenery.",
+      "category": "Cultural Fest",
+      "venue": "Shore Temple & Pancha Rathas, Mahabalipuram",
+      "isOnline": false,
+      "startDate": "2026-07-04T06:00:00.000Z",
+      "endDate": "2026-07-04T17:00:00.000Z",
+      "maxCapacity": 80,
+      "registrationDeadline": "2026-07-02T18:00:00.000Z",
+      "organizerEmail": "dharani.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1200&h=600&fit=crop"
+    },
+    {
+      "title": "Campus HackNight: Open Source in Tamil & Indic AI",
+      "clubName": "Namma Chennai Coders Club",
+      "description": "Overnight collaborative sprint building Tamil spelling checkers, OCR models for ancient Tamil inscriptions, and voice tools.",
+      "category": "Hackathon",
+      "venue": "Innovation & Incubation Centre",
+      "isOnline": false,
+      "startDate": "2026-07-11T19:00:00.000Z",
+      "endDate": "2026-07-12T08:00:00.000Z",
+      "maxCapacity": 120,
+      "registrationDeadline": "2026-07-10T15:00:00.000Z",
+      "organizerEmail": "dharani.lead@campus.edu",
+      "banner": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&h=600&fit=crop"
+    }
+  ],
+  "announcements": [
+    {
+      "title": "📢 Anna University End-Semester Theory & Practical Exam Schedule Published",
+      "content": "All B.E. / B.Tech students are hereby informed that the Anna University End-Semester Examination timetable for the Nov/Dec 2026 session is available on the student COE portal. Practical exams commence on November 10th. Hall tickets must be collected from respective HOD offices with signature.",
+      "category": "Academic",
+      "priority": "critical",
+      "targetAudience": "students",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "🌟 Zoho Corporation & Freshworks On-Campus Placement Drive for 2026 Batch",
+      "content": "Placement season kickoff! Zoho Corporation (Chennai & Tenkasi) and Freshworks will conduct on-campus written tests and coding rounds for Software Development Engineer (SDE) and Product Analyst roles. CTC ranges from ₹8.5 LPA to ₹16 LPA. Eligible departments: CSE, IT, ECE, AI&DS (Min 7.0 CGPA, no active backlogs). Register on CDC portal before Friday 5:00 PM.",
+      "category": "Placement & Career",
+      "priority": "urgent",
+      "targetAudience": "students",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "🌾 Special Pongal Holidays & Hostel Mess Arrangements Announcement",
+      "content": "In view of Pongal & Thiruvalluvar Day festivals, the campus will remain closed from January 14th to January 18th. Special festive lunch with Chakkarai Pongal, Medu Vada, and Avial will be served in all campus messes on January 14th. Outstation hostelers must submit exit pass on the warden portal.",
+      "category": "General",
+      "priority": "normal",
+      "targetAudience": "all",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "📚 Call for Papers: 4th National Conference on Tamil Computing & Indic AI",
+      "content": "The Department of CSE and Muthamil Mandram invite original research papers in Tamil NLP, OCR for palm leaf manuscripts, Speech-to-Text for regional dialects, and Machine Translation. Selected papers will be published with ISBN indexed proceedings. Submissions due March 1st.",
+      "category": "Club Activity",
+      "priority": "normal",
+      "targetAudience": "all",
+      "authorEmail": "radhakrishnan.cse@campus.edu"
+    },
+    {
+      "title": "⚠️ Heavy Rainfall Alert & Holiday Notification (IMD Red Alert Chennai)",
+      "content": "As per the Chennai District Collector’s circular due to deep depression rainfall, classes for all undergraduate and postgraduate programs are suspended tomorrow. Online lab submissions deadlines are extended by 48 hours.",
+      "category": "Emergency",
+      "priority": "critical",
+      "targetAudience": "all",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "💼 TCS NQT & Ninja / Digital Recruitment Drive Schedule",
+      "content": "Tata Consultancy Services (TCS) National Qualifier Test (NQT) slot booking is open. All pre-final and final year students are requested to complete the registration on the NextStep portal by end of this week.",
+      "category": "Placement & Career",
+      "priority": "normal",
+      "targetAudience": "students",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "🏆 University Merit Scholarship & Fee Concession Applications Open",
+      "content": "Applications are invited for the Dr. APJ Abdul Kalam Merit-cum-Means scholarship for students with family annual income under ₹3.0 Lakhs. Submit supporting documents to Dean Office Room 102.",
+      "category": "Academic",
+      "priority": "normal",
+      "targetAudience": "students",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "⚡ Power Maintenance & Central Server Downtime Notice",
+      "content": "Routine substation maintenance will occur on Saturday from 6:00 AM to 10:00 AM. Campus intranet and local Moodle servers will be temporarily offline during this window.",
+      "category": "General",
+      "priority": "normal",
+      "targetAudience": "all",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "🏏 Inter-College Sports Trials for Cricket, Football, and Kabaddi Teams",
+      "content": "Selection trials for the varsity sports contingent participating in Anna University Zonal Sports Tournaments will be conducted on Monday 6:00 AM at the Main Sports Pavilion.",
+      "category": "Club Activity",
+      "priority": "normal",
+      "targetAudience": "students",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "📖 Central Library: IEEE Xplore & ScienceDirect Remote Access Credentials",
+      "content": "Faculty and student researchers can now access IEEE Xplore, ACM Digital Library, and Springer journals from hostel Wi-Fi using the new OpenAthens institutional login portal.",
+      "category": "Academic",
+      "priority": "normal",
+      "targetAudience": "all",
+      "authorEmail": "radhakrishnan.cse@campus.edu"
+    },
+    {
+      "title": "🚌 Revised University Bus Routes for Tambaram, Velachery & Koyambedu",
+      "content": "Due to metro railway construction on GST Road, University Bus Routes 12, 18, and 24 have revised pick-up points starting Monday. Please check the updated route chart on the transport portal.",
+      "category": "General",
+      "priority": "normal",
+      "targetAudience": "students",
+      "authorEmail": "admin@campus.edu"
+    },
+    {
+      "title": "💡 Smart India Hackathon (SIH 2026) Internal Campus Selection Round",
+      "content": "Teams of 6 students (with minimum one female teammate) must submit their problem statement PPT on the campus innovation portal before Friday. Shortlisted teams will represent our college.",
+      "category": "Club Activity",
+      "priority": "urgent",
+      "targetAudience": "students",
+      "authorEmail": "meenakshi.aids@campus.edu"
+    },
+    {
+      "title": "🌱 Campus Green Initiative: Ban on Single-Use Plastic Water Bottles",
+      "content": "In alignment with Tamil Nadu Green Climate Mission, single-use plastic water bottles and cups are strictly prohibited on campus. Purified RO water stations have been installed in every floor.",
+      "category": "General",
+      "priority": "normal",
+      "targetAudience": "all",
+      "authorEmail": "sivakumar.civil@campus.edu"
+    },
+    {
+      "title": "🧪 AI Research Lab Grant: Open Positions for Student Research Associates",
+      "content": "The Department of AI & Data Science has received a ₹25 Lakh DST-SERB grant for Tamil Speech Processing. Hiring 3 undergraduate research interns (stipend ₹8,000/month). Apply by email to Dr. Meenakshi Sundaram.",
+      "category": "Academic",
+      "priority": "normal",
+      "targetAudience": "students",
+      "authorEmail": "meenakshi.aids@campus.edu"
+    },
+    {
+      "title": "🏥 Annual Student Health & Eye Screening Camp Announcement",
+      "content": "Free comprehensive dental, eye, and general health checkups organized in collaboration with Sankara Nethralaya Chennai on Wednesday at the Student Centre.",
+      "category": "General",
+      "priority": "normal",
+      "targetAudience": "all",
+      "authorEmail": "admin@campus.edu"
+    }
+  ],
+  "discussions": [
+    {
+      "title": "Best libraries & open-source datasets for Tamil NLP & Speech-to-Text in Python?",
+      "body": "Vanakkam all! We are developing our final year project for real-time Tamil speech-to-text to help rural primary school children. We have evaluated OpenAI Whisper (whisper-large-v3) fine-tuned on AI4Bharat IndicWav2Vec. Does anyone have experience running quantized models on Raspberry Pi / Android? Looking for benchmark tips!",
+      "category": "Academics",
+      "tags": [
+        "TamilNLP",
+        "AI4Bharat",
+        "Python",
+        "DeepLearning",
+        "FinalYearProject"
+      ],
+      "authorEmail": "kaviya.student@campus.edu",
+      "isPinned": true,
+      "replies": [
+        {
+          "authorEmail": "radhakrishnan.cse@campus.edu",
+          "content": "Kaviya, look into AI4Bharat's 'IndicTrans2' and 'IndicWhisper' repos. They have benchmarked Tamil dialect accuracy and provide ONNX quantized weights that run comfortably on mobile devices. Feel free to drop by the AI research lab during office hours for dataset access.",
+          "isFacultyEndorsed": true
+        },
+        {
+          "authorEmail": "dharani.lead@campus.edu",
+          "content": "We built a demo on Next.js using WebAssembly with Whisper tiny for Tamil. I can share the GitHub repo link and inference script during this weekend's Coder Club meet!"
+        }
+      ]
+    },
+    {
+      "title": "Zoho Chennai / Tenkasi Placement Interview: Round 2 & 3 Experience & Tips",
+      "body": "Hi seniors! I cleared Round 1 (C/Java MCQ & Aptitude) for Zoho Corporation on-campus drive. Can anyone who attended the Advanced Programming round and Tech HR round share the common types of questions asked? Especially regarding Matrix problems, String manipulation without built-in functions, and Object Oriented Design?",
+      "category": "Placement & Career",
+      "tags": [
+        "Zoho",
+        "Placements",
+        "InterviewPrep",
+        "DataStructures",
+        "Coding"
+      ],
+      "authorEmail": "ananya.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "dharani.lead@campus.edu",
+          "content": "For Round 2 (Advanced Programming), do NOT use built-in methods like split(), reverse(), or regex. Implement everything with pure pointer manipulation. Common questions: Sudoku validator, Railway Reservation CLI system, Nested Parenthesis evaluator. Focus on clean, modular code!"
+        },
+        {
+          "authorEmail": "karthik.lead@campus.edu",
+          "content": "Also prepare deeply on your final year project architecture. In the Tech HR round, they asked me to draw the full database schema and explain indexing and edge cases on the whiteboard."
+        }
+      ]
+    },
+    {
+      "title": "Hostel Mess Suggestion: Adding South Tamil Nadu / Chettinad specialties to weekend menu",
+      "body": "Can the student mess committee consider adding authentic regional breakfast items like Idiyappam with Sodhi/Kurma, Podi Dosa, and Ragi Koozh during summer? It would give hostel students a great taste of home food!",
+      "category": "General",
+      "tags": [
+        "Hostel",
+        "MessMenu",
+        "CampusLife",
+        "TamilNaduFood"
+      ],
+      "authorEmail": "vignesh.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "saravanan.student@campus.edu",
+          "content": "100% agreed! Podi Dosa and Kuzhi Paniyaram on Sunday mornings would be fantastic. Upvoted!"
+        },
+        {
+          "authorEmail": "karthik.lead@campus.edu",
+          "content": "I have raised this in the Student Welfare Committee agenda for this month. The warden has agreed to a trial menu next Sunday!"
+        }
+      ]
+    },
+    {
+      "title": "How to prepare for GATE CSE 2027 while managing college coursework and labs?",
+      "body": "I am in 2nd year CSE and want to target top IITs or IISc Bangalore for M.Tech AI. How should I balance discrete maths, TOC, and OS preparation with regular semester exams?",
+      "category": "Academics",
+      "tags": [
+        "GATE",
+        "MTech",
+        "IIT",
+        "HigherStudies",
+        "CSE"
+      ],
+      "authorEmail": "divya.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "radhakrishnan.cse@campus.edu",
+          "content": "Start with Discrete Mathematics and Data Structures in 2nd year since they align 100% with your current semester curriculum. Dedicate 2 hours daily for previous year questions (PYQs).",
+          "isFacultyEndorsed": true
+        }
+      ]
+    },
+    {
+      "title": "Looking for 2 teammates for SIH (Smart India Hackathon) 2026 - Problem Statement #1452",
+      "body": "We are a team of 4 (2 AI/DS, 1 ECE, 1 Mech) working on Smart Irrigation using LoRaWAN in rural Tamil Nadu. Looking for 1 frontend React developer and 1 female teammate (mandatory SIH rule) to join us. DM if interested!",
+      "category": "Projects",
+      "tags": [
+        "Hackathon",
+        "SIH2026",
+        "TeamBuilding",
+        "React",
+        "AgriTech"
+      ],
+      "authorEmail": "manoj.lead@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "deepika.student@campus.edu",
+          "content": "Hey Manoj, I am a 3rd year IT student specializing in React and Figma UI design. Would love to collaborate on the dashboard design!"
+        }
+      ]
+    },
+    {
+      "title": "Best places in and around Chennai for a 1-day weekend bike/bus trip with batchmates?",
+      "body": "Exam tension is finally over! Looking for good nature or heritage spots within 80km from campus for a class outing. Suggestions other than Mahabalipuram beach?",
+      "category": "Campus Life",
+      "tags": [
+        "Travel",
+        "Chennai",
+        "Weekend",
+        "Friends",
+        "Outing"
+      ],
+      "authorEmail": "praveen.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "soundarya.student@campus.edu",
+          "content": "Try Pulicat Lake (Pazhaverkadu) for flamingo bird watching and boating, or Tada Falls (Ubbalamadugu) for a short trek. Very peaceful!"
+        }
+      ]
+    },
+    {
+      "title": "ESP32 LoRaWAN packet drop issue in long-range campus mesh network",
+      "body": "We deployed 4 sensor nodes across the campus sports ground. At distances beyond 400m, packet loss increases to 45%. We are using SX1278 433MHz modules with default rubber duck antennas. Any suggestions on antenna matching or spreading factor?",
+      "category": "Tech Help",
+      "tags": [
+        "IoT",
+        "ESP32",
+        "LoRa",
+        "Hardware",
+        "Sensors"
+      ],
+      "authorEmail": "vignesh.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "revathi.ece@campus.edu",
+          "content": "Increase Spreading Factor from SF7 to SF10 and verify if there is Fresnel zone obstruction from academic blocks. Switching to a tuned 1/4 wavelength whip antenna will give you 2km+ line of sight.",
+          "isFacultyEndorsed": true
+        }
+      ]
+    },
+    {
+      "title": "Freshworks & Chargebee SaaS interview tips: What concepts in React/Node are tested?",
+      "body": "Any seniors placed at Freshworks or Chargebee Chennai? Do they focus more on Pure Javascript closures and asynchronous event loops, or full-stack architectural trade-offs?",
+      "category": "Placement & Career",
+      "tags": [
+        "Freshworks",
+        "SaaS",
+        "JavaScript",
+        "React",
+        "NodeJS"
+      ],
+      "authorEmail": "dharani.lead@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "ananya.student@campus.edu",
+          "content": "Freshworks asks heavily on Event Loop, Microtasks/Macrotasks, Prototype chaining, Promise polyfills, and Debounce/Throttle implementations. Practice writing them without any library."
+        }
+      ]
+    },
+    {
+      "title": "Silambam training for beginners: Practice timings and stick specifications",
+      "body": "Vanakkam! Is prior martial arts experience required to join the campus Silambam academy? What stick height should a beginner buy from the local sports store in Koyambedu?",
+      "category": "Campus Life",
+      "tags": [
+        "Silambam",
+        "Sports",
+        "Fitness",
+        "TraditionalArts"
+      ],
+      "authorEmail": "gokul.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "saravanan.student@campus.edu",
+          "content": "No prior experience needed! The bamboo stick length should reach your eye level or forehead when standing upright. We provide beginner practice sticks on Tuesday evenings at 5:30 PM."
+        }
+      ]
+    },
+    {
+      "title": "Comparison: Rust vs Go for building real-time high throughput IoT telemetry servers",
+      "body": "For our smart energy meter telemetry collector handling 50,000 requests/sec, which language ecosystem has better developer productivity and memory safety in production?",
+      "category": "Tech Help",
+      "tags": [
+        "Golang",
+        "Rust",
+        "Backend",
+        "IoT",
+        "SystemDesign"
+      ],
+      "authorEmail": "balaji.lead@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "dharani.lead@campus.edu",
+          "content": "Go is much faster for shipping APIs quickly with goroutines and built-in channel concurrency. Rust is great if you have tight zero-allocation constraints, but Go handles 50k RPS with minimal tuning."
+        }
+      ]
+    },
+    {
+      "title": "Guidance on choosing elective for 6th Sem: Cloud Computing vs Distributed Systems",
+      "body": "For students aspiring for cloud developer and DevOps career paths, which professional elective under Anna University Regulation 2021 curriculum has higher industry relevance?",
+      "category": "Academics",
+      "tags": [
+        "Electives",
+        "AnnaUniversity",
+        "Cloud",
+        "DevOps",
+        "Academics"
+      ],
+      "authorEmail": "keerthana.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "meenakshi.aids@campus.edu",
+          "content": "Both are complementary, but Distributed Systems gives you the mathematical foundation (consensus protocols, CAP theorem, replication) which will make Cloud Computing concepts like AWS/GCP trivial to master.",
+          "isFacultyEndorsed": true
+        }
+      ]
+    },
+    {
+      "title": "Campus Photography Club photowalk to Mylapore Kapaleeshwarar temple street fest",
+      "body": "Who is interested in an early morning street photography walk this Sunday around Mylapore tank for capturing classical architecture and traditional flower markets? Bring your DSLRs or phone cameras!",
+      "category": "Campus Life",
+      "tags": [
+        "Photography",
+        "Mylapore",
+        "Chennai",
+        "StreetPhoto",
+        "Culture"
+      ],
+      "authorEmail": "dharani.lead@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "kaviya.student@campus.edu",
+          "content": "Count me in! The early morning lighting between 6:00 AM to 8:00 AM at the temple tank is breathtaking."
+        }
+      ]
+    },
+    {
+      "title": "How to write competitive Tamil essays and speeches for inter-college competitions?",
+      "body": "Looking for guidance on structure, literary references (Purananuru, Kamba Ramayanam, Thirukkural), and stage voice modulation for state-level Tamil elocution contests.",
+      "category": "General",
+      "tags": [
+        "Tamil",
+        "Speech",
+        "Elocution",
+        "Purananuru",
+        "Literature"
+      ],
+      "authorEmail": "madhu.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "karthik.lead@campus.edu",
+          "content": "Start your speech with an impactful 2-line Thirukkural or Bharathiyar quote that directly addresses the problem statement. Muthamil Mandram conducts mock oratory sessions every Thursday at 4:30 PM!"
+        }
+      ]
+    },
+    {
+      "title": "Formula SAE Chassis FEA: Torsional stiffness calculation in ANSYS",
+      "body": "What is the recommended torsional stiffness range for a tubular spaceframe chassis competing in Formula Bharat Electric category? How many boundary condition fixtures are standard?",
+      "category": "Projects",
+      "tags": [
+        "FormulaStudent",
+        "ANSYS",
+        "FEA",
+        "Motorsports",
+        "Mechanical"
+      ],
+      "authorEmail": "kishore.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "chandru.mech@campus.edu",
+          "content": "Aim for a minimum torsional stiffness of 1500 to 2000 Nm/deg. Ensure the rear suspension pickup points are fully fixed while applying a pure torque couple to the front shock mounts.",
+          "isFacultyEndorsed": true
+        }
+      ]
+    },
+    {
+      "title": "Bug Bounty & Ethical Hacking: How to start as an engineering student in India?",
+      "body": "What platforms (HackerOne, Bugcrowd) and learning roadmaps (PortSwigger Web Security Academy) should a 2nd year student follow to start finding real vulnerabilities?",
+      "category": "Tech Help",
+      "tags": [
+        "Cybersecurity",
+        "BugBounty",
+        "EthicalHacking",
+        "WebSecurity"
+      ],
+      "authorEmail": "mugilan.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "dharani.lead@campus.edu",
+          "content": "Complete all labs on PortSwigger Academy (it is 100% free and gold standard). Focus first on IDOR, CSRF, and SQLi on Indian government VDP programs to build confidence."
+        }
+      ]
+    },
+    {
+      "title": "Recommendations for budget mechanical keyboard for everyday coding and typing",
+      "body": "Looking for a reliable mechanical keyboard under ₹3,000 for college lab and hostel room. Red switches (quiet) vs Brown switches (tactile) for late night coding?",
+      "category": "General",
+      "tags": [
+        "Hardware",
+        "Keyboards",
+        "Coding",
+        "Gear"
+      ],
+      "authorEmail": "aravind.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "vignesh.student@campus.edu",
+          "content": "Go for Red or Brown switches if you have roommates in the hostel! Blue switches are way too loud for midnight coding sessions."
+        }
+      ]
+    },
+    {
+      "title": "Deep Learning model quantization: FP32 to INT8 with PyTorch & ONNX Runtime",
+      "body": "We reduced our Tamil character recognition CNN model size from 85MB to 22MB with INT8 Post-Training Quantization (PTQ) with only 0.8% drop in top-1 accuracy. Sharing the conversion notebook!",
+      "category": "Projects",
+      "tags": [
+        "DeepLearning",
+        "Quantization",
+        "PyTorch",
+        "ONNX",
+        "MachineLearning"
+      ],
+      "authorEmail": "janani.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "radhakrishnan.cse@campus.edu",
+          "content": "Excellent engineering work, Janani! Publish this as an open-source GitHub tutorial for other students in the AI department.",
+          "isFacultyEndorsed": true
+        }
+      ]
+    },
+    {
+      "title": "Request to extend central library closing time during semester exam weeks",
+      "body": "Can the university library study halls remain open until 11:00 PM (instead of 8:00 PM) during November/December end-semester examination months?",
+      "category": "Campus Life",
+      "tags": [
+        "Library",
+        "Exams",
+        "CampusFacilities",
+        "Study"
+      ],
+      "authorEmail": "vijay.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "admin@campus.edu",
+          "content": "The Dean Office has approved extending the Ground Floor Reading Hall timings until 10:30 PM with security and Wi-Fi starting next Monday.",
+          "isFacultyEndorsed": true
+        }
+      ]
+    },
+    {
+      "title": "Carnatic Music Raga recommendation for focus and deep coding sessions",
+      "body": "Anyone else listen to instrumental Carnatic music while debugging code? Looking for soulful albums on Spotify or YouTube Music featuring Veena, Flute, or Mandolin.",
+      "category": "General",
+      "tags": [
+        "Music",
+        "Carnatic",
+        "CodingMusic",
+        "Focus",
+        "TamilCulture"
+      ],
+      "authorEmail": "ananya.student@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "subha.lead@campus.edu",
+          "content": "Listen to Mandolin U. Srinivas or Dr. N. Ramani (Flute) playing Raga Hamsadhwani and Mohanam. Absolutely elevates your focus!"
+        }
+      ]
+    },
+    {
+      "title": "Experience sharing: Google Summer of Code (GSoC) proposal writing for 2027",
+      "body": "For 1st and 2nd year students wanting to contribute to Linux Foundation, CNCF, or Mozilla under GSoC, how to pick organizations and interact with maintainers?",
+      "category": "Placement & Career",
+      "tags": [
+        "GSoC",
+        "OpenSource",
+        "Career",
+        "Mentorship",
+        "Coding"
+      ],
+      "authorEmail": "dharani.lead@campus.edu",
+      "isPinned": false,
+      "replies": [
+        {
+          "authorEmail": "karthik.lead@campus.edu",
+          "content": "Dharani will be hosting a live walkthrough on GSoC proposal writing and issue triaging at the next Coder Club meetup in the IT auditorium!"
+        }
+      ]
+    }
+  ]
+}
