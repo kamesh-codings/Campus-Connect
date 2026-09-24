@@ -40,9 +40,8 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-16 left-0 bottom-0 w-64 glass z-40 transition-transform duration-300 ease-in-out
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0`}
+        className={`fixed top-16 left-0 bottom-0 w-64 glass-neu-card rounded-none border-y-0 border-l-0 border-r border-white/10 z-40 transition-transform duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="flex flex-col h-full py-4 px-3">
           {/* Navigation Links */}

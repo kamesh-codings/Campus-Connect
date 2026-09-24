@@ -39,16 +39,18 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="lg:hidden text-text-secondary hover:text-text-primary transition-colors p-2"
+          className="text-text-secondary hover:text-white hover:bg-white/5 transition-all p-2 rounded-xl flex items-center justify-center neu-button"
+          title="Toggle Navigation Sidebar"
+          aria-label="Toggle Sidebar"
         >
-          {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          {sidebarOpen ? <X size={22} className="text-primary-light" /> : <Menu size={22} />}
         </button>
 
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
-            <GraduationCap size={20} className="text-white" />
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+            <GraduationCap size={22} className="text-white" />
           </div>
-          <span className="text-lg font-bold bg-gradient-to-r from-primary-light to-secondary bg-clip-text text-transparent hidden sm:block">
+          <span className="text-xl font-bold bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent font-['Outfit'] hidden sm:block tracking-tight">
             CampusConnect
           </span>
         </Link>
