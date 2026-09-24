@@ -179,23 +179,24 @@ const Login = () => {
         </div>
 
         {/* ── RIGHT PANEL: CLEAN, SLEEK LOGIN CARD ──────────────────────── */}
-        <div className="lg:col-span-6">
-          <div className="glass p-6 sm:p-8 rounded-xl border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
+        <div className="lg:col-span-6 w-full">
+          <div className="glass p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
             {/* Top Gradient Accent Border */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400" />
 
             {/* Header */}
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white tracking-tight font-['Outfit']">Sign In to Your Account</h2>
-              <p className="text-xs sm:text-sm text-slate-400 mt-1">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-['Outfit']">Sign In to Your Account</h2>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1.5 leading-relaxed">
                 Enter your credentials or select a quick demo profile below
               </p>
             </div>
 
             {/* Quick Demo Role Auto-Fill Bar */}
-            <div className="mb-6 bg-slate-900/80 p-3 rounded-2xl border border-white/5">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <div className="mb-6 bg-slate-900/90 p-3.5 rounded-xl border border-white/10">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles size={12} className="text-indigo-400" />
                   Quick Demo Accounts (1-Click Fill)
                 </span>
                 {selectedRole && (
@@ -206,14 +207,14 @@ const Login = () => {
                       setEmail('');
                       setPassword('');
                     }}
-                    className="text-[10px] text-slate-400 hover:text-white underline cursor-pointer"
+                    className="text-[11px] text-indigo-400 hover:text-indigo-300 font-medium underline cursor-pointer transition-colors"
                   >
-                    Clear
+                    Clear Form
                   </button>
                 )}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {demoRoles.map((role) => {
                   const Icon = role.icon;
                   const isSelected = selectedRole === role.id;
@@ -222,10 +223,10 @@ const Login = () => {
                       key={role.id}
                       type="button"
                       onClick={() => handleSelectRole(role)}
-                      className={`p-2.5 rounded-xl border text-xs font-semibold flex flex-col items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
+                      className={`py-2.5 px-2 rounded-xl border text-xs font-semibold flex flex-col items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? role.activeClass
-                          : 'border-white/5 bg-slate-950/60 text-slate-400 hover:text-white hover:bg-white/5 hover:border-white/10'
+                          : 'border-white/5 bg-[#0D111A]/80 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20'
                       }`}
                     >
                       <Icon size={16} className={isSelected ? 'text-inherit' : 'text-slate-400'} />
@@ -239,47 +240,47 @@ const Login = () => {
             {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email Input */}
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-slate-300">
                   Email Address
                 </label>
-                <div className="relative">
-                  <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <div className="relative flex items-center">
+                  <Mail size={17} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="Enter your college email"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-sans"
+                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-11 pr-4 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-sans"
                   />
                 </div>
               </div>
 
               {/* Password Input */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-medium text-slate-300">
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-semibold text-slate-300">
                     Password
                   </label>
-                  <span className="text-[11px] text-indigo-400 hover:underline cursor-pointer">
+                  <span className="text-[11px] text-indigo-400 hover:text-indigo-300 hover:underline cursor-pointer transition-colors">
                     Forgot password?
                   </span>
                 </div>
-                <div className="relative">
-                  <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <div className="relative flex items-center">
+                  <Lock size={17} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="Enter your password"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-10 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-sans"
+                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-11 pr-11 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-sans"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer p-0.5"
+                    className="absolute right-3 p-1 text-slate-400 hover:text-slate-200 cursor-pointer rounded-lg hover:bg-white/5 transition-colors z-10"
                     title={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -289,12 +290,12 @@ const Login = () => {
 
               {/* Remember Me */}
               <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer select-none">
+                <label className="flex items-center gap-2.5 text-xs text-slate-400 hover:text-slate-300 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-3.5 h-3.5 rounded bg-slate-900 border-white/20 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
+                    className="w-4 h-4 rounded bg-[#080B12] border-white/20 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer accent-indigo-600"
                   />
                   <span>Remember this device</span>
                 </label>
@@ -304,7 +305,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold py-2.5 px-4 rounded-xl shadow-lg shadow-indigo-600/25 transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-3"
+                className="w-full h-11 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/35 transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -318,9 +319,9 @@ const Login = () => {
             </form>
 
             {/* Footer Registration Link */}
-            <div className="mt-6 pt-5 border-t border-white/10 text-center text-xs text-slate-400">
+            <div className="mt-6 pt-4 border-t border-white/10 text-center text-xs text-slate-400">
               New to CampusConnect?{' '}
-              <Link to="/register" className="text-indigo-400 font-semibold hover:text-indigo-300 transition-colors">
+              <Link to="/register" className="text-indigo-400 font-semibold hover:text-indigo-300 transition-colors ml-1">
                 Create an account
               </Link>
             </div>

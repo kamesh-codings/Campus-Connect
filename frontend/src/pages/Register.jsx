@@ -116,18 +116,21 @@ const Register = () => {
 
         {/* RIGHT: REGISTER FORM */}
         <div className="lg:col-span-7">
-          <div className="p-6 sm:p-7 rounded-xl bg-[#0D111A] border border-white/10 shadow-xl relative overflow-hidden">
+          <div className="glass p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
+            {/* Top Gradient Accent Border */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400" />
+
             <div className="mb-5">
-              <h2 className="text-xl font-bold text-white tracking-tight">Create Account</h2>
-              <p className="text-xs text-slate-400 mt-0.5">Select your role and fill in your campus details</p>
+              <h2 className="text-2xl font-bold text-white tracking-tight font-['Outfit']">Create Account</h2>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1">Select your role and fill in your campus details</p>
             </div>
 
             {/* Role Selection Toggle */}
-            <div className="mb-4">
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">
+            <div className="mb-5">
+              <label className="block text-xs font-semibold text-slate-300 mb-2">
                 Account Role
               </label>
-              <div className="grid grid-cols-4 gap-2 bg-[#080B12] p-1.5 rounded-lg border border-white/10">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#080B12] p-1.5 rounded-xl border border-white/10">
                 {roleOptions.map((r) => {
                   const Icon = r.icon;
                   const isSelected = formData.role === r.id;
@@ -136,39 +139,39 @@ const Register = () => {
                       key={r.id}
                       type="button"
                       onClick={() => handleRoleChange(r.id)}
-                      className={`py-1.5 px-1 rounded-md text-xs font-semibold transition-colors flex flex-col items-center gap-1 cursor-pointer border ${
+                      className={`py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center gap-1 cursor-pointer border ${
                         isSelected
                           ? r.activeRing
                           : 'text-slate-400 hover:text-white hover:bg-white/5 border-transparent'
                       }`}
                     >
-                      <Icon size={14} />
-                      <span>{r.label}</span>
+                      <Icon size={16} />
+                      <span className="text-[11px]">{r.label}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3.5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
-                  <div className="relative">
-                    <User size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-300">Full Name</label>
+                  <div className="relative flex items-center">
+                    <User size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
                     <input
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="e.g. Ramesh Kumar"
-                      className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                      className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-sans"
                       required
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-300">
                     {formData.role === 'student' ? 'Student ID' : 'Faculty / Staff ID'}
                   </label>
                   <input
@@ -176,35 +179,35 @@ const Register = () => {
                     value={formData.studentId}
                     onChange={handleChange}
                     placeholder={formData.role === 'student' ? 'CS21089' : 'FAC2024'}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl px-3.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">College Email Address</label>
-                <div className="relative">
-                  <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-slate-300">College Email Address</label>
+                <div className="relative flex items-center">
+                  <Mail size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
                   <input
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="you@campus.edu"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono"
                     required
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-300">Department</label>
                   <select
                     name="department"
                     value={formData.department}
                     onChange={handleChange}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl px-3.5 text-xs text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 cursor-pointer"
                   >
                     {departments.map((d) => (
                       <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
@@ -212,8 +215,8 @@ const Register = () => {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-300">
                     {formData.role === 'student' ? 'Year of Study' : 'Experience Level'}
                   </label>
                   {formData.role === 'student' ? (
@@ -221,49 +224,49 @@ const Register = () => {
                       name="yearOfStudy"
                       value={formData.yearOfStudy}
                       onChange={handleChange}
-                      className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                      className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl px-3.5 text-xs text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 cursor-pointer"
                     >
                       {[1, 2, 3, 4].map((y) => (
                         <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
                       ))}
                     </select>
                   ) : (
-                    <div className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-slate-400 flex items-center">
+                    <div className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl px-3.5 text-xs text-slate-400 flex items-center">
                       Staff / Academic Lead
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Password</label>
-                  <div className="relative">
-                    <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-300">Password</label>
+                  <div className="relative flex items-center">
+                    <Lock size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
                     <input
                       name="password"
                       type="password"
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                      className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono"
                       required
                       minLength={6}
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Confirm Password</label>
-                  <div className="relative">
-                    <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-300">Confirm Password</label>
+                  <div className="relative flex items-center">
+                    <Lock size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
                     <input
                       name="confirmPassword"
                       type="password"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                      className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono"
                       required
                     />
                   </div>
@@ -273,22 +276,22 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md shadow-indigo-600/20 transition-colors flex items-center justify-center gap-1.5 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2 text-xs"
+                className="w-full h-11 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/25 transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-3"
               >
                 {loading ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
                     <span>Complete Registration</span>
-                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
               </button>
             </form>
 
-            <div className="mt-4 pt-3.5 border-t border-white/10 text-center text-xs text-slate-400">
+            <div className="mt-5 pt-4 border-t border-white/10 text-center text-xs text-slate-400">
               Already have an account?{' '}
-              <Link to="/login" className="text-indigo-400 font-semibold hover:text-indigo-300 transition-colors">
+              <Link to="/login" className="text-indigo-400 font-semibold hover:text-indigo-300 transition-colors ml-1">
                 Sign in here
               </Link>
             </div>
