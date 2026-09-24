@@ -21,8 +21,6 @@ import {
 import toast from 'react-hot-toast';
 
 const Login = () => {
-  // Start with empty inputs (no prefilled credentials in input fields)
-  const [selectedRole, setSelectedRole] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -32,60 +30,6 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const demoRoles = [
-    {
-      id: 'student',
-      dbRole: 'student',
-      title: 'Student',
-      badge: 'Student',
-      icon: GraduationCap,
-      description: 'Explore events, join clubs & discussions',
-      demoEmail: 'kaviya.student@campus.edu',
-      demoPassword: 'Student@123',
-      activeClass: 'border-emerald-500 bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/50',
-    },
-    {
-      id: 'lead',
-      dbRole: 'club_admin',
-      title: 'Club Lead',
-      badge: 'Club Admin',
-      icon: Users,
-      description: 'Manage club events & verify QR passes',
-      demoEmail: 'karthik.lead@campus.edu',
-      demoPassword: 'Lead@123',
-      activeClass: 'border-indigo-500 bg-indigo-500/15 text-indigo-300 ring-1 ring-indigo-500/50',
-    },
-    {
-      id: 'faculty',
-      dbRole: 'faculty',
-      title: 'Faculty',
-      badge: 'Faculty',
-      icon: BookOpen,
-      description: 'Post alerts & endorse academic Q&A',
-      demoEmail: 'radhakrishnan.cse@campus.edu',
-      demoPassword: 'Faculty@123',
-      activeClass: 'border-amber-500 bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/50',
-    },
-    {
-      id: 'admin',
-      dbRole: 'admin',
-      title: 'Admin',
-      badge: 'System Admin',
-      icon: Shield,
-      description: 'Full campus governance & analytics',
-      demoEmail: 'admin@campus.edu',
-      demoPassword: 'Admin@123',
-      activeClass: 'border-rose-500 bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/50',
-    },
-  ];
-
-  const handleSelectRole = (role) => {
-    setSelectedRole(role.id);
-    setEmail(role.demoEmail);
-    setPassword(role.demoPassword);
-    toast.success(`Loaded credentials for ${role.title}`);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
@@ -94,8 +38,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const activeRoleObj = demoRoles.find((r) => r.id === selectedRole);
-      await login(email.trim(), password.trim(), activeRoleObj ? activeRoleObj.dbRole : null);
+      await login(email.trim(), password.trim());
       toast.success('Welcome back to CampusConnect!');
       navigate('/');
     } catch (error) {
@@ -188,53 +131,8 @@ const Login = () => {
             <div className="mb-6">
               <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-['Outfit']">Sign In to Your Account</h2>
               <p className="text-xs sm:text-sm text-slate-400 mt-1.5 leading-relaxed">
-                Enter your credentials or select a quick demo profile below
+                Enter your credentials to access the campus portal
               </p>
-            </div>
-
-            {/* Quick Demo Role Auto-Fill Bar */}
-            <div className="mb-6 bg-slate-900/90 p-3.5 rounded-xl border border-white/10">
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles size={12} className="text-indigo-400" />
-                  Quick Demo Accounts (1-Click Fill)
-                </span>
-                {selectedRole && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedRole(null);
-                      setEmail('');
-                      setPassword('');
-                    }}
-                    className="text-[11px] text-indigo-400 hover:text-indigo-300 font-medium underline cursor-pointer transition-colors"
-                  >
-                    Clear Form
-                  </button>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                {demoRoles.map((role) => {
-                  const Icon = role.icon;
-                  const isSelected = selectedRole === role.id;
-                  return (
-                    <button
-                      key={role.id}
-                      type="button"
-                      onClick={() => handleSelectRole(role)}
-                      className={`py-2.5 px-2 rounded-xl border text-xs font-semibold flex flex-col items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
-                        isSelected
-                          ? role.activeClass
-                          : 'border-white/5 bg-[#0D111A]/80 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20'
-                      }`}
-                    >
-                      <Icon size={16} className={isSelected ? 'text-inherit' : 'text-slate-400'} />
-                      <span className="truncate w-full text-center text-[11px] font-medium">{role.title}</span>
-                    </button>
-                  );
-                })}
-              </div>
             </div>
 
             {/* Login Form */}
@@ -244,15 +142,16 @@ const Login = () => {
                 <label className="block text-xs font-semibold text-slate-300">
                   Email Address
                 </label>
-                <div className="relative flex items-center">
-                  <Mail size={17} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
+                <div className="flex items-center bg-[#080B12] border border-white/10 rounded-xl px-3.5 h-11 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                  <Mail size={18} className="text-slate-400 shrink-0 mr-3 pointer-events-none" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="Enter your college email"
-                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-11 pr-4 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-sans"
+                    className="w-full bg-transparent border-none p-0 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-0 font-sans"
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -267,23 +166,24 @@ const Login = () => {
                     Forgot password?
                   </span>
                 </div>
-                <div className="relative flex items-center">
-                  <Lock size={17} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
+                <div className="flex items-center bg-[#080B12] border border-white/10 rounded-xl px-3.5 h-11 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                  <Lock size={18} className="text-slate-400 shrink-0 mr-3 pointer-events-none" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="Enter your password"
-                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-11 pr-11 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-sans"
+                    className="w-full bg-transparent border-none p-0 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-0 font-sans"
+                    autoComplete="current-password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 p-1 text-slate-400 hover:text-slate-200 cursor-pointer rounded-lg hover:bg-white/5 transition-colors z-10"
+                    className="text-slate-400 hover:text-slate-200 ml-2.5 shrink-0 cursor-pointer p-0.5 rounded-lg hover:bg-white/5 transition-colors"
                     title={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>

@@ -157,14 +157,14 @@ const Register = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-semibold text-slate-300">Full Name</label>
-                  <div className="relative flex items-center">
-                    <User size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
+                  <div className="flex items-center bg-[#080B12] border border-white/10 rounded-xl px-3.5 h-11 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                    <User size={16} className="text-slate-400 shrink-0 mr-2.5 pointer-events-none" />
                     <input
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="e.g. Ramesh Kumar"
-                      className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-sans"
+                      className="w-full bg-transparent border-none p-0 text-xs text-white placeholder:text-slate-500 focus:outline-none font-sans"
                       required
                     />
                   </div>
@@ -186,15 +186,15 @@ const Register = () => {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold text-slate-300">College Email Address</label>
-                <div className="relative flex items-center">
-                  <Mail size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
+                <div className="flex items-center bg-[#080B12] border border-white/10 rounded-xl px-3.5 h-11 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                  <Mail size={16} className="text-slate-400 shrink-0 mr-2.5 pointer-events-none" />
                   <input
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="you@campus.edu"
-                    className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono"
+                    className="w-full bg-transparent border-none p-0 text-xs text-white placeholder:text-slate-500 focus:outline-none font-mono"
                     required
                   />
                 </div>
@@ -241,15 +241,15 @@ const Register = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-semibold text-slate-300">Password</label>
-                  <div className="relative flex items-center">
-                    <Lock size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
+                  <div className="flex items-center bg-[#080B12] border border-white/10 rounded-xl px-3.5 h-11 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                    <Lock size={16} className="text-slate-400 shrink-0 mr-2.5 pointer-events-none" />
                     <input
                       name="password"
                       type="password"
                       value={formData.password}
                       onChange={handleChange}
-                      placeholder="••••••••"
-                      className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono"
+                      placeholder="At least 6 characters"
+                      className="w-full bg-transparent border-none p-0 text-xs text-white placeholder:text-slate-500 focus:outline-none"
                       required
                       minLength={6}
                     />
@@ -258,15 +258,15 @@ const Register = () => {
 
                 <div className="space-y-1.5">
                   <label className="block text-xs font-semibold text-slate-300">Confirm Password</label>
-                  <div className="relative flex items-center">
-                    <Lock size={16} className="absolute left-3.5 text-slate-400 pointer-events-none z-10" />
+                  <div className="flex items-center bg-[#080B12] border border-white/10 rounded-xl px-3.5 h-11 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                    <Lock size={16} className="text-slate-400 shrink-0 mr-2.5 pointer-events-none" />
                     <input
                       name="confirmPassword"
                       type="password"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      placeholder="••••••••"
-                      className="w-full h-11 bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono"
+                      placeholder="Repeat password"
+                      className="w-full bg-transparent border-none p-0 text-xs text-white placeholder:text-slate-500 focus:outline-none"
                       required
                     />
                   </div>
