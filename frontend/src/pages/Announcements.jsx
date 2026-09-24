@@ -19,6 +19,7 @@ import {
   Bookmark,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Modal from '../components/common/Modal';
 
 const categories = ['All', 'Academic', 'Emergency', 'General', 'Club Activity', 'Placement & Career'];
 const priorities = ['all', 'normal', 'urgent', 'critical'];
@@ -266,95 +267,88 @@ const Announcements = () => {
       )}
 
       {/* ── 4. BROADCAST MODAL ───────────────────────────── */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="glass max-w-lg w-full rounded-xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+      <Modal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        title="Broadcast Campus Circular"
+        subtitle="Publish official announcements to student departments or campus-wide"
+        icon={Megaphone}
+        maxWidth="max-w-xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setShowCreateModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
-
-            <h2 className="text-xl font-bold text-white mb-1 font-['Outfit']">Broadcast Campus Circular</h2>
-            <p className="text-xs text-slate-400 mb-6">
-              Publish official announcements to student departments or campus-wide.
-            </p>
-
-            <form onSubmit={handleCreateSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Announcement Title *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. End Semester Exam Timetable Released"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1.5">Category *</label>
-                  <select
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500"
-                  >
-                    {categories.filter((c) => c !== 'All').map((cat) => (
-                      <option key={cat} value={cat} className="bg-slate-900 text-white">
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1.5">Priority Level *</label>
-                  <select
-                    value={formData.priority}
-                    onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500"
-                  >
-                    <option value="normal" className="bg-slate-900 text-white">Normal</option>
-                    <option value="urgent" className="bg-slate-900 text-white">Urgent</option>
-                    <option value="critical" className="bg-slate-900 text-white">Critical</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Circular Body & Details *</label>
-                <textarea
-                  rows="4"
-                  required
-                  placeholder="Provide complete notice details, dates, relevant links, and instructions..."
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"
-                />
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-lg shadow-amber-600/25 cursor-pointer"
-                >
-                  Publish Notice
-                </button>
-              </div>
-            </form>
+            <button
+              type="submit"
+              form="broadcast-ann-form"
+              className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-lg shadow-amber-600/30 transition-all cursor-pointer inline-flex items-center gap-1.5"
+            >
+              Publish Notice
+            </button>
+          </>
+        }
+      >
+        <form id="broadcast-ann-form" onSubmit={handleCreateSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">Announcement Title *</label>
+            <input
+              type="text"
+              required
+              placeholder="e.g. End Semester Exam Timetable Released"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+            />
           </div>
-        </div>
-      )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">Category *</label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+              >
+                {categories.filter((c) => c !== 'All').map((cat) => (
+                  <option key={cat} value={cat} className="bg-slate-900 text-white">
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">Priority Level *</label>
+              <select
+                value={formData.priority}
+                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+              >
+                <option value="normal" className="bg-slate-900 text-white">Normal</option>
+                <option value="urgent" className="bg-slate-900 text-white">Urgent</option>
+                <option value="critical" className="bg-slate-900 text-white">Critical</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">Circular Body & Details *</label>
+            <textarea
+              rows="4"
+              required
+              placeholder="Provide complete notice details, dates, relevant links, and instructions..."
+              value={formData.content}
+              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"
+            />
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

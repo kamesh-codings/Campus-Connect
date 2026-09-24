@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import API from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import Modal from '../components/common/Modal';
 import {
   Shield,
   Users,
@@ -21,6 +22,10 @@ import {
   Megaphone,
   BookOpen,
   Calendar,
+  Mail,
+  User as UserIcon,
+  GraduationCap,
+  Sparkles,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -756,231 +761,275 @@ const AdminDashboard = () => {
       )}
 
       {/* ── 7. MODAL: EDIT STUDENT DETAILS & CREDENTIALS ──── */}
-      {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+      <Modal
+        isOpen={!!editingUser}
+        onClose={() => setEditingUser(null)}
+        title="Edit Student Credentials & Details"
+        subtitle="Institutional Override: Update profile details, credentials and academic standing"
+        icon={Key}
+        maxWidth="max-w-2xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setEditingUser(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
-
-            <div className="flex items-center gap-2 mb-1">
-              <Key size={18} className="text-indigo-400" />
-              <h2 className="text-lg font-bold text-white">Edit Student Credentials & Details</h2>
+            <button
+              type="submit"
+              form="edit-user-form"
+              disabled={saving}
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer disabled:opacity-50 inline-flex items-center gap-1.5"
+            >
+              {saving ? 'Updating...' : 'Save Changes'}
+            </button>
+          </>
+        }
+      >
+        <form id="edit-user-form" onSubmit={handleSaveUser} className="space-y-4">
+          {/* Section: Credentials */}
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-400">
+              <Lock size={13} />
+              <span>Login Credentials & Identification</span>
             </div>
-            <p className="text-xs text-slate-400 mb-4">
-              Authorized Faculty & Administration override for student login credentials and academic records.
-            </p>
 
-            <form onSubmit={handleSaveUser} className="space-y-3.5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+                <div className="relative">
+                  <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                   <input
                     type="text"
                     required
                     value={editFormData.name}
                     onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Student ID / Roll No</label>
-                  <input
-                    type="text"
-                    value={editFormData.studentId}
-                    onChange={(e) => setEditFormData({ ...editFormData, studentId: e.target.value })}
-                    placeholder="e.g. CS21045"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">College Email (Login)</label>
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Student ID / Roll No</label>
+                <div className="relative">
+                  <Award className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
+                  <input
+                    type="text"
+                    value={editFormData.studentId}
+                    onChange={(e) => setEditFormData({ ...editFormData, studentId: e.target.value })}
+                    placeholder="e.g. 110725102107"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">College Email (Login)</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                   <input
                     type="email"
                     required
                     value={editFormData.email}
                     onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono transition-colors"
                   />
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-amber-300 mb-1">Reset Password</label>
+              <div>
+                <label className="block text-xs font-medium text-amber-300 mb-1">Reset Password</label>
+                <div className="relative">
+                  <Key className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400" size={14} />
                   <input
                     type="password"
                     placeholder="Leave blank to keep unchanged"
                     value={editFormData.password}
                     onChange={(e) => setEditFormData({ ...editFormData, password: e.target.value })}
-                    className="w-full bg-[#080B12] border border-amber-500/30 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 font-mono"
+                    className="w-full bg-[#080B12] border border-amber-500/30 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 font-mono transition-colors"
                   />
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
-                  <select
-                    value={editFormData.department}
-                    onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    {departmentsList.map((d) => (
-                      <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
-                    ))}
-                  </select>
-                </div>
+          {/* Section: Academic Record */}
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
+              <GraduationCap size={13} />
+              <span>Academic Performance & Enrollment</span>
+            </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
-                  <select
-                    value={editFormData.yearOfStudy}
-                    onChange={(e) => setEditFormData({ ...editFormData, yearOfStudy: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    {[1, 2, 3, 4, 5].map((y) => (
-                      <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Academic CGPA</label>
-                  <input
-                    type="text"
-                    value={editFormData.gpa}
-                    onChange={(e) => setEditFormData({ ...editFormData, gpa: e.target.value })}
-                    placeholder="8.8 / 10"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Specialization / Major</label>
-                  <input
-                    type="text"
-                    value={editFormData.specialization}
-                    onChange={(e) => setEditFormData({ ...editFormData, specialization: e.target.value })}
-                    placeholder="e.g. Artificial Intelligence"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">System Role</label>
-                  <select
-                    value={editFormData.role}
-                    onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    <option value="student">Student</option>
-                    <option value="club_admin">Club Lead</option>
-                    <option value="faculty">Faculty Member</option>
-                    <option value="admin">System Administrator</option>
-                  </select>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
+                <select
+                  value={editFormData.department}
+                  onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  {departmentsList.map((d) => (
+                    <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
+                  ))}
+                </select>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities (comma-separated)</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
+                <select
+                  value={editFormData.yearOfStudy}
+                  onChange={(e) => setEditFormData({ ...editFormData, yearOfStudy: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  {[1, 2, 3, 4, 5].map((y) => (
+                    <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Academic CGPA</label>
                 <input
                   type="text"
-                  value={editFormData.extracurricularActivities}
-                  onChange={(e) => setEditFormData({ ...editFormData, extracurricularActivities: e.target.value })}
-                  placeholder="Tamil Debate Team, Rotaract Volunteer, Basketball"
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  value={editFormData.gpa}
+                  onChange={(e) => setEditFormData({ ...editFormData, gpa: e.target.value })}
+                  placeholder="8.8 / 10"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Specialization / Major</label>
+                <input
+                  type="text"
+                  value={editFormData.specialization}
+                  onChange={(e) => setEditFormData({ ...editFormData, specialization: e.target.value })}
+                  placeholder="e.g. Artificial Intelligence"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setEditingUser(null)}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">System Role</label>
+                <select
+                  value={editFormData.role}
+                  onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition-colors cursor-pointer disabled:opacity-50"
-                >
-                  {saving ? 'Updating...' : 'Save Changes'}
-                </button>
+                  <option value="student">Student</option>
+                  <option value="club_admin">Club Lead</option>
+                  <option value="faculty">Faculty Member</option>
+                  <option value="admin">System Administrator</option>
+                </select>
               </div>
-            </form>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities</label>
+              <input
+                type="text"
+                value={editFormData.extracurricularActivities}
+                onChange={(e) => setEditFormData({ ...editFormData, extracurricularActivities: e.target.value })}
+                placeholder="Tamil Debate Team, Rotaract Volunteer, Basketball"
+                className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
           </div>
-        </div>
-      )}
+        </form>
+      </Modal>
 
       {/* ── 8. MODAL: ADD NEW STUDENT / MEMBER ─────────────── */}
-      {showAddUserModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+      <Modal
+        isOpen={showAddUserModal}
+        onClose={() => setShowAddUserModal(false)}
+        title="Add New Student / Member"
+        subtitle="Direct institutional enrolment: create student login credentials and initialize academic records"
+        icon={Plus}
+        maxWidth="max-w-2xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setShowAddUserModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
-
-            <div className="flex items-center gap-2 mb-1">
-              <Plus size={18} className="text-indigo-400" />
-              <h2 className="text-lg font-bold text-white">Add New Student / Member</h2>
+            <button
+              type="submit"
+              form="create-user-form"
+              disabled={saving}
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer disabled:opacity-50 inline-flex items-center gap-1.5"
+            >
+              {saving ? 'Creating...' : 'Enroll Account'}
+            </button>
+          </>
+        }
+      >
+        <form id="create-user-form" onSubmit={handleCreateUser} className="space-y-4">
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-400">
+              <Lock size={13} />
+              <span>Credentials Setup</span>
             </div>
-            <p className="text-xs text-slate-400 mb-4">
-              Direct institutional enrolment: create student login credentials and initialize academic records.
-            </p>
 
-            <form onSubmit={handleCreateUser} className="space-y-3.5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+                <div className="relative">
+                  <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                   <input
                     type="text"
                     required
                     value={newUserData.name}
                     onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
                     placeholder="e.g. Vignesh Sundar"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Student ID / Roll No</label>
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Student ID / Roll No</label>
+                <div className="relative">
+                  <Award className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                   <input
                     type="text"
                     value={newUserData.studentId}
                     onChange={(e) => setNewUserData({ ...newUserData, studentId: e.target.value })}
                     placeholder="e.g. CS22088"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
                   />
                 </div>
               </div>
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">College Email</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">College Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                   <input
                     type="email"
                     required
                     value={newUserData.email}
                     onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
                     placeholder="vignesh@campus.edu"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
                   />
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Initial Password</label>
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Initial Password</label>
+                <div className="relative">
+                  <Key className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                   <input
                     type="password"
                     required
@@ -988,203 +1037,183 @@ const AdminDashboard = () => {
                     value={newUserData.password}
                     onChange={(e) => setNewUserData({ ...newUserData, password: e.target.value })}
                     placeholder="At least 6 characters"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
                   />
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
-                  <select
-                    value={newUserData.department}
-                    onChange={(e) => setNewUserData({ ...newUserData, department: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    {departmentsList.map((d) => (
-                      <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
-                    ))}
-                  </select>
-                </div>
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
+              <GraduationCap size={13} />
+              <span>Academic Details</span>
+            </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
-                  <select
-                    value={newUserData.yearOfStudy}
-                    onChange={(e) => setNewUserData({ ...newUserData, yearOfStudy: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    {[1, 2, 3, 4, 5].map((y) => (
-                      <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Initial CGPA</label>
-                  <input
-                    type="text"
-                    value={newUserData.gpa}
-                    onChange={(e) => setNewUserData({ ...newUserData, gpa: e.target.value })}
-                    placeholder="8.5 / 10"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Specialization</label>
-                  <input
-                    type="text"
-                    value={newUserData.specialization}
-                    onChange={(e) => setNewUserData({ ...newUserData, specialization: e.target.value })}
-                    placeholder="e.g. Data Science & AI"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Assigned Role</label>
-                  <select
-                    value={newUserData.role}
-                    onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    <option value="student">Student</option>
-                    <option value="club_admin">Club Lead</option>
-                    <option value="faculty">Faculty Member</option>
-                    <option value="admin">System Administrator</option>
-                  </select>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
+                <select
+                  value={newUserData.department}
+                  onChange={(e) => setNewUserData({ ...newUserData, department: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  {departmentsList.map((d) => (
+                    <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
+                  ))}
+                </select>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
+                <select
+                  value={newUserData.yearOfStudy}
+                  onChange={(e) => setNewUserData({ ...newUserData, yearOfStudy: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  {[1, 2, 3, 4, 5].map((y) => (
+                    <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Initial CGPA</label>
                 <input
                   type="text"
-                  value={newUserData.extracurricularActivities}
-                  onChange={(e) => setNewUserData({ ...newUserData, extracurricularActivities: e.target.value })}
-                  placeholder="Robotics Club, Tennis, NSS Volunteer"
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  value={newUserData.gpa}
+                  onChange={(e) => setNewUserData({ ...newUserData, gpa: e.target.value })}
+                  placeholder="8.5 / 10"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Specialization</label>
+                <input
+                  type="text"
+                  value={newUserData.specialization}
+                  onChange={(e) => setNewUserData({ ...newUserData, specialization: e.target.value })}
+                  placeholder="e.g. Data Science & AI"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setShowAddUserModal(false)}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Assigned Role</label>
+                <select
+                  value={newUserData.role}
+                  onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition-colors cursor-pointer disabled:opacity-50"
-                >
-                  {saving ? 'Creating...' : 'Create Account'}
-                </button>
+                  <option value="student">Student</option>
+                  <option value="club_admin">Club Lead</option>
+                  <option value="faculty">Faculty Member</option>
+                  <option value="admin">System Administrator</option>
+                </select>
               </div>
-            </form>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities</label>
+              <input
+                type="text"
+                value={newUserData.extracurricularActivities}
+                onChange={(e) => setNewUserData({ ...newUserData, extracurricularActivities: e.target.value })}
+                placeholder="Robotics Club, Tennis, NSS Volunteer"
+                className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
           </div>
-        </div>
-      )}
+        </form>
+      </Modal>
 
       {/* ── 9. MODAL: PUBLISH ANNOUNCEMENT ────────────────── */}
-      {showCreateAnnModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+      <Modal
+        isOpen={showCreateAnnModal}
+        onClose={() => setShowCreateAnnModal(false)}
+        title="Publish Official Notice"
+        subtitle="Broadcast academic alerts, circulars, or urgent notifications to all campus students"
+        icon={Megaphone}
+        maxWidth="max-w-xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setShowCreateAnnModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
-
-            <div className="flex items-center gap-2 mb-1">
-              <Megaphone size={18} className="text-indigo-400" />
-              <h2 className="text-lg font-bold text-white">Publish Official Notice</h2>
-            </div>
-            <p className="text-xs text-slate-400 mb-4">
-              Broadcast academic alerts, circulars, or urgent notifications to all campus students.
-            </p>
-
-            <form onSubmit={handleCreateAnnouncement} className="space-y-3.5">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Notice Title</label>
-                <input
-                  type="text"
-                  required
-                  value={newAnnData.title}
-                  onChange={(e) => setNewAnnData({ ...newAnnData, title: e.target.value })}
-                  placeholder="e.g. End Semester Exam Timetable Released"
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Category</label>
-                  <select
-                    value={newAnnData.category}
-                    onChange={(e) => setNewAnnData({ ...newAnnData, category: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    <option value="Academic">Academic</option>
-                    <option value="Emergency">Emergency</option>
-                    <option value="General">General</option>
-                    <option value="Club Activity">Club Activity</option>
-                    <option value="Placement & Career">Placement & Career</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Priority</label>
-                  <select
-                    value={newAnnData.priority}
-                    onChange={(e) => setNewAnnData({ ...newAnnData, priority: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    <option value="normal">Normal</option>
-                    <option value="urgent">Urgent</option>
-                    <option value="critical">Critical</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Announcement Body</label>
-                <textarea
-                  rows="4"
-                  required
-                  value={newAnnData.content}
-                  onChange={(e) => setNewAnnData({ ...newAnnData, content: e.target.value })}
-                  placeholder="Detail the instructions, hall tickets, deadlines, or contact info..."
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
-                />
-              </div>
-
-              <div className="pt-2 flex justify-end gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateAnnModal(false)}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition-colors cursor-pointer disabled:opacity-50"
-                >
-                  {saving ? 'Publishing...' : 'Broadcast Notice'}
-                </button>
-              </div>
-            </form>
+            <button
+              type="submit"
+              form="create-ann-form"
+              disabled={saving}
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer disabled:opacity-50 inline-flex items-center gap-1.5"
+            >
+              {saving ? 'Publishing...' : 'Broadcast Notice'}
+            </button>
+          </>
+        }
+      >
+        <form id="create-ann-form" onSubmit={handleCreateAnnouncement} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Notice Title</label>
+            <input
+              type="text"
+              required
+              value={newAnnData.title}
+              onChange={(e) => setNewAnnData({ ...newAnnData, title: e.target.value })}
+              placeholder="e.g. End Semester Exam Timetable Released"
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
           </div>
-        </div>
-      )}
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">Category</label>
+              <select
+                value={newAnnData.category}
+                onChange={(e) => setNewAnnData({ ...newAnnData, category: e.target.value })}
+                className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+              >
+                <option value="Academic">Academic</option>
+                <option value="Emergency">Emergency</option>
+                <option value="General">General</option>
+                <option value="Club Activity">Club Activity</option>
+                <option value="Placement & Career">Placement & Career</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">Priority</label>
+              <select
+                value={newAnnData.priority}
+                onChange={(e) => setNewAnnData({ ...newAnnData, priority: e.target.value })}
+                className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+              >
+                <option value="normal">Normal</option>
+                <option value="urgent">Urgent</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Announcement Body</label>
+            <textarea
+              rows="4"
+              required
+              value={newAnnData.content}
+              onChange={(e) => setNewAnnData({ ...newAnnData, content: e.target.value })}
+              placeholder="Detail the instructions, hall tickets, deadlines, or contact info..."
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+            />
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import {
   Flag,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Modal from '../components/common/Modal';
 
 const categories = ['All', 'General', 'Academics', 'Projects', 'Career', 'Hackathons', 'Clubs'];
 
@@ -349,91 +350,84 @@ const Discussions = () => {
       )}
 
       {/* ── 4. CREATE DISCUSSION MODAL ───────────────────── */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+      <Modal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        title="Start Community Thread"
+        subtitle="Ask a question, share a project, or start a campus discussion"
+        icon={MessageCircle}
+        maxWidth="max-w-xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setShowCreateModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
-
-            <h2 className="text-xl font-bold text-white mb-1">Start Community Thread</h2>
-            <p className="text-xs text-slate-400 mb-5">
-              Ask a question, share a project, or start a campus discussion.
-            </p>
-
-            <form onSubmit={handleCreateSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Topic / Question Title *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Best resources for learning Next.js and Cloud Native?"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Category *</label>
-                <select
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
-                >
-                  {categories.filter((c) => c !== 'All').map((cat) => (
-                    <option key={cat} value={cat} className="bg-slate-900 text-white">
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Discussion Content *</label>
-                <textarea
-                  rows="4"
-                  required
-                  placeholder="Provide background details, code snippets, or what you've tried..."
-                  value={formData.body}
-                  onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Tags (comma-separated)</label>
-                <input
-                  type="text"
-                  placeholder="react, webdev, placements, ai"
-                  value={formData.tags}
-                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2.5 pt-3 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateModal(false)}
-                  className="px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 cursor-pointer"
-                >
-                  Publish Thread
-                </button>
-              </div>
-            </form>
+            <button
+              type="submit"
+              form="create-discussion-form"
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer inline-flex items-center gap-1.5"
+            >
+              Publish Thread
+            </button>
+          </>
+        }
+      >
+        <form id="create-discussion-form" onSubmit={handleCreateSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Topic / Question Title *</label>
+            <input
+              type="text"
+              required
+              placeholder="e.g. Best resources for learning Next.js and Cloud Native?"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
           </div>
-        </div>
-      )}
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Category *</label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+            >
+              {categories.filter((c) => c !== 'All').map((cat) => (
+                <option key={cat} value={cat} className="bg-slate-900 text-white">
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Discussion Content *</label>
+            <textarea
+              rows="4"
+              required
+              placeholder="Provide background details, code snippets, or what you've tried..."
+              value={formData.body}
+              onChange={(e) => setFormData({ ...formData, body: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Tags (comma-separated)</label>
+            <input
+              type="text"
+              placeholder="react, webdev, placements, ai"
+              value={formData.tags}
+              onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

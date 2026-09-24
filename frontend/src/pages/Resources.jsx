@@ -19,6 +19,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Modal from '../components/common/Modal';
 
 const categories = ['All', 'Event Poster', 'Academic Notice', 'Club Resource', 'Syllabus & Material', 'General'];
 
@@ -303,103 +304,96 @@ const Resources = () => {
       )}
 
       {/* ── 4. UPLOAD MODAL ──────────────────────────────── */}
-      {showUploadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+      <Modal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        title="Upload Campus Resource"
+        subtitle="Upload verified event posters, academic circulars, or club documentation"
+        icon={Upload}
+        maxWidth="max-w-xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setShowUploadModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
-
-            <h2 className="text-xl font-bold text-white mb-1">Upload Campus Resource</h2>
-            <p className="text-xs text-slate-400 mb-5">
-              Upload verified event posters, academic circulars, or club documentation.
-            </p>
-
-            <form onSubmit={handleUploadSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Resource Title *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Hackathon 2026 Poster or CS8601 Syllabus"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Category *</label>
-                <select
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
-                >
-                  {categories.filter((c) => c !== 'All').map((cat) => (
-                    <option key={cat} value={cat} className="bg-slate-900 text-white">
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Description</label>
-                <textarea
-                  rows="3"
-                  placeholder="Brief description or purpose of this file..."
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Select File (Max 5MB: Image or PDF) *</label>
-                <div className="border border-dashed border-white/15 rounded-lg p-4 text-center hover:border-indigo-500/50 transition-colors bg-[#080B12]">
-                  <input
-                    type="file"
-                    required
-                    accept="image/*,application/pdf"
-                    onChange={handleFileChange}
-                    className="hidden"
-                    id="resource-file-input"
-                  />
-                  <label htmlFor="resource-file-input" className="cursor-pointer block">
-                    <Upload size={24} className="mx-auto text-indigo-400 mb-1.5" />
-                    <span className="text-xs text-indigo-300 font-semibold block">
-                      {formData.file ? formData.file.name : 'Click to select file'}
-                    </span>
-                    <span className="text-xs text-slate-500 block mt-0.5">
-                      Supports PNG, JPG, WebP, and PDF up to 5MB
-                    </span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-2.5 pt-3 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={() => setShowUploadModal(false)}
-                  className="px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={uploading}
-                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
-                >
-                  {uploading ? 'Uploading...' : 'Publish File'}
-                </button>
-              </div>
-            </form>
+            <button
+              type="submit"
+              form="upload-resource-form"
+              disabled={uploading}
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer disabled:opacity-50 inline-flex items-center gap-1.5"
+            >
+              {uploading ? 'Uploading...' : 'Publish File'}
+            </button>
+          </>
+        }
+      >
+        <form id="upload-resource-form" onSubmit={handleUploadSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Resource Title *</label>
+            <input
+              type="text"
+              required
+              placeholder="e.g. Hackathon 2026 Poster or CS8601 Syllabus"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
           </div>
-        </div>
-      )}
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Category *</label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+            >
+              {categories.filter((c) => c !== 'All').map((cat) => (
+                <option key={cat} value={cat} className="bg-slate-900 text-white">
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Description</label>
+            <textarea
+              rows="3"
+              placeholder="Brief description or purpose of this file..."
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Select File (Max 5MB: Image or PDF) *</label>
+            <div className="border border-dashed border-white/15 rounded-xl p-4 text-center hover:border-indigo-500/50 transition-colors bg-[#080B12]">
+              <input
+                type="file"
+                required
+                accept="image/*,application/pdf"
+                onChange={handleFileChange}
+                className="hidden"
+                id="resource-file-input"
+              />
+              <label htmlFor="resource-file-input" className="cursor-pointer block">
+                <Upload size={24} className="mx-auto text-indigo-400 mb-1.5" />
+                <span className="text-xs text-indigo-300 font-semibold block">
+                  {formData.file ? formData.file.name : 'Click to select file'}
+                </span>
+                <span className="text-xs text-slate-500 block mt-0.5">
+                  Supports PNG, JPG, WebP, and PDF up to 5MB
+                </span>
+              </label>
+            </div>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

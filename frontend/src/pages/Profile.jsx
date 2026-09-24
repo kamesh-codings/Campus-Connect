@@ -31,6 +31,7 @@ import {
   Server
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Modal from '../components/common/Modal';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -732,116 +733,153 @@ const Profile = () => {
       )}
 
       {/* ── 5. EDIT PROFILE MODAL ────────────────────────── */}
-      {showEditModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+      <Modal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        title="Edit Student Community Profile"
+        subtitle="Update your academic info, skills, achievements, and extracurricular activities"
+        icon={Edit3}
+        maxWidth="max-w-xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setShowEditModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
+            <button
+              type="submit"
+              form="edit-profile-form"
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer inline-flex items-center gap-1.5"
+            >
+              Save Profile
+            </button>
+          </>
+        }
+      >
+        <form id="edit-profile-form" onSubmit={handleUpdate} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
+          </div>
 
-            <h2 className="text-xl font-bold text-white mb-1">
-              Edit {currentTheme.badge} Profile
-            </h2>
-            <p className="text-xs text-slate-400 mb-5">
-              Update your biographical details, skills, and personal information.
-            </p>
-
-            <form onSubmit={handleUpdate} className="space-y-3.5">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              {role === 'student' && (
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="block text-xs font-medium text-slate-300 mb-1">Technical Skills (comma-separated)</label>
-                      <input
-                        type="text"
-                        value={formData.skills}
-                        onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
-                        placeholder="React, Node.js, Python, Tailwind"
-                        className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-slate-300 mb-1">Campus Interests</label>
-                      <input
-                        type="text"
-                        value={formData.interests}
-                        onChange={(e) => setFormData({ ...formData, interests: e.target.value })}
-                        placeholder="Hackathons, Robotics, AI"
-                        className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities</label>
-                    <input
-                      type="text"
-                      value={formData.extracurricularActivities}
-                      onChange={(e) => setFormData({ ...formData, extracurricularActivities: e.target.value })}
-                      placeholder="Tamil Debate Team, NSS Volunteer, Chess Club"
-                      className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                    />
-                  </div>
-                </>
-              )}
-
-              {['admin', 'faculty', 'club_admin'].includes(role) && (
+          {['admin', 'faculty'].includes(user?.role) ? (
+            <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Areas of Expertise / Specializations</label>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
                   <input
                     type="text"
-                    value={formData.skills}
-                    onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
-                    placeholder="Machine Learning, Indic NLP, Distributed Systems"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    value={formData.department}
+                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
-              )}
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
+                  <select
+                    value={formData.yearOfStudy}
+                    onChange={(e) => setFormData({ ...formData, yearOfStudy: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                  >
+                    {[1, 2, 3, 4, 5].map((y) => (
+                      <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">CGPA (e.g. 8.8)</label>
+                  <input
+                    type="text"
+                    value={formData.gpa}
+                    onChange={(e) => setFormData({ ...formData, gpa: e.target.value })}
+                    placeholder="8.8 / 10"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Bio / Statement</label>
-                <textarea
-                  rows="3"
-                  value={formData.bio}
-                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                  placeholder="Share your role description, academic focus, or interests..."
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+                <label className="block text-xs font-medium text-slate-300 mb-1">Academic Specialization / Minor</label>
+                <input
+                  type="text"
+                  value={formData.specialization}
+                  onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
+                  placeholder="e.g. Full Stack & Indic NLP"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
-
-              <div className="flex justify-end gap-2.5 pt-3 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={() => setShowEditModal(false)}
-                  className="px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 cursor-pointer"
-                >
-                  Save Profile
-                </button>
+            </div>
+          ) : (
+            <div className="p-3.5 rounded-xl bg-indigo-950/40 border border-indigo-500/20 text-xs text-slate-300 space-y-1">
+              <div className="flex items-center gap-1.5 font-semibold text-indigo-300">
+                <Shield size={13} />
+                <span>Verified Institutional Records</span>
               </div>
-            </form>
+              <p className="text-[11px] text-slate-400">
+                Department: <strong className="text-white">{p?.department}</strong> • Year: <strong className="text-white">{p?.yearOfStudy}</strong> • CGPA: <strong className="text-emerald-400">{p?.academicInfo?.gpa || '8.8 / 10'}</strong>
+              </p>
+              <p className="text-[10px] text-slate-500 italic">
+                Academic records and official credentials can only be edited by Faculty Advisors and Campus Administration.
+              </p>
+            </div>
+          )}
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Bio / Statement</label>
+            <textarea
+              rows="2"
+              value={formData.bio}
+              onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+              placeholder="Share your interests, club leadership roles, or tech stack..."
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+            />
           </div>
-        </div>
-      )}
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Technical Skills (comma-separated)</label>
+            <input
+              type="text"
+              value={formData.skills}
+              onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
+              placeholder="React, Node.js, Python, Tailwind"
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Campus Interests (comma-separated)</label>
+            <input
+              type="text"
+              value={formData.interests}
+              onChange={(e) => setFormData({ ...formData, interests: e.target.value })}
+              placeholder="Hackathons, AI Research, Robotics"
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities (comma-separated)</label>
+            <input
+              type="text"
+              value={formData.extracurricularActivities}
+              onChange={(e) => setFormData({ ...formData, extracurricularActivities: e.target.value })}
+              placeholder="Tamil Debate Team, NSS Volunteer, Chess Club"
+              className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

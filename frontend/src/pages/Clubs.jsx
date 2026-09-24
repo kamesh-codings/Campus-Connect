@@ -24,6 +24,7 @@ import {
   Linkedin,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Modal from '../components/common/Modal';
 
 const categories = ['All', 'Technical', 'Cultural', 'Sports', 'Social & Outreach', 'Academic'];
 
@@ -299,35 +300,53 @@ const Clubs = () => {
       )}
 
       {/* ── 4. CLUB DETAIL / WORKSPACE MODAL ─────────────── */}
-      {selectedClub && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="glass max-w-lg w-full rounded-xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+      <Modal
+        isOpen={!!selectedClub}
+        onClose={() => setSelectedClub(null)}
+        title={selectedClub?.name}
+        subtitle={selectedClub?.category}
+        icon={Users}
+        maxWidth="max-w-xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setSelectedClub(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Close
             </button>
-
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center font-bold text-base text-white">
-                {selectedClub.name.charAt(0)}
-              </div>
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
-                  {selectedClub.category}
-                </span>
-                <h2 className="text-lg font-bold text-white mt-1">{selectedClub.name}</h2>
-              </div>
-            </div>
-
+            {selectedClub?.members?.some(
+              (m) => m.user?._id === user?._id || m.user === user?._id
+            ) ? (
+              <button
+                type="button"
+                onClick={() => handleLeave(selectedClub._id)}
+                className="px-4 py-2 rounded-xl bg-rose-600/20 text-rose-300 border border-rose-500/30 text-xs font-semibold hover:bg-rose-600/30 transition-colors cursor-pointer"
+              >
+                Leave Club
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => handleJoin(selectedClub._id)}
+                className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
+              >
+                Join Club
+              </button>
+            )}
+          </>
+        }
+      >
+        {selectedClub && (
+          <div className="space-y-4">
             {selectedClub.tagline && (
-              <p className="text-xs text-cyan-400 font-medium italic mb-3">
+              <p className="text-xs text-cyan-400 font-medium italic">
                 "{selectedClub.tagline}"
               </p>
             )}
 
-            <div className="bg-slate-900/80 p-3.5 rounded-lg border border-white/5 text-xs space-y-1.5 mb-3">
+            <div className="bg-slate-900/80 p-3.5 rounded-xl border border-white/5 text-xs space-y-1.5">
               <p className="text-slate-300">
                 <strong className="text-white">Active Members:</strong> {selectedClub.members?.length || 0} students
               </p>
@@ -339,14 +358,16 @@ const Clubs = () => {
               )}
             </div>
 
-            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-1.5">About this Organization</h4>
-            <p className="text-slate-300 text-xs leading-relaxed mb-4 whitespace-pre-line">
-              {selectedClub.description}
-            </p>
+            <div>
+              <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-1.5">About this Organization</h4>
+              <p className="text-slate-300 text-xs leading-relaxed whitespace-pre-line">
+                {selectedClub.description}
+              </p>
+            </div>
 
             {/* Social Links */}
             {selectedClub.socialLinks && Object.values(selectedClub.socialLinks).some(Boolean) && (
-              <div className="mb-4 border-t border-white/5 pt-3">
+              <div className="border-t border-white/5 pt-3">
                 <h5 className="text-xs font-semibold text-white mb-2">Club Links & Repos</h5>
                 <div className="flex flex-wrap gap-2 text-xs">
                   {selectedClub.socialLinks.website && (
@@ -354,7 +375,7 @@ const Clubs = () => {
                       href={selectedClub.socialLinks.website}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-md text-indigo-300 border border-white/5 flex items-center gap-1.5"
+                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-lg text-indigo-300 border border-white/5 flex items-center gap-1.5"
                     >
                       <Globe size={12} /> Website
                     </a>
@@ -364,7 +385,7 @@ const Clubs = () => {
                       href={selectedClub.socialLinks.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-md text-indigo-300 border border-white/5 flex items-center gap-1.5"
+                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-lg text-indigo-300 border border-white/5 flex items-center gap-1.5"
                     >
                       <Github size={12} /> GitHub
                     </a>
@@ -374,7 +395,7 @@ const Clubs = () => {
                       href={selectedClub.socialLinks.linkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-md text-indigo-300 border border-white/5 flex items-center gap-1.5"
+                      className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 rounded-lg text-indigo-300 border border-white/5 flex items-center gap-1.5"
                     >
                       <Linkedin size={12} /> LinkedIn
                     </a>
@@ -382,122 +403,89 @@ const Clubs = () => {
                 </div>
               </div>
             )}
-
-            <div className="flex justify-end gap-3 pt-2">
-              <button
-                onClick={() => setSelectedClub(null)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-medium hover:bg-slate-700 cursor-pointer"
-              >
-                Close
-              </button>
-              {selectedClub.members?.some(
-                (m) => m.user?._id === user?._id || m.user === user?._id
-              ) ? (
-                <button
-                  onClick={() => handleLeave(selectedClub._id)}
-                  className="px-4 py-2 rounded-lg bg-rose-600/20 text-rose-300 border border-rose-500/30 text-xs font-semibold hover:bg-rose-600/30 cursor-pointer"
-                >
-                  Leave Club
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleJoin(selectedClub._id)}
-                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium shadow-sm cursor-pointer"
-                >
-                  Join Club
-                </button>
-              )}
-            </div>
           </div>
-        </div>
-      )}
+        )}
+      </Modal>
 
       {/* ── 5. CHARTER CLUB MODAL ───────────────────────── */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="glass max-w-lg w-full rounded-xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+      <Modal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        title="Charter a New Club"
+        subtitle="Establish a new official campus community"
+        icon={Plus}
+        maxWidth="max-w-xl"
+        footer={
+          <>
             <button
+              type="button"
               onClick={() => setShowCreateModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
-              <X size={18} />
+              Cancel
             </button>
-
-            <h2 className="text-xl font-bold text-white mb-1 font-['Outfit']">Charter a New Club</h2>
-            <p className="text-xs text-slate-400 mb-6">
-              Establish a new official campus community.
-            </p>
-
-            <form onSubmit={handleCreateSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Club Name *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Google Developer Student Club"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Category *</label>
-                <select
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500"
-                >
-                  {categories.filter((c) => c !== 'All').map((cat) => (
-                    <option key={cat} value={cat} className="bg-slate-900 text-white">
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Motto / Tagline</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Innovate, Collaborate, Build"
-                  value={formData.tagline}
-                  onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Mission & Description *</label>
-                <textarea
-                  rows="3"
-                  required
-                  placeholder="Describe your club mission, regular activities, and member goals..."
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
-                />
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 cursor-pointer"
-                >
-                  Charter Club
-                </button>
-              </div>
-            </form>
+            <button
+              type="submit"
+              form="charter-club-form"
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer inline-flex items-center gap-1.5"
+            >
+              Charter Club
+            </button>
+          </>
+        }
+      >
+        <form id="charter-club-form" onSubmit={handleCreateSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">Club Name *</label>
+            <input
+              type="text"
+              required
+              placeholder="e.g. Google Developer Student Club"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
           </div>
-        </div>
-      )}
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">Category *</label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+            >
+              {categories.filter((c) => c !== 'All').map((cat) => (
+                <option key={cat} value={cat} className="bg-slate-900 text-white">
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">Motto / Tagline</label>
+            <input
+              type="text"
+              placeholder="e.g. Innovate, Collaborate, Build"
+              value={formData.tagline}
+              onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">Mission & Description *</label>
+            <textarea
+              rows="3"
+              required
+              placeholder="Describe your club mission, regular activities, and member goals..."
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+            />
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
