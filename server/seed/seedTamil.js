@@ -40,6 +40,16 @@ const generate100PlusDataset = () => {
 
     // Faculty
     {
+      name: 'Dr. Anita Sharma',
+      email: 'sharma.cse@campus.edu',
+      password: 'Faculty@123',
+      role: 'faculty',
+      department: 'CSE',
+      bio: 'Professor, Computer Science & Engineering. Research: Machine Learning & Indic AI.',
+      skills: ['AI', 'Machine Learning', 'Python'],
+      interests: ['Academic Mentorship', 'AI in Education']
+    },
+    {
       name: 'Dr. K. Radhakrishnan',
       email: 'radhakrishnan.cse@campus.edu',
       password: 'Faculty@123',
@@ -91,6 +101,18 @@ const generate100PlusDataset = () => {
     },
 
     // Club Leads
+    {
+      name: 'Rahul Verma',
+      email: 'gdsc.lead@campus.edu',
+      password: 'Lead@123',
+      role: 'club_admin',
+      department: 'CSE',
+      yearOfStudy: 3,
+      studentId: 'CS21045',
+      bio: 'Developer Lead | Full Stack Engineer',
+      skills: ['React', 'Node.js'],
+      interests: ['Web Development']
+    },
     {
       name: 'Karthikeyan Natarajan',
       email: 'karthik.lead@campus.edu',
@@ -165,6 +187,18 @@ const generate100PlusDataset = () => {
     },
 
     // Students (Across various years and branches)
+    {
+      name: 'Alex Johnson',
+      email: 'alex.student@campus.edu',
+      password: 'Student@123',
+      role: 'student',
+      department: 'CSE',
+      yearOfStudy: 3,
+      studentId: 'CS21089',
+      bio: 'Student developer passionate about hackathons.',
+      skills: ['JavaScript', 'React'],
+      interests: ['Hackathons', 'Web Development']
+    },
     {
       name: 'Kaviya Ramasamy',
       email: 'kaviya.student@campus.edu',
