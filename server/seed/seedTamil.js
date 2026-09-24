@@ -1347,11 +1347,17 @@ const seedLargeTamilDatabase = async () => {
 
     // ─── 3. CREATE EVENTS ─────────────────────────────────────────
     const eventList = [];
-    for (const eventData of dataset.events) {
+    for (let i = 0; i < dataset.events.length; i++) {
+      const eventData = dataset.events[i];
       const club = clubMap[eventData.clubName];
       const organizer = userMap[eventData.organizerEmail];
 
       if (!club || !organizer) continue;
+
+      // Calculate upcoming dates dynamically (starting 1 day from now, spaced 2 days apart)
+      const eventStart = new Date(Date.now() + (i * 2 + 1) * 24 * 60 * 60 * 1000 + (10 * 60 * 60 * 1000));
+      const eventEnd = new Date(eventStart.getTime() + (6 * 60 * 60 * 1000));
+      const regDeadline = new Date(eventStart.getTime() - (12 * 60 * 60 * 1000));
 
       const event = await Event.create({
         title: eventData.title,
@@ -1361,10 +1367,10 @@ const seedLargeTamilDatabase = async () => {
         category: eventData.category,
         venue: eventData.venue,
         isOnline: eventData.isOnline,
-        startDate: new Date(eventData.startDate),
-        endDate: new Date(eventData.endDate),
+        startDate: eventStart,
+        endDate: eventEnd,
         maxCapacity: eventData.maxCapacity,
-        registrationDeadline: new Date(eventData.registrationDeadline),
+        registrationDeadline: regDeadline,
         createdBy: organizer._id,
         registeredUsers: [
           {

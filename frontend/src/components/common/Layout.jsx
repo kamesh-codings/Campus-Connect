@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
@@ -8,72 +8,56 @@ import {
   Users,
   Megaphone,
   MessageCircle,
-  UserCircle,
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 
 const Layout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(
-    typeof window !== 'undefined' ? window.innerWidth >= 1024 : false
-  );
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const location = useLocation();
-  const { user } = useAuth();
-
-  // Handle window resize for sidebar behavior
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setSidebarOpen(true);
-      } else {
-        setSidebarOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const mobileNavItems = [
     { path: '/', icon: LayoutDashboard, label: 'Feed' },
     { path: '/events', icon: Calendar, label: 'Events' },
     { path: '/clubs', icon: Users, label: 'Clubs' },
-    { path: '/discussions', icon: MessageCircle, label: 'Discuss' },
     { path: '/announcements', icon: Megaphone, label: 'Alerts' },
+    { path: '/discussions', icon: MessageCircle, label: 'Discuss' },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white relative">
-      {/* Dynamic Background Gradient Mesh */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -right-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white flex flex-col">
+      {/* 1. Top Navbar (Fixed full-width header) */}
+      <Navbar
+        onToggleSidebar={() => setMobileSidebarOpen((prev) => !prev)}
+        sidebarOpen={mobileSidebarOpen}
+      />
+
+      {/* 2. Main Shell (Starts below 64px header, full height) */}
+      <div className="flex-1 flex pt-16 min-h-screen">
+        {/* Desktop Sidebar (Permanent, in-flow column: NO overlapping) */}
+        <div className="hidden lg:block w-64 shrink-0 border-r border-white/10 bg-slate-900/60 backdrop-blur-xl">
+          <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+            <Sidebar isOpen={true} onClose={() => {}} isDesktop={true} />
+          </div>
+        </div>
+
+        {/* Mobile / Tablet Drawer Sidebar (Overlay) */}
+        <div className="lg:hidden">
+          <Sidebar
+            isOpen={mobileSidebarOpen}
+            onClose={() => setMobileSidebarOpen(false)}
+            isDesktop={false}
+          />
+        </div>
+
+        {/* Main Content Area (Takes remaining width naturally, centered, with generous breathing room) */}
+        <main className="flex-1 min-w-0 w-full overflow-x-hidden px-4 sm:px-6 lg:px-10 py-8 pb-28 sm:pb-16">
+          <div className="max-w-6xl mx-auto w-full">
+            <Outlet />
+          </div>
+        </main>
       </div>
 
-      {/* Top Navigation Bar */}
-      <Navbar
-        onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
-        sidebarOpen={sidebarOpen}
-      />
-
-      {/* Side Navigation Bar */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
-
-      {/* Main Content Area */}
-      <main
-        className={`relative z-10 pt-20 pb-24 sm:pb-12 min-h-screen transition-all duration-300 ease-in-out ${
-          sidebarOpen ? 'lg:pl-64' : 'pl-0'
-        }`}
-      >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Outlet />
-        </div>
-      </main>
-
-      {/* Mobile Bottom Navigation Bar (Visible only on small devices < 640px) */}
-      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-xl border-t border-white/10 px-2 py-1.5 flex items-center justify-around shadow-2xl">
+      {/* 3. Mobile Bottom Navigation Bar (< 640px) */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-white/10 px-2 py-1.5 flex items-center justify-around shadow-2xl">
         {mobileNavItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -84,13 +68,13 @@ const Layout = () => {
               to={item.path}
               className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl text-[10px] font-medium transition-all duration-200 ${
                 isActive
-                  ? 'text-primary-light font-bold scale-105'
-                  : 'text-text-muted hover:text-text-secondary'
+                  ? 'text-indigo-400 font-bold scale-105'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               <div
                 className={`p-1 rounded-lg transition-colors ${
-                  isActive ? 'bg-primary/20 text-primary-light' : ''
+                  isActive ? 'bg-indigo-500/20 text-indigo-400' : ''
                 }`}
               >
                 <Icon size={18} />

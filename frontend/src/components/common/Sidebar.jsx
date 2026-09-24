@@ -12,10 +12,9 @@ import {
   UserCircle,
   Sparkles,
   ChevronRight,
-  ExternalLink,
 } from 'lucide-react';
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
   const { user } = useAuth();
   const { unreadCount } = useSocket();
   const location = useLocation();
@@ -85,136 +84,144 @@ const Sidebar = ({ isOpen, onClose }) => {
     admin: 'from-rose-500 to-amber-500',
     faculty: 'from-amber-500 to-orange-500',
     club_admin: 'from-indigo-500 to-purple-500',
-    student: 'from-primary to-cyan-500',
+    student: 'from-indigo-500 to-cyan-500',
   };
 
   const currentGradient = roleGradients[user?.role] || roleGradients.student;
 
+  const content = (
+    <div className="flex flex-col h-full py-4 px-3.5 space-y-4">
+      {/* Tamil Nadu Campus / Dept Tag */}
+      <div className="px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-white/10 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-2 min-w-0">
+          <Sparkles size={14} className="text-indigo-400 shrink-0" />
+          <span className="text-xs font-semibold text-slate-200 truncate">
+            {user?.department || 'Campus'} Dept
+          </span>
+        </div>
+        <span className="text-[10px] text-slate-400 font-mono shrink-0 ml-1">
+          {user?.yearOfStudy ? `Yr ${user.yearOfStudy}` : 'Staff'}
+        </span>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="flex-1 space-y-1">
+        {filteredItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = location.pathname === item.path;
+
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={() => {
+                if (!isDesktop) onClose();
+              }}
+              className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group
+                ${
+                  isActive
+                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-white/5'
+                }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <Icon
+                  size={18}
+                  className={`shrink-0 transition-transform ${
+                    isActive ? 'text-white' : 'text-slate-400 group-hover:text-indigo-400'
+                  }`}
+                />
+                <span className="truncate tracking-wide">{item.label}</span>
+              </div>
+
+              {item.badge && (
+                <span
+                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md shrink-0 ml-1 ${
+                    typeof item.badge === 'number'
+                      ? 'bg-rose-500 text-white'
+                      : isActive
+                      ? 'bg-white/20 text-white'
+                      : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                  }`}
+                >
+                  {item.badge}
+                </span>
+              )}
+            </NavLink>
+          );
+        })}
+      </nav>
+
+      {/* Muthamil Mandram Spotlight Card */}
+      <div className="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/20 shadow-inner">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider">
+            🏛️ Muthamil Mandram
+          </span>
+        </div>
+        <p className="text-[11px] text-slate-300 leading-snug">
+          Pongal Thiruvizha & Tamil Debate 2026 is live on campus!
+        </p>
+        <NavLink
+          to="/events"
+          onClick={() => {
+            if (!isDesktop) onClose();
+          }}
+          className="mt-2.5 inline-flex items-center gap-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
+        >
+          View Events <ChevronRight size={13} />
+        </NavLink>
+      </div>
+
+      {/* User Info Bar at Bottom */}
+      <div className="pt-3 border-t border-white/10">
+        <NavLink
+          to="/profile"
+          onClick={() => {
+            if (!isDesktop) onClose();
+          }}
+          className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors group"
+        >
+          <div
+            className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${currentGradient} flex items-center justify-center font-bold text-white text-xs shadow-md shrink-0`}
+          >
+            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold text-slate-100 truncate group-hover:text-indigo-400 transition-colors">
+              {user?.name}
+            </p>
+            <p className="text-[10px] text-slate-400 truncate capitalize">
+              {user?.role?.replace('_', ' ')} • {user?.department}
+            </p>
+          </div>
+        </NavLink>
+      </div>
+    </div>
+  );
+
+  // Desktop inline rendering
+  if (isDesktop) {
+    return <div className="h-full">{content}</div>;
+  }
+
+  // Mobile Drawer rendering
   return (
     <>
-      {/* Mobile backdrop overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 transition-opacity"
           onClick={onClose}
           aria-hidden="true"
         />
       )}
 
-      {/* Main Sidebar */}
       <aside
-        className={`fixed top-16 left-0 bottom-0 w-64 bg-slate-950/90 backdrop-blur-2xl border-r border-white/10 z-40 transition-transform duration-300 ease-in-out flex flex-col justify-between
-          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        className={`fixed top-16 left-0 bottom-0 w-64 bg-slate-900 border-r border-white/10 z-50 transition-transform duration-300 ease-in-out shadow-2xl ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
       >
-        <div className="flex flex-col h-full py-4 px-3 overflow-y-auto">
-          {/* Tamil Nadu Campus Tagline */}
-          <div className="px-3 py-2 mb-2 rounded-xl bg-gradient-to-r from-primary/10 via-cyan-500/10 to-transparent border border-primary/20 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Sparkles size={14} className="text-primary-light animate-pulse" />
-              <span className="text-[11px] font-semibold text-primary-light">
-                {user?.department} Department
-              </span>
-            </div>
-            <span className="text-[10px] text-text-muted font-mono">
-              {user?.yearOfStudy ? `Y${user.yearOfStudy}` : 'Staff'}
-            </span>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="flex-1 space-y-1.5 mt-1">
-            {filteredItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => {
-                    if (window.innerWidth < 1024) onClose();
-                  }}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group relative
-                    ${
-                      isActive
-                        ? 'bg-gradient-to-r from-primary/25 to-primary/5 text-white border-l-3 border-primary shadow-lg shadow-primary/10'
-                        : 'text-text-secondary hover:text-white hover:bg-white/5'
-                    }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon
-                      size={18}
-                      className={`transition-colors duration-200 ${
-                        isActive
-                          ? 'text-primary-light scale-110'
-                          : 'text-text-muted group-hover:text-primary-light'
-                      }`}
-                    />
-                    <span className="tracking-wide">{item.label}</span>
-                  </div>
-
-                  {item.badge && (
-                    <span
-                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
-                        typeof item.badge === 'number'
-                          ? 'bg-rose-500 text-white'
-                          : 'bg-primary/20 text-primary-light border border-primary/30'
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
-                </NavLink>
-              );
-            })}
-          </nav>
-
-          {/* Quick Info Box: Tamil Mandram & Campus Highlights */}
-          <div className="mt-4 p-3 rounded-2xl bg-gradient-to-br from-slate-900/90 to-slate-900/40 border border-white/10 relative overflow-hidden group">
-            <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/10 rounded-full blur-xl pointer-events-none group-hover:bg-primary/20 transition-all" />
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider flex items-center gap-1">
-                🏛️ Muthamil Mandram
-              </span>
-            </div>
-            <p className="text-[11px] text-text-secondary leading-snug">
-              Pongal Thiruvizha & Pattimandram 2026 registration is live!
-            </p>
-            <NavLink
-              to="/events"
-              onClick={() => {
-                if (window.innerWidth < 1024) onClose();
-              }}
-              className="mt-2 text-[10px] font-bold text-primary-light hover:text-white flex items-center gap-1 transition-colors"
-            >
-              Explore Events <ChevronRight size={12} />
-            </NavLink>
-          </div>
-
-          {/* Bottom User Card */}
-          <div className="mt-3 pt-3 border-t border-white/10">
-            <NavLink
-              to="/profile"
-              onClick={() => {
-                if (window.innerWidth < 1024) onClose();
-              }}
-              className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors group"
-            >
-              <div
-                className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${currentGradient} flex items-center justify-center font-bold text-white text-xs shadow-md group-hover:scale-105 transition-transform`}
-              >
-                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-text-primary truncate group-hover:text-primary-light transition-colors">
-                  {user?.name}
-                </p>
-                <p className="text-[10px] text-text-muted truncate capitalize">
-                  {user?.role?.replace('_', ' ')} • {user?.department}
-                </p>
-              </div>
-            </NavLink>
-          </div>
-        </div>
+        {content}
       </aside>
     </>
   );
