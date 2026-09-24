@@ -42,6 +42,7 @@ app.use('/api/events', require('./routes/events'));
 app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/discussions', require('./routes/discussions'));
 app.use('/api/notifications', require('./routes/notifications'));
+app.use('/api/feed', require('./routes/feed'));
 
 // Health check
 app.get('/api/health', (req, res) => {

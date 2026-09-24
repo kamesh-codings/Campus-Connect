@@ -13,10 +13,14 @@ import {
   AlertTriangle,
   Zap,
   Sparkles,
+  Award,
+  Compass,
 } from 'lucide-react';
 
 const Feed = () => {
   const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('for-you'); // 'for-you' or 'all'
+  const [feedItems, setFeedItems] = useState([]);
   const [events, setEvents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [stats, setStats] = useState({ events: 0, clubs: 0, announcements: 0, discussions: 0 });
@@ -25,11 +29,13 @@ const Feed = () => {
   useEffect(() => {
     const fetchFeedData = async () => {
       try {
-        const [evRes, anRes, clRes, dsRes] = await Promise.all([
+        setLoading(true);
+        const [evRes, anRes, clRes, dsRes, feedRes] = await Promise.all([
           API.get('/events'),
           API.get('/announcements'),
           API.get('/clubs'),
           API.get('/discussions'),
+          API.get(`/feed?tab=${activeTab}`),
         ]);
 
         const allEvents = Array.isArray(evRes.data) ? evRes.data : [];
@@ -37,7 +43,7 @@ const Feed = () => {
         const allClubs = Array.isArray(clRes.data) ? clRes.data : [];
         const allDiscussions = Array.isArray(dsRes.data) ? dsRes.data : [];
 
-        // Show upcoming or recent events
+        setFeedItems(Array.isArray(feedRes.data) ? feedRes.data : []);
         setEvents(allEvents.slice(0, 4));
         setAnnouncements(allAnnouncements.slice(0, 5));
         setStats({
@@ -53,7 +59,7 @@ const Feed = () => {
       }
     };
     fetchFeedData();
-  }, []);
+  }, [activeTab]);
 
   const priorityIcon = { critical: AlertTriangle, urgent: Zap, normal: Megaphone };
   const priorityStyles = {
@@ -157,6 +163,39 @@ const Feed = () => {
             </Link>
           );
         })}
+      </div>
+
+      {/* ── Feed Stream Tab Toggle ────────────────── */}
+      <div className="flex items-center justify-between border-b border-white/10 pb-4">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setActiveTab('for-you')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === 'for-you'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'bg-slate-900 text-slate-400 hover:text-white border border-white/5'
+            }`}
+          >
+            <Sparkles size={14} className={activeTab === 'for-you' ? 'text-amber-300' : ''} />
+            For You (Ranked Stream)
+          </button>
+
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === 'all'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'bg-slate-900 text-slate-400 hover:text-white border border-white/5'
+            }`}
+          >
+            <Compass size={14} />
+            All Campus Activities
+          </button>
+        </div>
+
+        <span className="text-[11px] text-slate-400 hidden sm:inline">
+          {activeTab === 'for-you' ? `Personalized for ${user?.department} student` : 'Chronological stream'}
+        </span>
       </div>
 
       {/* ── Main Two-Column Content ────────────────── */}

@@ -28,6 +28,10 @@ const Events = () => {
   const [filterType, setFilterType] = useState('all'); // all, upcoming, past
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [registeredTicket, setRegisteredTicket] = useState(null);
+  const [checkInModalEvent, setCheckInModalEvent] = useState(null);
+  const [checkInCode, setCheckInCode] = useState('');
+  const [checkInLoading, setCheckInLoading] = useState(false);
 
   // Form state for creating event
   const [formData, setFormData] = useState({
@@ -80,6 +84,9 @@ const Events = () => {
     try {
       const res = await API.post(`/events/${eventId}/register`);
       toast.success(res.data.message || 'Registered successfully!');
+      if (res.data.qrCode) {
+        setRegisteredTicket(res.data);
+      }
       fetchEvents();
       if (selectedEvent && selectedEvent._id === eventId) {
         const updated = await API.get(`/events/${eventId}`);
@@ -87,6 +94,25 @@ const Events = () => {
       }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
+    }
+  };
+
+  const handleCheckIn = async (e) => {
+    e.preventDefault();
+    if (!checkInModalEvent || !checkInCode.trim()) return;
+    setCheckInLoading(true);
+    try {
+      const res = await API.post(`/events/${checkInModalEvent._id}/check-in`, {
+        ticketCode: checkInCode.trim().toUpperCase(),
+      });
+      toast.success(res.data.message || 'Check-in successful!');
+      setCheckInCode('');
+      setCheckInModalEvent(null);
+      fetchEvents();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Check-in failed');
+    } finally {
+      setCheckInLoading(false);
     }
   };
 
@@ -293,7 +319,20 @@ const Events = () => {
                       disabled={isFull}
                       className={`btn-primary text-xs py-1.5 px-3 ${isFull ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      {isFull ? 'Full' : 'RSVP Now'}
+                      {isFull ? 'Full' : 'RSVP & Get QR Ticket'}
+                    </button>
+                  )}
+
+                  {canCreate && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCheckInModalEvent(ev);
+                      }}
+                      className="px-2.5 py-1.5 rounded-xl bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 border border-amber-500/30 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                      title="Verify and check-in attendee tickets"
+                    >
+                      <Ticket size={13} /> Check-In
                     </button>
                   )}
                 </div>
@@ -598,8 +637,168 @@ const Events = () => {
           </div>
         </div>
       )}
+
+      {/* ── Modal 1: Digital QR Event Ticket Pass ─────────────── */}
+      {registeredTicket && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+          <div className="w-full max-w-md rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-indigo-500/30 p-6 shadow-2xl relative text-center animate-fade-in-up">
+            <button
+              onClick={() => setRegisteredTicket(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold mb-3">
+              <CheckCircle2 size={14} /> Official Verified Campus Ticket
+            </div>
+
+            <h3 className="text-xl font-extrabold text-white mb-1 font-['Outfit']">
+              {registeredTicket.eventTitle}
+            </h3>
+            <p className="text-xs text-slate-400 mb-4">
+              📍 {registeredTicket.venue}
+            </p>
+
+            {/* QR Code Container */}
+            <div className="p-4 bg-white rounded-2xl inline-block shadow-xl my-2 border-4 border-indigo-500/20">
+              <img
+                src={registeredTicket.qrCode}
+                alt="Event Ticket QR"
+                className="w-52 h-52 object-contain mx-auto"
+              />
+            </div>
+
+            <div className="mt-3 p-3 rounded-xl bg-slate-800/80 border border-white/10 font-mono text-center">
+              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Ticket Token</span>
+              <span className="text-base font-extrabold text-indigo-300 tracking-widest">
+                {registeredTicket.ticketCode}
+              </span>
+            </div>
+
+            <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+              Show this QR code at the venue entry. Club organizers will scan it to verify your attendance and award <strong className="text-amber-400">+25 Reputation Points</strong>!
+            </p>
+
+            <div className="mt-5 flex gap-3">
+              <button
+                onClick={() => window.print()}
+                className="btn-secondary w-full text-xs justify-center"
+              >
+                Print Pass
+              </button>
+              <button
+                onClick={() => setRegisteredTicket(null)}
+                className="btn-primary w-full text-xs justify-center"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal 2: Club Admin Check-In & Ticket Scanner ───────── */}
+      {checkInModalEvent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+          <div className="w-full max-w-lg rounded-3xl bg-slate-900 border border-amber-500/30 p-6 shadow-2xl relative animate-fade-in-up">
+            <button
+              onClick={() => {
+                setCheckInModalEvent(null);
+                setCheckInCode('');
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-2 mb-2">
+              <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+                <Ticket size={18} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">Attendee Check-In Station</h3>
+                <p className="text-xs text-slate-400">{checkInModalEvent.title}</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCheckIn} className="mt-5 space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  Enter or Scan Ticket Code (e.g., CC-XXXXXXXX)
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    required
+                    placeholder="CC-XXXXXX"
+                    value={checkInCode}
+                    onChange={(e) => setCheckInCode(e.target.value.toUpperCase())}
+                    className="input-field-no-icon font-mono text-base uppercase font-bold tracking-wider bg-slate-950 border border-white/15 focus:border-amber-400 rounded-xl px-4 py-2.5 w-full text-white"
+                  />
+                  <button
+                    type="submit"
+                    disabled={checkInLoading || !checkInCode.trim()}
+                    className="btn-primary bg-amber-600 hover:bg-amber-500 border-none text-xs font-bold px-5 shrink-0"
+                  >
+                    {checkInLoading ? 'Verifying...' : 'Validate'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Registered Attendees List */}
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-slate-300">
+                    Registered Attendees ({checkInModalEvent.registeredUsers?.length || 0})
+                  </span>
+                  <span className="text-[11px] text-slate-400">
+                    {checkInModalEvent.registeredUsers?.filter((r) => r.attended).length || 0} Checked In
+                  </span>
+                </div>
+
+                <div className="max-h-48 overflow-y-auto space-y-1.5 divide-y divide-white/5 pr-1">
+                  {checkInModalEvent.registeredUsers?.length === 0 ? (
+                    <p className="text-xs text-slate-500 py-3 text-center">No attendees registered yet.</p>
+                  ) : (
+                    checkInModalEvent.registeredUsers?.map((reg) => (
+                      <div
+                        key={reg.ticketCode || Math.random()}
+                        className="flex items-center justify-between py-2 text-xs"
+                      >
+                        <div>
+                          <span className="font-mono text-slate-300 font-bold mr-2">{reg.ticketCode}</span>
+                          <span className="text-[11px] text-slate-400">
+                            {new Date(reg.registeredAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                          </span>
+                        </div>
+                        {reg.attended ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                            <CheckCircle2 size={11} /> Attended (+25 pts)
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCheckInCode(reg.ticketCode);
+                            }}
+                            className="text-[10px] text-amber-400 hover:underline cursor-pointer"
+                          >
+                            Quick Check-In
+                          </button>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Events;
+

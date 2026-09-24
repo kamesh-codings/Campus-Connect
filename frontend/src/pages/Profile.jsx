@@ -147,6 +147,43 @@ const Profile = () => {
         )}
       </div>
 
+      {/* Reputation Points & Achievements Banner */}
+      <div className="p-6 rounded-3xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-900 border border-indigo-500/20 shadow-xl relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-3xl shrink-0 shadow-lg shadow-amber-500/10">
+              🏆
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl sm:text-3xl font-extrabold text-white">
+                  {p?.points || 125}
+                </span>
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+                  Reputation Pts
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 mt-1">
+                Level {(Math.floor((p?.points || 125) / 100)) + 1} Campus Contributor • {100 - ((p?.points || 125) % 100)} pts to next milestone
+              </p>
+            </div>
+          </div>
+
+          {/* Badges / Achievements List */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="px-3 py-1.5 rounded-xl bg-slate-800/80 border border-white/10 flex items-center gap-2 text-xs font-semibold text-slate-200">
+              <span>🎫</span> Event Explorer
+            </div>
+            <div className="px-3 py-1.5 rounded-xl bg-slate-800/80 border border-white/10 flex items-center gap-2 text-xs font-semibold text-slate-200">
+              <span>🌟</span> Campus Pioneer
+            </div>
+            <div className="px-3 py-1.5 rounded-xl bg-slate-800/80 border border-white/10 flex items-center gap-2 text-xs font-semibold text-slate-200">
+              <span>🏛️</span> Muthamil Scholar
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Grid: Skills, Interests & Clubs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Skills & Expertise */}

@@ -51,6 +51,18 @@ const userSchema = new mongoose.Schema(
     skills: [{ type: String }],
     interests: [{ type: String }],
     joinedClubs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Club' }],
+    points: {
+      type: Number,
+      default: 50,
+    },
+    achievements: [
+      {
+        title: { type: String, required: true },
+        icon: { type: String, default: '🏆' },
+        description: { type: String },
+        earnedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

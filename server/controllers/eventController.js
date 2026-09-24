@@ -106,6 +106,9 @@ const updateEvent = async (req, res) => {
   }
 };
 
+const QRCode = require('qrcode');
+const User = require('../models/User');
+
 // @desc    Register for event (RSVP)
 // @route   POST /api/events/:id/register
 // @access  Private
@@ -134,8 +137,24 @@ const registerForEvent = async (req, res) => {
       return res.status(400).json({ message: 'You are already registered for this event' });
     }
 
-    // Generate unique ticket code
+    // Generate unique ticket code & QR Token
     const ticketCode = `CC-${uuidv4().slice(0, 8).toUpperCase()}`;
+
+    // Generate QR Code data URL
+    const qrPayload = JSON.stringify({
+      ticketCode,
+      eventId: event._id,
+      eventTitle: event.title,
+      userId: req.user._id,
+      userName: req.user.name,
+      timestamp: new Date().toISOString(),
+    });
+
+    const qrCode = await QRCode.toDataURL(qrPayload, {
+      width: 280,
+      margin: 2,
+      color: { dark: '#0f172a', light: '#ffffff' },
+    });
 
     event.registeredUsers.push({
       user: req.user._id,
@@ -143,9 +162,13 @@ const registerForEvent = async (req, res) => {
     });
     await event.save();
 
+    // Award initial registration points (+10 pts)
+    await User.findByIdAndUpdate(req.user._id, { $inc: { points: 10 } });
+
     res.json({
-      message: 'Successfully registered for the event',
+      message: 'Successfully registered for the event! +10 Points earned.',
       ticketCode,
+      qrCode,
       eventTitle: event.title,
       venue: event.venue,
       startDate: event.startDate,
@@ -169,17 +192,36 @@ const checkInAttendee = async (req, res) => {
 
     const registration = event.registeredUsers.find((r) => r.ticketCode === ticketCode);
     if (!registration) {
-      return res.status(404).json({ message: 'Invalid ticket code' });
+      return res.status(404).json({ message: 'Invalid ticket code. Attendee not found.' });
     }
 
     if (registration.attended) {
-      return res.status(400).json({ message: 'Attendee already checked in' });
+      return res.status(400).json({ message: 'Attendee has already been checked in!' });
     }
 
     registration.attended = true;
     await event.save();
 
-    res.json({ message: 'Check-in successful', ticketCode });
+    // Award check-in attendance points (+25 pts) and milestone badges
+    const attendee = await User.findById(registration.user);
+    if (attendee) {
+      attendee.points = (attendee.points || 0) + 25;
+      attendee.achievements = attendee.achievements || [];
+      if (!attendee.achievements.some((a) => a.title === 'Event Explorer')) {
+        attendee.achievements.push({
+          title: 'Event Explorer',
+          icon: '🎫',
+          description: 'Checked into your first campus event!',
+        });
+      }
+      await attendee.save();
+    }
+
+    res.json({
+      message: `✅ Check-in successful for ${attendee?.name || 'student'}! +25 reputation points awarded.`,
+      attended: true,
+      user: attendee ? { name: attendee.name, email: attendee.email, department: attendee.department } : null,
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
