@@ -186,7 +186,7 @@ const Login = () => {
 
             {/* Title & Subtitle */}
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white tracking-tight">Sign In to Portal</h2>
+              <h2 className="text-2xl font-bold text-white tracking-tight font-['Outfit']">Sign In to Portal</h2>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">Select a demo profile or enter your credentials</p>
             </div>
 

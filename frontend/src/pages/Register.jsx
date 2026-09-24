@@ -10,8 +10,8 @@ import {
   Sparkles, 
   BookOpen, 
   Award,
-  CheckCircle2,
-  Building
+  Shield,
+  Users
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -30,10 +30,21 @@ const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const departments = ['CSE', 'ECE', 'MECH', 'CIVIL', 'EEE', 'IT', 'CHEM', 'BIO'];
+  const departments = ['CSE', 'ECE', 'MECH', 'CIVIL', 'EEE', 'IT', 'AI&DS', 'CHEM', 'BIO', 'Administration'];
+
+  const roleOptions = [
+    { id: 'student', label: 'Student', icon: GraduationCap, activeRing: 'ring-2 ring-emerald-500 bg-emerald-500/20 text-emerald-400 border-emerald-400' },
+    { id: 'faculty', label: 'Faculty', icon: BookOpen, activeRing: 'ring-2 ring-amber-500 bg-amber-500/20 text-amber-400 border-amber-400' },
+    { id: 'club_admin', label: 'Club Lead', icon: Users, activeRing: 'ring-2 ring-indigo-500 bg-indigo-500/20 text-indigo-400 border-indigo-400' },
+    { id: 'admin', label: 'Admin', icon: Shield, activeRing: 'ring-2 ring-rose-500 bg-rose-500/20 text-rose-400 border-rose-400' },
+  ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleRoleChange = (roleId) => {
+    setFormData({ ...formData, role: roleId });
   };
 
   const handleSubmit = async (e) => {
@@ -73,11 +84,11 @@ const Register = () => {
             <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.1] text-white">
               Create your <br />
               <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-400 bg-clip-text text-transparent">
-                Digital Student Profile
+                Digital Campus Profile
               </span>
             </h1>
             <p className="text-slate-400 text-base max-w-lg leading-relaxed pt-2">
-              Get immediate access to club memberships, instant event RSVPs, AI personalized feeds, and student discussion forums.
+              Get immediate access to club memberships, instant event RSVPs, AI personalized feeds, and campus discussions.
             </p>
           </div>
 
@@ -111,8 +122,36 @@ const Register = () => {
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500" />
 
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white tracking-tight">Create Account</h2>
-              <p className="text-xs sm:text-sm text-slate-400 mt-1">Fill in your student credentials</p>
+              <h2 className="text-2xl font-bold text-white tracking-tight font-['Outfit']">Create Account</h2>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1">Select your role and fill in your campus details</p>
+            </div>
+
+            {/* Role Selection Toggle */}
+            <div className="mb-4">
+              <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                Account Role
+              </label>
+              <div className="grid grid-cols-4 gap-2 bg-slate-950/70 p-1.5 rounded-xl border border-white/10">
+                {roleOptions.map((r) => {
+                  const Icon = r.icon;
+                  const isSelected = formData.role === r.id;
+                  return (
+                    <button
+                      key={r.id}
+                      type="button"
+                      onClick={() => handleRoleChange(r.id)}
+                      className={`py-2 px-1 rounded-lg text-xs font-semibold transition-all flex flex-col items-center gap-1 cursor-pointer border ${
+                        isSelected
+                          ? r.activeRing
+                          : 'text-slate-400 hover:text-white hover:bg-white/5 border-transparent'
+                      }`}
+                    >
+                      <Icon size={16} />
+                      <span>{r.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -125,7 +164,7 @@ const Register = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="e.g. Kaviya Devi"
+                      placeholder="Dr. S. Ramesh"
                       className="w-full bg-[#080B12]/90 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                       required
                     />
@@ -133,18 +172,16 @@ const Register = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1.5">Student ID / Roll No</label>
-                  <div className="relative">
-                    <Building size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                    <input
-                      name="studentId"
-                      value={formData.studentId}
-                      onChange={handleChange}
-                      placeholder="e.g. 21CS089"
-                      className="w-full bg-[#080B12]/90 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-mono"
-                      required
-                    />
-                  </div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                    {formData.role === 'student' ? 'Student ID' : 'Faculty / Staff ID'}
+                  </label>
+                  <input
+                    name="studentId"
+                    value={formData.studentId}
+                    onChange={handleChange}
+                    placeholder={formData.role === 'student' ? 'CS21089' : 'FAC2024'}
+                    className="w-full bg-[#080B12]/90 border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-mono"
+                  />
                 </div>
               </div>
 
@@ -157,7 +194,7 @@ const Register = () => {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="student@campus.edu"
+                    placeholder="you@campus.edu"
                     className="w-full bg-[#080B12]/90 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-mono text-xs sm:text-sm"
                     required
                   />
@@ -180,17 +217,25 @@ const Register = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1.5">Year of Study</label>
-                  <select
-                    name="yearOfStudy"
-                    value={formData.yearOfStudy}
-                    onChange={handleChange}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
-                  >
-                    {[1, 2, 3, 4].map((y) => (
-                      <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
-                    ))}
-                  </select>
+                  <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                    {formData.role === 'student' ? 'Year of Study' : 'Experience Level'}
+                  </label>
+                  {formData.role === 'student' ? (
+                    <select
+                      name="yearOfStudy"
+                      value={formData.yearOfStudy}
+                      onChange={handleChange}
+                      className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                    >
+                      {[1, 2, 3, 4].map((y) => (
+                        <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <div className="w-full bg-[#080B12]/60 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-slate-400 flex items-center">
+                      Staff / Academic Lead
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -207,6 +252,7 @@ const Register = () => {
                       placeholder="••••••••"
                       className="w-full bg-[#080B12]/90 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-mono"
                       required
+                      minLength={6}
                     />
                   </div>
                 </div>

@@ -40,14 +40,14 @@ const generate100PlusDataset = () => {
 
     // Faculty
     {
-      name: 'Dr. Anita Sharma',
+      name: 'Dr. Ramesh Sharma',
       email: 'sharma.cse@campus.edu',
       password: 'Faculty@123',
       role: 'faculty',
       department: 'CSE',
-      bio: 'Professor, Computer Science & Engineering. Research: Machine Learning & Indic AI.',
-      skills: ['AI', 'Machine Learning', 'Python'],
-      interests: ['Academic Mentorship', 'AI in Education']
+      bio: 'Associate Professor, Computer Science and Engineering. Research: Machine Learning & Distributed Systems.',
+      skills: ['Algorithms', 'Data Structures', 'Cloud Computing', 'AI'],
+      interests: ['Distributed Systems', 'Academic Mentorship']
     },
     {
       name: 'Dr. K. Radhakrishnan',
@@ -102,16 +102,16 @@ const generate100PlusDataset = () => {
 
     // Club Leads
     {
-      name: 'Rahul Verma',
+      name: 'Priya Sundaram',
       email: 'gdsc.lead@campus.edu',
       password: 'Lead@123',
       role: 'club_admin',
-      department: 'CSE',
+      department: 'IT',
       yearOfStudy: 3,
-      studentId: 'CS21045',
-      bio: 'Developer Lead | Full Stack Engineer',
-      skills: ['React', 'Node.js'],
-      interests: ['Web Development']
+      studentId: 'IT21011',
+      bio: 'Google Developer Student Clubs Lead and Community Organizer.',
+      skills: ['Community Leadership', 'Flutter', 'Firebase', 'React'],
+      interests: ['Mobile Dev', 'Hackathons', 'Open Source']
     },
     {
       name: 'Karthikeyan Natarajan',
@@ -194,10 +194,10 @@ const generate100PlusDataset = () => {
       role: 'student',
       department: 'CSE',
       yearOfStudy: 3,
-      studentId: 'CS21089',
-      bio: 'Student developer passionate about hackathons.',
-      skills: ['JavaScript', 'React'],
-      interests: ['Hackathons', 'Web Development']
+      studentId: 'CS21099',
+      bio: 'Student developer and open source enthusiast.',
+      skills: ['JavaScript', 'Python', 'React'],
+      interests: ['Web Development', 'AI', 'Hackathons']
     },
     {
       name: 'Kaviya Ramasamy',
@@ -1381,6 +1381,10 @@ const seedLargeTamilDatabase = async () => {
 
     // ─── 3. CREATE EVENTS ─────────────────────────────────────────
     const eventList = [];
+    const now = Date.now();
+    const dayMs = 24 * 60 * 60 * 1000;
+    const hourMs = 60 * 60 * 1000;
+
     for (let i = 0; i < dataset.events.length; i++) {
       const eventData = dataset.events[i];
       const club = clubMap[eventData.clubName];
@@ -1388,10 +1392,15 @@ const seedLargeTamilDatabase = async () => {
 
       if (!club || !organizer) continue;
 
-      // Calculate upcoming dates dynamically (starting 1 day from now, spaced 2 days apart)
-      const eventStart = new Date(Date.now() + (i * 2 + 1) * 24 * 60 * 60 * 1000 + (10 * 60 * 60 * 1000));
-      const eventEnd = new Date(eventStart.getTime() + (6 * 60 * 60 * 1000));
-      const regDeadline = new Date(eventStart.getTime() - (12 * 60 * 60 * 1000));
+      // First 14 events are upcoming, rest are past
+      let eventStart;
+      if (i < 14) {
+        eventStart = new Date(now + (i * 3 + 2) * dayMs + 10 * hourMs);
+      } else {
+        eventStart = new Date(now - ((i - 13) * 6 + 2) * dayMs + 9 * hourMs);
+      }
+      const eventEnd = new Date(eventStart.getTime() + 6 * hourMs);
+      const regDeadline = new Date(eventStart.getTime() - 18 * hourMs);
 
       const event = await Event.create({
         title: eventData.title,
@@ -1410,22 +1419,22 @@ const seedLargeTamilDatabase = async () => {
           {
             user: userMap['kaviya.student@campus.edu']._id,
             ticketCode: `TKT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-            registeredAt: new Date(),
+            registeredAt: new Date(now - 12 * hourMs),
           },
           {
             user: userMap['vignesh.student@campus.edu']._id,
             ticketCode: `TKT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-            registeredAt: new Date(),
+            registeredAt: new Date(now - 10 * hourMs),
           },
           {
             user: userMap['ananya.student@campus.edu']._id,
             ticketCode: `TKT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-            registeredAt: new Date(),
+            registeredAt: new Date(now - 8 * hourMs),
           },
           {
             user: userMap['saravanan.student@campus.edu']._id,
             ticketCode: `TKT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-            registeredAt: new Date(),
+            registeredAt: new Date(now - 5 * hourMs),
           },
         ],
       });
@@ -1435,9 +1444,12 @@ const seedLargeTamilDatabase = async () => {
 
     // ─── 4. CREATE ANNOUNCEMENTS ──────────────────────────────────
     let announcementCount = 0;
-    for (const annData of dataset.announcements) {
+    for (let i = 0; i < dataset.announcements.length; i++) {
+      const annData = dataset.announcements[i];
       const author = userMap[annData.authorEmail];
       if (!author) continue;
+
+      const createdTime = new Date(now - (i * 12 + 2) * hourMs);
 
       await Announcement.create({
         title: annData.title,
@@ -1446,6 +1458,7 @@ const seedLargeTamilDatabase = async () => {
         priority: annData.priority,
         targetAudience: annData.targetAudience,
         author: author._id,
+        createdAt: createdTime,
       });
       announcementCount++;
     }

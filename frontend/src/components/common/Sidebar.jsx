@@ -217,7 +217,7 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
       )}
 
       <aside
-        className={`fixed top-16 left-0 bottom-0 w-64 bg-slate-900 border-r border-white/10 z-50 transition-transform duration-300 ease-in-out shadow-2xl ${
+        className={`fixed top-16 left-0 bottom-0 w-64 bg-slate-950/95 backdrop-blur-2xl border-r border-white/10 z-50 transition-transform duration-300 ease-in-out shadow-2xl flex flex-col justify-between ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

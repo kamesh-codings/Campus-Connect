@@ -37,7 +37,7 @@ const Layout = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white flex flex-col relative">
       {/* 1. Top Navbar (Fixed full-width header) */}
       <Navbar
         onToggleSidebar={() => setMobileSidebarOpen((prev) => !prev)}
@@ -63,7 +63,7 @@ const Layout = () => {
         </div>
 
         {/* Main Content Area (Takes remaining width naturally, centered, with generous breathing room) */}
-        <main className="flex-1 min-w-0 w-full overflow-x-hidden px-4 sm:px-6 lg:px-10 py-8 pb-28 sm:pb-16">
+        <main className="app-main-layout flex-1 min-w-0 w-full overflow-x-hidden px-4 sm:px-6 lg:px-10 py-8 pb-28 sm:pb-16">
           <div className="max-w-6xl mx-auto w-full">
             <Outlet />
           </div>

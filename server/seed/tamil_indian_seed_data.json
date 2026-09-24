@@ -37,7 +37,7 @@
       ]
     },
     {
-      "name": "Dr. Anita Sharma",
+      "name": "Dr. Ramesh Sharma",
       "email": "sharma.cse@campus.edu",
       "password": "Faculty@123",
       "role": "faculty",
@@ -46,7 +46,8 @@
       "skills": [
         "AI",
         "Machine Learning",
-        "Python"
+        "Python",
+        "Cloud Computing"
       ],
       "interests": [
         "Academic Mentorship",
@@ -150,19 +151,23 @@
       ]
     },
     {
-      "name": "Rahul Verma",
+      "name": "Priya Sundaram",
       "email": "gdsc.lead@campus.edu",
       "password": "Lead@123",
       "role": "club_admin",
-      "department": "CSE",
+      "department": "IT",
       "yearOfStudy": 3,
-      "studentId": "CS21045",
-      "bio": "Developer Lead | Full Stack Engineer",
+      "studentId": "IT21011",
+      "bio": "Google Developer Student Clubs Lead and Community Organizer.",
       "skills": [
-        "React",
-        "Node.js"
+        "Community Leadership",
+        "Flutter",
+        "Firebase",
+        "React"
       ],
       "interests": [
+        "Mobile Dev",
+        "Hackathons",
         "Web Development"
       ]
     },
@@ -304,15 +309,17 @@
       "role": "student",
       "department": "CSE",
       "yearOfStudy": 3,
-      "studentId": "CS21089",
-      "bio": "Student developer passionate about hackathons.",
+      "studentId": "CS21099",
+      "bio": "Student developer and open source enthusiast.",
       "skills": [
         "JavaScript",
+        "Python",
         "React"
       ],
       "interests": [
+        "Web Development",
         "Hackathons",
-        "Web Development"
+        "AI"
       ]
     },
     {

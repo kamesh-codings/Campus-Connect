@@ -398,6 +398,26 @@ body {
 }
 
 /* ═══════════════════════════════════════════════
+   MAIN LAYOUT & TOP NAVBAR CLEARANCE
+   ═══════════════════════════════════════════════ */
+
+.app-main-layout {
+  position: relative;
+  z-index: 10;
+  padding-top: 104px !important; /* Guaranteed clearance for fixed 64px navbar + 40px spacing */
+  padding-bottom: 5rem;
+  min-height: 100vh;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .app-main-layout {
+    padding-top: 92px !important;
+    padding-bottom: 6rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
    FEED PAGE — Centered, spacious, premium layout
    ═══════════════════════════════════════════════ */
 
@@ -406,14 +426,16 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 3rem;
+  gap: 2.5rem;
+  padding-top: 0.5rem;
 }
 
 /* ── Welcome Header (centered) ──────────────── */
 .feed-header {
   text-align: center;
   width: 100%;
-  max-width: 700px;
+  max-width: 750px;
+  padding-top: 0.5rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
