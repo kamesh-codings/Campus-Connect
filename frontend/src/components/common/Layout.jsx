@@ -7,7 +7,7 @@ const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-surface text-text-primary">
+    <div className="min-h-screen bg-surface text-text-primary gradient-mesh">
       {/* Top Navbar */}
       <Navbar
         onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
@@ -20,9 +20,22 @@ const Layout = () => {
         onClose={() => setSidebarOpen(false)}
       />
 
-      {/* Main Content Area */}
-      <main className={`pt-20 min-h-screen transition-all duration-300 ease-in-out ${sidebarOpen ? 'lg:pl-64' : 'pl-0'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-8">
+      {/* Main Content Area — always centered */}
+      <main
+        className={`pt-24 pb-12 min-h-screen transition-all duration-300 ease-in-out ${
+          sidebarOpen ? 'lg:pl-64' : 'pl-0'
+        }`}
+      >
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '1280px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            paddingLeft: 'clamp(1.25rem, 4vw, 3rem)',
+            paddingRight: 'clamp(1.25rem, 4vw, 3rem)',
+          }}
+        >
           <Outlet />
         </div>
       </main>
