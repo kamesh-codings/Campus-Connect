@@ -42,16 +42,16 @@
       "password": "Faculty@123",
       "role": "faculty",
       "department": "CSE",
-      "bio": "Professor, Computer Science & Engineering. Research: Machine Learning & Indic AI.",
+      "bio": "Associate Professor, Computer Science and Engineering. Research: Machine Learning & Distributed Systems.",
       "skills": [
-        "AI",
-        "Machine Learning",
-        "Python",
-        "Cloud Computing"
+        "Algorithms",
+        "Data Structures",
+        "Cloud Computing",
+        "AI"
       ],
       "interests": [
-        "Academic Mentorship",
-        "AI in Education"
+        "Distributed Systems",
+        "Academic Mentorship"
       ]
     },
     {
@@ -168,7 +168,7 @@
       "interests": [
         "Mobile Dev",
         "Hackathons",
-        "Web Development"
+        "Open Source"
       ]
     },
     {
@@ -318,8 +318,8 @@
       ],
       "interests": [
         "Web Development",
-        "Hackathons",
-        "AI"
+        "AI",
+        "Hackathons"
       ]
     },
     {
