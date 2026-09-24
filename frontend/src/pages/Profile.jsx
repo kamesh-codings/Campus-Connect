@@ -351,56 +351,73 @@ const Profile = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
-                  <input
-                    type="text"
-                    value={formData.department}
-                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
+              {['admin', 'faculty'].includes(user?.role) ? (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
+                      <input
+                        type="text"
+                        value={formData.department}
+                        onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                        className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                      />
+                    </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
-                  <select
-                    value={formData.yearOfStudy}
-                    onChange={(e) => setFormData({ ...formData, yearOfStudy: e.target.value })}
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
-                  >
-                    {[1, 2, 3, 4].map((y) => (
-                      <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
-                    ))}
-                  </select>
-                </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
+                      <select
+                        value={formData.yearOfStudy}
+                        onChange={(e) => setFormData({ ...formData, yearOfStudy: e.target.value })}
+                        className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                      >
+                        {[1, 2, 3, 4, 5].map((y) => (
+                          <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
+                        ))}
+                      </select>
+                    </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">CGPA (e.g. 8.8)</label>
-                  <input
-                    type="text"
-                    value={formData.gpa}
-                    onChange={(e) => setFormData({ ...formData, gpa: e.target.value })}
-                    placeholder="8.8 / 10"
-                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-              </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-300 mb-1">CGPA (e.g. 8.8)</label>
+                      <input
+                        type="text"
+                        value={formData.gpa}
+                        onChange={(e) => setFormData({ ...formData, gpa: e.target.value })}
+                        placeholder="8.8 / 10"
+                        className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Academic Specialization / Minor</label>
-                <input
-                  type="text"
-                  value={formData.specialization}
-                  onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
-                  placeholder="e.g. Full Stack & Indic NLP"
-                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-300 mb-1">Academic Specialization / Minor</label>
+                    <input
+                      type="text"
+                      value={formData.specialization}
+                      onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
+                      placeholder="e.g. Full Stack & Indic NLP"
+                      className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/20 text-xs text-slate-300 space-y-1">
+                  <div className="flex items-center gap-1.5 font-semibold text-indigo-300">
+                    <Shield size={13} />
+                    <span>Verified Institutional Records</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400">
+                    Department: <strong className="text-white">{p?.department}</strong> • Year: <strong className="text-white">{p?.yearOfStudy}</strong> • CGPA: <strong className="text-emerald-400">{p?.academicInfo?.gpa || '8.8 / 10'}</strong>
+                  </p>
+                  <p className="text-[10px] text-slate-500 italic">
+                    Academic records and official credentials can only be edited by Faculty Advisors and Campus Administration.
+                  </p>
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1">Bio / Statement</label>

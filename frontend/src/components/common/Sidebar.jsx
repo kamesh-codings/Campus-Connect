@@ -80,8 +80,8 @@ const Sidebar = ({ isOpen, onClose, isDesktop = false }) => {
     {
       path: '/admin',
       icon: Shield,
-      label: 'Admin Hub',
-      roles: ['admin'],
+      label: 'Faculty & Admin Hub',
+      roles: ['admin', 'faculty'],
       badge: 'Staff',
     },
   ];

@@ -35,12 +35,19 @@ const updateProfile = async (req, res) => {
     if (bio !== undefined) user.bio = bio;
     if (skills) user.skills = skills;
     if (interests) user.interests = interests;
-    if (extracurricularActivities) user.extracurricularActivities = extracurricularActivities;
-    if (academicInfo) user.academicInfo = { ...user.academicInfo, ...academicInfo };
-    if (achievements) user.achievements = achievements;
     if (avatar) user.avatar = avatar;
-    if (department) user.department = department;
-    if (yearOfStudy) user.yearOfStudy = yearOfStudy;
+
+    // Academic & institutional records: strictly restricted to faculty and administration
+    if (['admin', 'faculty'].includes(req.user.role)) {
+      if (department) user.department = department;
+      if (yearOfStudy) user.yearOfStudy = yearOfStudy;
+      if (academicInfo) user.academicInfo = { ...user.academicInfo, ...academicInfo };
+      if (achievements) user.achievements = achievements;
+      if (extracurricularActivities) user.extracurricularActivities = extracurricularActivities;
+    } else {
+      // Students can update their extracurricular interests
+      if (extracurricularActivities) user.extracurricularActivities = extracurricularActivities;
+    }
 
     const updatedUser = await user.save();
     res.json(updatedUser);
@@ -49,9 +56,9 @@ const updateProfile = async (req, res) => {
   }
 };
 
-// @desc    Get all users (admin)
+// @desc    Get all users (Faculty & Admin)
 // @route   GET /api/users
-// @access  Private/Admin
+// @access  Private/Admin & Faculty
 const getAllUsers = async (req, res) => {
   try {
     const { role, department, search } = req.query;
@@ -63,6 +70,7 @@ const getAllUsers = async (req, res) => {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
+        { studentId: { $regex: search, $options: 'i' } },
       ];
     }
 
@@ -77,9 +85,147 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// @desc    Update user role (admin)
+// @desc    Update student credentials and details (Faculty & Administration only)
+// @route   PUT /api/users/:id/manage
+// @access  Private/Admin & Faculty
+const manageStudent = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      studentId,
+      department,
+      yearOfStudy,
+      role,
+      academicInfo,
+      extracurricularActivities,
+      skills,
+      interests,
+      points,
+    } = req.body;
+
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Student record not found' });
+    }
+
+    if (name) user.name = name;
+    if (email && email.toLowerCase() !== user.email) {
+      const emailExists = await User.findOne({ email: email.toLowerCase() });
+      if (emailExists && emailExists._id.toString() !== user._id.toString()) {
+        return res.status(400).json({ message: 'Email already assigned to another user' });
+      }
+      user.email = email.toLowerCase();
+    }
+    if (password && password.trim().length > 0) {
+      if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters' });
+      }
+      user.password = password; // Trigger pre('save') bcrypt hashing
+    }
+    if (studentId !== undefined) user.studentId = studentId;
+    if (department) user.department = department;
+    if (yearOfStudy !== undefined) user.yearOfStudy = Number(yearOfStudy);
+    if (role && ['student', 'club_admin', 'faculty', 'admin'].includes(role)) {
+      user.role = role;
+    }
+    if (academicInfo) {
+      user.academicInfo = {
+        gpa: academicInfo.gpa !== undefined ? academicInfo.gpa : user.academicInfo?.gpa,
+        specialization: academicInfo.specialization !== undefined ? academicInfo.specialization : user.academicInfo?.specialization,
+        semester: academicInfo.semester !== undefined ? Number(academicInfo.semester) : user.academicInfo?.semester,
+      };
+    }
+    if (extracurricularActivities) {
+      user.extracurricularActivities = extracurricularActivities;
+    }
+    if (skills) user.skills = skills;
+    if (interests) user.interests = interests;
+    if (points !== undefined) user.points = Number(points);
+
+    const updatedUser = await user.save();
+    res.json({
+      message: 'Student credentials and details updated successfully',
+      user: {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        department: updatedUser.department,
+        yearOfStudy: updatedUser.yearOfStudy,
+        studentId: updatedUser.studentId,
+        academicInfo: updatedUser.academicInfo,
+        extracurricularActivities: updatedUser.extracurricularActivities,
+        skills: updatedUser.skills,
+        interests: updatedUser.interests,
+        points: updatedUser.points,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update student details', error: error.message });
+  }
+};
+
+// @desc    Create student/member account (Faculty & Administration only)
+// @route   POST /api/users
+// @access  Private/Admin & Faculty
+const createStudent = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      studentId,
+      department,
+      yearOfStudy,
+      role = 'student',
+      academicInfo,
+      extracurricularActivities,
+    } = req.body;
+
+    if (!name || !email || !password || !department) {
+      return res.status(400).json({ message: 'Name, email, password, and department are required' });
+    }
+
+    const userExists = await User.findOne({ email: email.toLowerCase() });
+    if (userExists) {
+      return res.status(400).json({ message: 'A user with this email already exists' });
+    }
+
+    const newUser = await User.create({
+      name,
+      email: email.toLowerCase(),
+      password, // auto-hashed by pre('save')
+      studentId: studentId || '',
+      department,
+      yearOfStudy: Number(yearOfStudy) || 1,
+      role: ['student', 'club_admin', 'faculty', 'admin'].includes(role) ? role : 'student',
+      academicInfo: academicInfo || { gpa: '8.5 / 10', semester: 2, specialization: department },
+      extracurricularActivities: extracurricularActivities || [],
+    });
+
+    res.status(201).json({
+      message: 'Student account created successfully',
+      user: {
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        department: newUser.department,
+        yearOfStudy: newUser.yearOfStudy,
+        studentId: newUser.studentId,
+        academicInfo: newUser.academicInfo,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to create student account', error: error.message });
+  }
+};
+
+// @desc    Update user role (Faculty & Admin)
 // @route   PUT /api/users/:id/role
-// @access  Private/Admin
+// @access  Private/Admin & Faculty
 const updateUserRole = async (req, res) => {
   try {
     const { role } = req.body;
@@ -98,9 +244,9 @@ const updateUserRole = async (req, res) => {
   }
 };
 
-// @desc    Delete user (admin)
+// @desc    Delete user (Faculty & Admin)
 // @route   DELETE /api/users/:id
-// @access  Private/Admin
+// @access  Private/Admin & Faculty
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -142,4 +288,13 @@ const getDirectory = async (req, res) => {
   }
 };
 
-module.exports = { getUserProfile, updateProfile, getAllUsers, getDirectory, updateUserRole, deleteUser };
+module.exports = {
+  getUserProfile,
+  updateProfile,
+  getAllUsers,
+  getDirectory,
+  updateUserRole,
+  deleteUser,
+  manageStudent,
+  createStudent,
+};

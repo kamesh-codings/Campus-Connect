@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload');
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 const {
   uploadFile,
   getResources,
@@ -14,7 +14,7 @@ router.post('/', protect, upload.single('file'), uploadFile);
 
 // Campus Resource Library & File Sharing
 router.get('/resources', protect, getResources);
-router.post('/resources', protect, createResource);
-router.delete('/resources/:id', protect, deleteResource);
+router.post('/resources', protect, authorize('admin', 'faculty'), createResource);
+router.delete('/resources/:id', protect, authorize('admin', 'faculty'), deleteResource);
 
 module.exports = router;

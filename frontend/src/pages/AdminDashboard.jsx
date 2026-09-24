@@ -12,18 +12,75 @@ import {
   Flag,
   Check,
   AlertTriangle,
+  Edit3,
+  Plus,
+  X,
+  Lock,
+  Key,
+  Award,
+  Megaphone,
+  BookOpen,
+  Calendar,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+const departmentsList = ['CSE', 'ECE', 'MECH', 'CIVIL', 'EEE', 'IT', 'AI&DS', 'CHEM', 'BIO', 'Administration'];
 
 const AdminDashboard = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [clubs, setClubs] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [reportedDiscussions, setReportedDiscussions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Search filters
   const [userSearch, setUserSearch] = useState('');
   const [clubSearch, setClubSearch] = useState('');
-  const [activeTab, setActiveTab] = useState('users'); // users, clubs, moderation
+  const [annSearch, setAnnSearch] = useState('');
+  const [activeTab, setActiveTab] = useState('users'); // users, clubs, announcements, moderation
+
+  // Modals state
+  const [editingUser, setEditingUser] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    studentId: '',
+    department: 'CSE',
+    yearOfStudy: 1,
+    role: 'student',
+    gpa: '8.8 / 10',
+    semester: 6,
+    specialization: 'Full Stack & AI',
+    extracurricularActivities: '',
+  });
+
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [newUserData, setNewUserData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    studentId: '',
+    department: 'CSE',
+    yearOfStudy: 1,
+    role: 'student',
+    gpa: '8.5 / 10',
+    semester: 2,
+    specialization: 'Computer Science',
+    extracurricularActivities: '',
+  });
+
+  const [showCreateAnnModal, setShowCreateAnnModal] = useState(false);
+  const [newAnnData, setNewAnnData] = useState({
+    title: '',
+    content: '',
+    category: 'Academic',
+    priority: 'normal',
+    targetAudience: 'all',
+  });
+
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     fetchAdminData();
@@ -32,14 +89,16 @@ const AdminDashboard = () => {
   const fetchAdminData = async () => {
     try {
       setLoading(true);
-      const [usersRes, clubsRes, repRes] = await Promise.all([
+      const [usersRes, clubsRes, repRes, annRes] = await Promise.all([
         API.get('/users'),
         API.get('/clubs'),
         API.get('/discussions/reported'),
+        API.get('/announcements'),
       ]);
-      setUsers(usersRes.data);
-      setClubs(clubsRes.data);
+      setUsers(usersRes.data || []);
+      setClubs(clubsRes.data || []);
       setReportedDiscussions(Array.isArray(repRes.data) ? repRes.data : []);
+      setAnnouncements(Array.isArray(annRes.data) ? annRes.data : []);
     } catch (err) {
       toast.error('Failed to load administration data');
     } finally {
@@ -47,42 +106,174 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleRoleChange = async (userId, newRole) => {
+  // Open Edit User Modal
+  const handleOpenEditUser = (u) => {
+    setEditingUser(u);
+    setEditFormData({
+      name: u.name || '',
+      email: u.email || '',
+      password: '', // blank by default: only changes if filled
+      studentId: u.studentId || '',
+      department: u.department || 'CSE',
+      yearOfStudy: u.yearOfStudy || 1,
+      role: u.role || 'student',
+      gpa: u.academicInfo?.gpa || '8.8 / 10',
+      semester: u.academicInfo?.semester || (u.yearOfStudy ? u.yearOfStudy * 2 : 2),
+      specialization: u.academicInfo?.specialization || 'Full Stack Engineering',
+      extracurricularActivities: u.extracurricularActivities?.join(', ') || '',
+    });
+  };
+
+  // Save Edit User
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    setSaving(true);
     try {
-      await API.put(`/users/${userId}/role`, { role: newRole });
-      toast.success('User role updated');
+      const payload = {
+        name: editFormData.name,
+        email: editFormData.email,
+        studentId: editFormData.studentId,
+        department: editFormData.department,
+        yearOfStudy: Number(editFormData.yearOfStudy),
+        role: editFormData.role,
+        academicInfo: {
+          gpa: editFormData.gpa,
+          semester: Number(editFormData.semester),
+          specialization: editFormData.specialization,
+        },
+        extracurricularActivities: editFormData.extracurricularActivities
+          ? editFormData.extracurricularActivities.split(',').map((a) => a.trim()).filter(Boolean)
+          : [],
+      };
+
+      if (editFormData.password.trim()) {
+        payload.password = editFormData.password.trim();
+      }
+
+      const res = await API.put(`/users/${editingUser._id}/manage`, payload);
+      toast.success('Student credentials and details updated successfully!');
       setUsers((prev) =>
-        prev.map((u) => (u._id === userId ? { ...u, role: newRole } : u))
+        prev.map((u) => (u._id === editingUser._id ? { ...u, ...res.data.user } : u))
       );
+      setEditingUser(null);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to update role');
+      toast.error(err.response?.data?.message || 'Failed to update student');
+    } finally {
+      setSaving(false);
     }
   };
 
+  // Create New Student / User
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const payload = {
+        name: newUserData.name,
+        email: newUserData.email,
+        password: newUserData.password,
+        studentId: newUserData.studentId,
+        department: newUserData.department,
+        yearOfStudy: Number(newUserData.yearOfStudy),
+        role: newUserData.role,
+        academicInfo: {
+          gpa: newUserData.gpa,
+          semester: Number(newUserData.semester),
+          specialization: newUserData.specialization,
+        },
+        extracurricularActivities: newUserData.extracurricularActivities
+          ? newUserData.extracurricularActivities.split(',').map((a) => a.trim()).filter(Boolean)
+          : [],
+      };
+
+      const res = await API.post('/users', payload);
+      toast.success('Student account created successfully!');
+      setUsers((prev) => [res.data.user, ...prev]);
+      setShowAddUserModal(false);
+      setNewUserData({
+        name: '',
+        email: '',
+        password: '',
+        studentId: '',
+        department: 'CSE',
+        yearOfStudy: 1,
+        role: 'student',
+        gpa: '8.5 / 10',
+        semester: 2,
+        specialization: 'Computer Science',
+        extracurricularActivities: '',
+      });
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to create student account');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Delete User
   const handleDeleteUser = async (userId) => {
-    if (!window.confirm('Are you sure you want to remove this user from campus directory?'))
+    if (!window.confirm('Are you sure you want to remove this user from the campus directory?'))
       return;
     try {
       await API.delete(`/users/${userId}`);
-      toast.success('User removed');
+      toast.success('User removed from campus records');
       setUsers((prev) => prev.filter((u) => u._id !== userId));
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to delete user');
     }
   };
 
+  // Delete Club
   const handleDeleteClub = async (clubId) => {
     if (!window.confirm('Are you sure you want to disband this club?'))
       return;
     try {
       await API.delete(`/clubs/${clubId}`);
-      toast.success('Club removed');
+      toast.success('Club disbanded');
       setClubs((prev) => prev.filter((c) => c._id !== clubId));
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to delete club');
     }
   };
 
+  // Delete Announcement
+  const handleDeleteAnnouncement = async (annId) => {
+    if (!window.confirm('Are you sure you want to permanently delete this announcement?'))
+      return;
+    try {
+      await API.delete(`/announcements/${annId}`);
+      toast.success('Announcement deleted');
+      setAnnouncements((prev) => prev.filter((a) => a._id !== annId));
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete announcement');
+    }
+  };
+
+  // Create Announcement
+  const handleCreateAnnouncement = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const res = await API.post('/announcements', newAnnData);
+      toast.success('Announcement broadcasted successfully!');
+      setAnnouncements((prev) => [res.data, ...prev]);
+      setShowCreateAnnModal(false);
+      setNewAnnData({
+        title: '',
+        content: '',
+        category: 'Academic',
+        priority: 'normal',
+        targetAudience: 'all',
+      });
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to publish announcement');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Dismiss Discussion Report
   const handleDismissReport = async (discussionId) => {
     try {
       await API.put(`/discussions/${discussionId}/dismiss-report`);
@@ -93,6 +284,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // Delete Reported Discussion
   const handleDeleteReportedDiscussion = async (discussionId) => {
     if (!window.confirm('Are you sure you want to permanently delete this reported discussion thread?')) return;
     try {
@@ -104,23 +296,32 @@ const AdminDashboard = () => {
     }
   };
 
+  // Filtered queries
   const filteredUsers = users.filter(
     (u) =>
-      u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
-      u.email.toLowerCase().includes(userSearch.toLowerCase()) ||
-      u.department?.toLowerCase().includes(userSearch.toLowerCase())
+      u.name?.toLowerCase().includes(userSearch.toLowerCase()) ||
+      u.email?.toLowerCase().includes(userSearch.toLowerCase()) ||
+      u.department?.toLowerCase().includes(userSearch.toLowerCase()) ||
+      u.studentId?.toLowerCase().includes(userSearch.toLowerCase())
   );
 
   const filteredClubs = clubs.filter(
     (c) =>
-      c.name.toLowerCase().includes(clubSearch.toLowerCase()) ||
+      c.name?.toLowerCase().includes(clubSearch.toLowerCase()) ||
       c.category?.toLowerCase().includes(clubSearch.toLowerCase())
+  );
+
+  const filteredAnnouncements = announcements.filter(
+    (a) =>
+      a.title?.toLowerCase().includes(annSearch.toLowerCase()) ||
+      a.category?.toLowerCase().includes(annSearch.toLowerCase()) ||
+      a.content?.toLowerCase().includes(annSearch.toLowerCase())
   );
 
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-rose-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -137,34 +338,45 @@ const AdminDashboard = () => {
       {/* ── 1. HEADER ────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-semibold mb-2">
-            <ShieldAlert size={12} className="text-rose-400" />
-            <span>Root Governance & Content Moderation</span>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-2">
+            <ShieldAlert size={12} className="text-indigo-400" />
+            <span>Institutional Governance & Records Authority</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-            Administrator Hub
+            Faculty & Administration Portal
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-            Manage user roles, moderate student clubs, review flagged community content, and audit campus activity.
+            Manage student credentials, update academic records, control announcements, govern student clubs, and moderate campus content.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Tab Switcher */}
+        <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => setActiveTab('users')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border ${
               activeTab === 'users'
-                ? 'bg-rose-600 text-white border-rose-500 shadow-sm'
+                ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
                 : 'bg-slate-900 text-slate-400 hover:text-white border-white/10'
             }`}
           >
-            Users ({users.length})
+            Students & Users ({users.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('announcements')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border ${
+              activeTab === 'announcements'
+                ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
+                : 'bg-slate-900 text-slate-400 hover:text-white border-white/10'
+            }`}
+          >
+            Announcements ({announcements.length})
           </button>
           <button
             onClick={() => setActiveTab('clubs')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border ${
               activeTab === 'clubs'
-                ? 'bg-rose-600 text-white border-rose-500 shadow-sm'
+                ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
                 : 'bg-slate-900 text-slate-400 hover:text-white border-white/10'
             }`}
           >
@@ -184,11 +396,11 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* ── 2. STAT CARDS ────────────────────────────────── */}
+      {/* ── 2. METRIC OVERVIEW CARDS ─────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between shadow-md">
           <div>
-            <p className="text-xs font-medium text-slate-400">Total Campus Users</p>
+            <p className="text-xs font-medium text-slate-400">Total Enrolled Users</p>
             <p className="text-2xl font-bold text-white mt-0.5">{users.length}</p>
           </div>
           <div className="w-10 h-10 rounded-lg bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 flex items-center justify-center">
@@ -198,7 +410,7 @@ const AdminDashboard = () => {
 
         <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between shadow-md">
           <div>
-            <p className="text-xs font-medium text-slate-400">Active Student Clubs</p>
+            <p className="text-xs font-medium text-slate-400">Active Campus Clubs</p>
             <p className="text-2xl font-bold text-white mt-0.5">{clubs.length}</p>
           </div>
           <div className="w-10 h-10 rounded-lg bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 flex items-center justify-center">
@@ -208,54 +420,62 @@ const AdminDashboard = () => {
 
         <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between shadow-md">
           <div>
-            <p className="text-xs font-medium text-slate-400">Reported Content</p>
+            <p className="text-xs font-medium text-slate-400">Official Circulars</p>
+            <p className="text-2xl font-bold text-white mt-0.5">{announcements.length}</p>
+          </div>
+          <div className="w-10 h-10 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+            <Megaphone size={18} />
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between shadow-md">
+          <div>
+            <p className="text-xs font-medium text-slate-400">Flagged For Review</p>
             <p className="text-2xl font-bold text-amber-400 mt-0.5">{reportedDiscussions.length}</p>
           </div>
           <div className="w-10 h-10 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center">
             <Flag size={18} />
           </div>
         </div>
-
-        <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between shadow-md">
-          <div>
-            <p className="text-xs font-medium text-slate-400">System Status</p>
-            <p className="text-lg font-bold text-emerald-400 mt-0.5 flex items-center gap-1.5">
-              <CheckCircle size={16} /> Operational
-            </p>
-          </div>
-          <div className="w-10 h-10 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
-            <Shield size={18} />
-          </div>
-        </div>
       </div>
 
-      {/* ── 3. TAB 1: USER MANAGEMENT TABLE ──────────────── */}
+      {/* ── 3. TAB 1: USERS & STUDENTS (FULL CRUD) ────────── */}
       {activeTab === 'users' && (
-        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-3">
+        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-4">
           <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div className="relative w-full sm:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
               <input
                 type="text"
-                placeholder="Search user name, email, department..."
+                placeholder="Search by name, roll no, email, dept..."
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
-                className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-rose-500"
+                className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
               />
             </div>
-            <span className="text-xs text-slate-400 font-mono">
-              Showing {filteredUsers.length} user records
-            </span>
+
+            <div className="flex items-center gap-3 self-end sm:self-auto">
+              <span className="text-xs text-slate-400 font-mono hidden sm:inline">
+                {filteredUsers.length} records
+              </span>
+              <button
+                onClick={() => setShowAddUserModal(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/20 transition-colors cursor-pointer"
+              >
+                <Plus size={14} /> Add Student / User
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b border-white/10 text-slate-400 uppercase tracking-wider text-xs">
-                  <th className="py-2.5 px-3">User</th>
-                  <th className="py-2.5 px-3">Department</th>
-                  <th className="py-2.5 px-3">Current Role</th>
-                  <th className="py-2.5 px-3">Assign Role</th>
+                  <th className="py-2.5 px-3">Student / User</th>
+                  <th className="py-2.5 px-3">Student ID</th>
+                  <th className="py-2.5 px-3">Department & Year</th>
+                  <th className="py-2.5 px-3">Academic GPA</th>
+                  <th className="py-2.5 px-3">Role</th>
                   <th className="py-2.5 px-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -273,29 +493,117 @@ const AdminDashboard = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="py-2.5 px-3 text-slate-300 font-medium">{u.department || 'N/A'}</td>
+                    <td className="py-2.5 px-3 text-slate-300 font-mono">
+                      {u.studentId || '—'}
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-300 font-medium">
+                      {u.department} {u.yearOfStudy ? `• Yr ${u.yearOfStudy}` : ''}
+                    </td>
+                    <td className="py-2.5 px-3 text-emerald-400 font-semibold font-mono">
+                      {u.academicInfo?.gpa || '8.8 / 10'}
+                    </td>
                     <td className="py-2.5 px-3">
                       <span className={`text-xs font-semibold px-2 py-0.5 rounded-md border ${roleStyles[u.role] || 'bg-slate-800 text-slate-300'}`}>
-                        {u.role}
+                        {u.role?.replace('_', ' ')}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-right">
+                      <div className="inline-flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleOpenEditUser(u)}
+                          className="p-1.5 rounded-md text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
+                          title="Edit Credentials, Details & GPA"
+                        >
+                          <Edit3 size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteUser(u._id)}
+                          className="p-1.5 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                          title="Remove User Record"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── 4. TAB 2: ANNOUNCEMENTS MANAGEMENT (CRUD) ─────── */}
+      {activeTab === 'announcements' && (
+        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-4">
+          <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
+            <div className="relative w-full sm:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
+              <input
+                type="text"
+                placeholder="Search announcement title, category..."
+                value={annSearch}
+                onChange={(e) => setAnnSearch(e.target.value)}
+                className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+
+            <button
+              onClick={() => setShowCreateAnnModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/20 transition-colors cursor-pointer"
+            >
+              <Plus size={14} /> Publish Announcement
+            </button>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-white/10 text-slate-400 uppercase tracking-wider text-xs">
+                  <th className="py-2.5 px-3">Title & Content</th>
+                  <th className="py-2.5 px-3">Category</th>
+                  <th className="py-2.5 px-3">Priority</th>
+                  <th className="py-2.5 px-3">Publisher</th>
+                  <th className="py-2.5 px-3">Date</th>
+                  <th className="py-2.5 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {filteredAnnouncements.map((ann) => (
+                  <tr key={ann._id} className="hover:bg-white/5 transition-colors">
+                    <td className="py-2.5 px-3 max-w-sm">
+                      <span className="font-semibold text-white block truncate">{ann.title}</span>
+                      <span className="text-xs text-slate-400 line-clamp-1">{ann.content}</span>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-white/10">
+                        {ann.category}
                       </span>
                     </td>
                     <td className="py-2.5 px-3">
-                      <select
-                        value={u.role}
-                        onChange={(e) => handleRoleChange(u._id, e.target.value)}
-                        className="bg-slate-900 border border-white/10 rounded-md px-2 py-1 text-xs text-white focus:outline-none focus:border-rose-500 cursor-pointer"
+                      <span
+                        className={`text-xs font-semibold px-2 py-0.5 rounded-md border uppercase ${
+                          ann.priority === 'critical'
+                            ? 'bg-rose-500/20 text-rose-300 border-rose-500/30'
+                            : ann.priority === 'urgent'
+                            ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                            : 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
+                        }`}
                       >
-                        <option value="student">Student</option>
-                        <option value="club_admin">Club Lead</option>
-                        <option value="faculty">Faculty</option>
-                        <option value="admin">Admin</option>
-                      </select>
+                        {ann.priority}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-300 font-medium">
+                      {ann.author?.name || 'Administration'}
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-400 font-mono">
+                      {new Date(ann.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
                     </td>
                     <td className="py-2.5 px-3 text-right">
                       <button
-                        onClick={() => handleDeleteUser(u._id)}
+                        onClick={() => handleDeleteAnnouncement(ann._id)}
                         className="p-1.5 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
-                        title="Remove User"
+                        title="Delete Announcement"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -308,9 +616,9 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ── 4. TAB 2: CLUB MODERATION TABLE ──────────────── */}
+      {/* ── 5. TAB 3: CLUBS & MANDRAMS ───────────────────── */}
       {activeTab === 'clubs' && (
-        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-3">
+        <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-4">
           <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div className="relative w-full sm:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
@@ -319,11 +627,11 @@ const AdminDashboard = () => {
                 placeholder="Search club name, category..."
                 value={clubSearch}
                 onChange={(e) => setClubSearch(e.target.value)}
-                className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-rose-500"
+                className="w-full bg-[#080B12] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
               />
             </div>
             <span className="text-xs text-slate-400 font-mono">
-              Showing {filteredClubs.length} club records
+              Showing {filteredClubs.length} active clubs
             </span>
           </div>
 
@@ -369,7 +677,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ── 5. TAB 3: CONTENT MODERATION ─────────────────── */}
+      {/* ── 6. TAB 4: CONTENT MODERATION ─────────────────── */}
       {activeTab === 'moderation' && (
         <div className="p-5 rounded-xl bg-[#0D111A] border border-white/10 shadow-lg space-y-4">
           <div className="flex items-center justify-between">
@@ -444,6 +752,437 @@ const AdminDashboard = () => {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ── 7. MODAL: EDIT STUDENT DETAILS & CREDENTIALS ──── */}
+      {editingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
+          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+            <button
+              onClick={() => setEditingUser(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-2 mb-1">
+              <Key size={18} className="text-indigo-400" />
+              <h2 className="text-lg font-bold text-white">Edit Student Credentials & Details</h2>
+            </div>
+            <p className="text-xs text-slate-400 mb-4">
+              Authorized Faculty & Administration override for student login credentials and academic records.
+            </p>
+
+            <form onSubmit={handleSaveUser} className="space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={editFormData.name}
+                    onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Student ID / Roll No</label>
+                  <input
+                    type="text"
+                    value={editFormData.studentId}
+                    onChange={(e) => setEditFormData({ ...editFormData, studentId: e.target.value })}
+                    placeholder="e.g. CS21045"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">College Email (Login)</label>
+                  <input
+                    type="email"
+                    required
+                    value={editFormData.email}
+                    onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-amber-300 mb-1">Reset Password</label>
+                  <input
+                    type="password"
+                    placeholder="Leave blank to keep unchanged"
+                    value={editFormData.password}
+                    onChange={(e) => setEditFormData({ ...editFormData, password: e.target.value })}
+                    className="w-full bg-[#080B12] border border-amber-500/30 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
+                  <select
+                    value={editFormData.department}
+                    onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    {departmentsList.map((d) => (
+                      <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
+                  <select
+                    value={editFormData.yearOfStudy}
+                    onChange={(e) => setEditFormData({ ...editFormData, yearOfStudy: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    {[1, 2, 3, 4, 5].map((y) => (
+                      <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Academic CGPA</label>
+                  <input
+                    type="text"
+                    value={editFormData.gpa}
+                    onChange={(e) => setEditFormData({ ...editFormData, gpa: e.target.value })}
+                    placeholder="8.8 / 10"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Specialization / Major</label>
+                  <input
+                    type="text"
+                    value={editFormData.specialization}
+                    onChange={(e) => setEditFormData({ ...editFormData, specialization: e.target.value })}
+                    placeholder="e.g. Artificial Intelligence"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">System Role</label>
+                  <select
+                    value={editFormData.role}
+                    onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    <option value="student">Student</option>
+                    <option value="club_admin">Club Lead</option>
+                    <option value="faculty">Faculty Member</option>
+                    <option value="admin">System Administrator</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities (comma-separated)</label>
+                <input
+                  type="text"
+                  value={editFormData.extracurricularActivities}
+                  onChange={(e) => setEditFormData({ ...editFormData, extracurricularActivities: e.target.value })}
+                  placeholder="Tamil Debate Team, Rotaract Volunteer, Basketball"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  {saving ? 'Updating...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── 8. MODAL: ADD NEW STUDENT / MEMBER ─────────────── */}
+      {showAddUserModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
+          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+            <button
+              onClick={() => setShowAddUserModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-2 mb-1">
+              <Plus size={18} className="text-indigo-400" />
+              <h2 className="text-lg font-bold text-white">Add New Student / Member</h2>
+            </div>
+            <p className="text-xs text-slate-400 mb-4">
+              Direct institutional enrolment: create student login credentials and initialize academic records.
+            </p>
+
+            <form onSubmit={handleCreateUser} className="space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={newUserData.name}
+                    onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
+                    placeholder="e.g. Vignesh Sundar"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Student ID / Roll No</label>
+                  <input
+                    type="text"
+                    value={newUserData.studentId}
+                    onChange={(e) => setNewUserData({ ...newUserData, studentId: e.target.value })}
+                    placeholder="e.g. CS22088"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">College Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={newUserData.email}
+                    onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
+                    placeholder="vignesh@campus.edu"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Initial Password</label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={newUserData.password}
+                    onChange={(e) => setNewUserData({ ...newUserData, password: e.target.value })}
+                    placeholder="At least 6 characters"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Department</label>
+                  <select
+                    value={newUserData.department}
+                    onChange={(e) => setNewUserData({ ...newUserData, department: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    {departmentsList.map((d) => (
+                      <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Year of Study</label>
+                  <select
+                    value={newUserData.yearOfStudy}
+                    onChange={(e) => setNewUserData({ ...newUserData, yearOfStudy: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    {[1, 2, 3, 4, 5].map((y) => (
+                      <option key={y} value={y} className="bg-slate-900 text-white">Year {y}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Initial CGPA</label>
+                  <input
+                    type="text"
+                    value={newUserData.gpa}
+                    onChange={(e) => setNewUserData({ ...newUserData, gpa: e.target.value })}
+                    placeholder="8.5 / 10"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Specialization</label>
+                  <input
+                    type="text"
+                    value={newUserData.specialization}
+                    onChange={(e) => setNewUserData({ ...newUserData, specialization: e.target.value })}
+                    placeholder="e.g. Data Science & AI"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Assigned Role</label>
+                  <select
+                    value={newUserData.role}
+                    onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    <option value="student">Student</option>
+                    <option value="club_admin">Club Lead</option>
+                    <option value="faculty">Faculty Member</option>
+                    <option value="admin">System Administrator</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Extracurricular Activities</label>
+                <input
+                  type="text"
+                  value={newUserData.extracurricularActivities}
+                  onChange={(e) => setNewUserData({ ...newUserData, extracurricularActivities: e.target.value })}
+                  placeholder="Robotics Club, Tennis, NSS Volunteer"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setShowAddUserModal(false)}
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  {saving ? 'Creating...' : 'Create Account'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── 9. MODAL: PUBLISH ANNOUNCEMENT ────────────────── */}
+      {showCreateAnnModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
+          <div className="bg-[#0D111A] max-w-lg w-full rounded-xl p-6 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl font-sans">
+            <button
+              onClick={() => setShowCreateAnnModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-2 mb-1">
+              <Megaphone size={18} className="text-indigo-400" />
+              <h2 className="text-lg font-bold text-white">Publish Official Notice</h2>
+            </div>
+            <p className="text-xs text-slate-400 mb-4">
+              Broadcast academic alerts, circulars, or urgent notifications to all campus students.
+            </p>
+
+            <form onSubmit={handleCreateAnnouncement} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Notice Title</label>
+                <input
+                  type="text"
+                  required
+                  value={newAnnData.title}
+                  onChange={(e) => setNewAnnData({ ...newAnnData, title: e.target.value })}
+                  placeholder="e.g. End Semester Exam Timetable Released"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Category</label>
+                  <select
+                    value={newAnnData.category}
+                    onChange={(e) => setNewAnnData({ ...newAnnData, category: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    <option value="Academic">Academic</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="General">General</option>
+                    <option value="Club Activity">Club Activity</option>
+                    <option value="Placement & Career">Placement & Career</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Priority</label>
+                  <select
+                    value={newAnnData.priority}
+                    onChange={(e) => setNewAnnData({ ...newAnnData, priority: e.target.value })}
+                    className="w-full bg-[#080B12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    <option value="normal">Normal</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="critical">Critical</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Announcement Body</label>
+                <textarea
+                  rows="4"
+                  required
+                  value={newAnnData.content}
+                  onChange={(e) => setNewAnnData({ ...newAnnData, content: e.target.value })}
+                  placeholder="Detail the instructions, hall tickets, deadlines, or contact info..."
+                  className="w-full bg-[#080B12] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateAnnModal(false)}
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  {saving ? 'Publishing...' : 'Broadcast Notice'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

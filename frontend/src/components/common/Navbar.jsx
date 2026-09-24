@@ -514,7 +514,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                     </Link>
                   )}
 
-                  {user?.role === 'admin' && (
+                  {['admin', 'faculty'].includes(user?.role) && (
                     <Link
                       to="/admin"
                       onClick={() => setShowProfile(false)}
@@ -523,7 +523,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                       <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 group-hover:bg-rose-500/20 transition-colors">
                         <Shield size={15} />
                       </div>
-                      <span>Admin Control Hub</span>
+                      <span>Faculty & Admin Hub</span>
                     </Link>
                   )}
                 </div>
