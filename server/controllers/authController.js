@@ -52,7 +52,7 @@ const register = async (req, res) => {
 // @access  Public
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, requiredRole } = req.body;
 
     // Find user and explicitly include password field
     const user = await User.findOne({ email }).select('+password');
@@ -63,6 +63,19 @@ const login = async (req, res) => {
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Database Role Verification
+    if (requiredRole && user.role !== requiredRole) {
+      const roleDisplayNames = {
+        student: 'Student',
+        faculty: 'Faculty',
+        club_admin: 'Club Lead',
+        admin: 'Administrator'
+      };
+      return res.status(403).json({ 
+        message: `Database Verification Failed: Account is registered as "${roleDisplayNames[user.role] || user.role}" in MongoDB, which cannot log in via the ${roleDisplayNames[requiredRole] || requiredRole} portal.` 
+      });
     }
 
     const token = generateToken(user._id);
