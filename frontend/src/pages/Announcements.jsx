@@ -12,6 +12,11 @@ import {
   Calendar,
   Building,
   Users,
+  Sparkles,
+  Zap,
+  Tag,
+  Share2,
+  Bookmark,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -58,7 +63,7 @@ const Announcements = () => {
     e.preventDefault();
     try {
       await API.post('/announcements', formData);
-      toast.success('Announcement broadcasted to campus!');
+      toast.success('Announcement broadcasted across campus!');
       setShowCreateModal(false);
       setFormData({
         title: '',
@@ -84,74 +89,73 @@ const Announcements = () => {
   });
 
   return (
-    <div className="space-y-8 animate-fadeIn">
-      {/* Header */}
+    <div className="space-y-8 animate-fade-in-up pb-10">
+      {/* ── 1. HEADER ────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white font-['Outfit']">
-            Campus Announcements
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-2">
+            <Sparkles size={13} className="text-amber-400" />
+            <span>Campus Circulars & Broadcasts</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-['Outfit']">
+            Announcements & Alerts
           </h1>
-          <p className="text-text-secondary mt-1">
-            Official broadcasts, departmental circulars, placement drives, and emergency notices.
+          <p className="text-sm text-slate-400 mt-1">
+            Official circulars, placement notifications, academic schedules, and emergency notices.
           </p>
         </div>
+
         {canCreate && (
           <button
             onClick={() => setShowCreateModal(true)}
-            className="btn-primary inline-flex items-center gap-2 self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all shadow-lg shadow-amber-600/25 cursor-pointer self-start sm:self-auto"
           >
-            <Plus size={18} />
-            Post Notice
+            <Plus size={16} /> Broadcast Notice
           </button>
         )}
       </div>
 
-      {/* Filters Bar */}
-      <div className="glass p-4 rounded-2xl space-y-4">
+      {/* ── 2. SEARCH & FILTER CONTROLS ──────────────────── */}
+      <div className="glass p-4 sm:p-5 rounded-2xl space-y-4 border border-white/10">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             <input
               type="text"
-              placeholder="Search circulars and notices..."
+              placeholder="Search circulars, department notices, keyword..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="input-field pl-10"
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
             />
           </div>
 
-          {/* Priority filter buttons */}
-          <div className="flex items-center gap-1.5 p-1 bg-surface-light/60 rounded-xl w-full md:w-auto">
-            {priorities.map((pri) => (
+          <div className="flex items-center gap-1.5 p-1 bg-slate-900 rounded-xl w-full md:w-auto border border-white/5">
+            {priorities.map((p) => (
               <button
-                key={pri}
-                onClick={() => setSelectedPriority(pri)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all flex-1 md:flex-initial ${
-                  selectedPriority === pri
-                    ? pri === 'critical'
-                      ? 'bg-danger text-white shadow-md'
-                      : pri === 'urgent'
-                      ? 'bg-accent text-white shadow-md'
-                      : 'bg-primary text-white shadow-md'
-                    : 'text-text-secondary hover:text-text-primary'
+                key={p}
+                onClick={() => setSelectedPriority(p)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all flex-1 md:flex-initial cursor-pointer ${
+                  selectedPriority === p
+                    ? 'bg-amber-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
-                {pri}
+                {p}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Category Pills */}
+        {/* Category Chips */}
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-primary/20 text-primary-light border border-primary/40'
-                  : 'bg-surface-light text-text-secondary hover:bg-surface-lighter hover:text-text-primary'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                  : 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white border border-white/5'
               }`}
             >
               {cat}
@@ -160,90 +164,100 @@ const Announcements = () => {
         </div>
       </div>
 
-      {/* Announcements List */}
+      {/* ── 3. ANNOUNCEMENTS LIST ────────────────────────── */}
       {loading ? (
         <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-amber-500"></div>
         </div>
       ) : filteredAnnouncements.length === 0 ? (
-        <div className="glass p-12 text-center rounded-2xl">
-          <Megaphone size={48} className="mx-auto text-text-muted mb-3 opacity-40" />
-          <h3 className="text-lg font-semibold text-text-primary">No announcements found</h3>
-          <p className="text-text-secondary text-sm mt-1">Check back later or adjust your filters.</p>
+        <div className="glass p-12 text-center rounded-3xl border border-white/10">
+          <Megaphone size={48} className="mx-auto text-slate-600 mb-3 opacity-50" />
+          <h3 className="text-lg font-bold text-white">No announcements found</h3>
+          <p className="text-slate-400 text-xs mt-1">Try adjusting your category or priority filter.</p>
         </div>
       ) : (
         <div className="space-y-4">
-          {filteredAnnouncements.map((item) => {
-            const isCritical = item.priority === 'critical';
-            const isUrgent = item.priority === 'urgent';
+          {filteredAnnouncements.map((ann) => {
+            const isCritical = ann.priority === 'critical';
+            const isUrgent = ann.priority === 'urgent';
 
             return (
               <div
-                key={item._id}
-                className={`card relative transition-all duration-200 ${
+                key={ann._id}
+                className={`glass p-6 rounded-3xl transition-all duration-300 hover:-translate-y-0.5 shadow-lg relative overflow-hidden ${
                   isCritical
-                    ? 'border-danger/50 bg-danger/5 shadow-[0_0_20px_rgba(239,68,68,0.15)]'
+                    ? 'border-rose-500/40 bg-rose-950/15'
                     : isUrgent
-                    ? 'border-accent/40 bg-accent/5'
-                    : ''
+                    ? 'border-amber-500/40 bg-amber-950/15'
+                    : 'border-white/10 hover:border-amber-500/30'
                 }`}
               >
+                {/* Critical Top Pulse Indicator */}
+                {isCritical && (
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-red-500 to-rose-500" />
+                )}
+
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    {isCritical && (
-                      <span className="badge-danger inline-flex items-center gap-1 text-xs animate-pulse">
-                        <AlertTriangle size={13} />
-                        CRITICAL ALERT
-                      </span>
-                    )}
-                    {isUrgent && (
-                      <span className="badge-warning inline-flex items-center gap-1 text-xs">
-                        <AlertCircle size={13} />
-                        Urgent
-                      </span>
-                    )}
-                    <span className="badge-primary text-xs font-semibold">
-                      {item.category}
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                        isCritical
+                          ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                          : isUrgent
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                          : 'bg-indigo-500/15 text-indigo-300 border-indigo-500/25'
+                      }`}
+                    >
+                      {ann.priority} priority
                     </span>
-                    {item.targetDepartment && (
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-surface-light text-text-muted flex items-center gap-1">
-                        <Building size={11} /> {item.targetDepartment}
-                      </span>
-                    )}
+
+                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-white/5">
+                      {ann.category}
+                    </span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-xs text-text-muted">
-                    <Calendar size={13} />
-                    <span>
-                      {new Date(item.createdAt).toLocaleDateString([], {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </span>
-                  </div>
+                  <span className="text-xs text-slate-400 font-mono">
+                    {new Date(ann.createdAt).toLocaleDateString([], {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-2 font-['Outfit']">
-                  {item.title}
+                <h3 className="text-lg font-bold text-white mb-2 font-['Outfit']">
+                  {ann.title}
                 </h3>
 
-                <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-line mb-4">
-                  {item.content}
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line mb-4">
+                  {ann.content}
                 </p>
 
-                <div className="border-t border-glass-border pt-3 flex items-center justify-between text-xs text-text-muted">
+                {/* Footer / Author info */}
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full gradient-primary flex items-center justify-center text-white font-bold text-[10px]">
-                      {item.author?.name?.charAt(0) || 'A'}
+                    <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center font-bold text-[10px] text-white">
+                      {ann.author?.name?.charAt(0) || 'A'}
                     </div>
-                    <span>
-                      Posted by <strong className="text-text-primary">{item.author?.name || 'Administrator'}</strong>
+                    <span className="text-slate-300 font-medium">
+                      {ann.author?.name || 'Campus Administration'}
                     </span>
+                    {ann.author?.department && (
+                      <span className="text-slate-400 text-[11px]">
+                        • {ann.author.department}
+                      </span>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1 capitalize">
-                    <Users size={12} /> Target: {item.targetAudience}
-                  </div>
+
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      toast.success('Link copied to clipboard');
+                    }}
+                    className="text-xs text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
+                  >
+                    <Share2 size={13} /> Share
+                  </button>
                 </div>
               </div>
             );
@@ -251,49 +265,45 @@ const Announcements = () => {
         </div>
       )}
 
-      {/* Create Announcement Modal */}
+      {/* ── 4. BROADCAST MODAL ───────────────────────────── */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className="glass max-w-xl w-full rounded-2xl p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
+          <div className="glass max-w-lg w-full rounded-3xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
             <button
               onClick={() => setShowCreateModal(false)}
-              className="absolute top-4 right-4 text-text-muted hover:text-white"
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
 
-            <h2 className="text-2xl font-bold text-white mb-1 font-['Outfit']">Broadcast Announcement</h2>
-            <p className="text-xs text-text-secondary mb-6">
-              Publish an official campus circular, event update, or urgent alert.
+            <h2 className="text-2xl font-black text-white mb-1 font-['Outfit']">Broadcast Campus Circular</h2>
+            <p className="text-xs text-slate-400 mb-6">
+              Publish official announcements to student departments or campus-wide.
             </p>
 
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-text-secondary mb-1">
-                  Title *
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">Announcement Title *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Campus Placement Drive: Microsoft & Amazon"
+                  placeholder="e.g. End Semester Exam Timetable Released"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="input-field"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-text-secondary mb-1">
-                    Category *
-                  </label>
+                  <label className="block text-xs font-medium text-slate-300 mb-1.5">Category *</label>
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="input-field"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500"
                   >
                     {categories.filter((c) => c !== 'All').map((cat) => (
-                      <option key={cat} value={cat} className="bg-surface">
+                      <option key={cat} value={cat} className="bg-slate-900 text-white">
                         {cat}
                       </option>
                     ))}
@@ -301,78 +311,44 @@ const Announcements = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-text-secondary mb-1">
-                    Priority Level *
-                  </label>
+                  <label className="block text-xs font-medium text-slate-300 mb-1.5">Priority Level *</label>
                   <select
                     value={formData.priority}
                     onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                    className="input-field"
+                    className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500"
                   >
-                    <option value="normal" className="bg-surface">Normal</option>
-                    <option value="urgent" className="bg-surface">Urgent</option>
-                    <option value="critical" className="bg-surface">Critical Emergency</option>
+                    <option value="normal" className="bg-slate-900 text-white">Normal</option>
+                    <option value="urgent" className="bg-slate-900 text-white">Urgent</option>
+                    <option value="critical" className="bg-slate-900 text-white">Critical</option>
                   </select>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-text-secondary mb-1">
-                    Target Audience
-                  </label>
-                  <select
-                    value={formData.targetAudience}
-                    onChange={(e) => setFormData({ ...formData, targetAudience: e.target.value })}
-                    className="input-field"
-                  >
-                    <option value="all" className="bg-surface">Entire Campus</option>
-                    <option value="students" className="bg-surface">Students Only</option>
-                    <option value="faculty" className="bg-surface">Faculty Only</option>
-                    <option value="specific_dept" className="bg-surface">Specific Department</option>
-                  </select>
-                </div>
-
-                {formData.targetAudience === 'specific_dept' && (
-                  <div>
-                    <label className="block text-xs font-semibold text-text-secondary mb-1">
-                      Department
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Computer Science & Engg"
-                      value={formData.targetDepartment}
-                      onChange={(e) => setFormData({ ...formData, targetDepartment: e.target.value })}
-                      className="input-field"
-                    />
-                  </div>
-                )}
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-text-secondary mb-1">
-                  Announcement Details *
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">Circular Body & Details *</label>
                 <textarea
-                  rows="5"
+                  rows="4"
                   required
-                  placeholder="Draft your circular content here with instructions, dates, and contacts..."
+                  placeholder="Provide complete notice details, dates, relevant links, and instructions..."
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  className="input-field resize-none"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-glass-border">
+              <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="btn-outline text-xs"
+                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="btn-primary text-xs">
-                  Broadcast Notice
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-lg shadow-amber-600/25 cursor-pointer"
+                >
+                  Publish Notice
                 </button>
               </div>
             </form>

@@ -9,6 +9,10 @@ import {
   Award,
   Activity,
   Layers,
+  Sparkles,
+  BarChart3,
+  PieChart as PieIcon,
+  Flame,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -61,12 +65,12 @@ const Analytics = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
 
-  // Calculate metrics
+  // Metrics
   const totalRsvps = events.reduce((acc, ev) => acc + (ev.registeredUsers?.length || 0), 0);
   const totalMemberships = clubs.reduce((acc, c) => acc + (c.members?.length || 0), 0);
   const totalDiscussions = discussions.length;
@@ -94,227 +98,227 @@ const Analytics = () => {
     value: clubsByCategory[key],
   }));
 
-  // Engagement trend mock weekly breakdown for chart
+  // Chart 3: Weekly Active Campus Trends
   const activityData = [
     { day: 'Mon', activeUsers: 140, rsvps: 28, posts: 12 },
     { day: 'Tue', activeUsers: 220, rsvps: 45, posts: 18 },
-    { day: 'Wed', activeUsers: 310, rsvps: 62, posts: 25 },
-    { day: 'Thu', activeUsers: 280, rsvps: 50, posts: 22 },
-    { day: 'Fri', activeUsers: 420, rsvps: 88, posts: 35 },
-    { day: 'Sat', activeUsers: 380, rsvps: 74, posts: 30 },
-    { day: 'Sun', activeUsers: 260, rsvps: 39, posts: 16 },
+    { day: 'Wed', activeUsers: 310, rsvps: 62, posts: 24 },
+    { day: 'Thu', activeUsers: 280, rsvps: 51, posts: 19 },
+    { day: 'Fri', activeUsers: 420, rsvps: 94, posts: 38 },
+    { day: 'Sat', activeUsers: 380, rsvps: 88, posts: 30 },
+    { day: 'Sun', activeUsers: 290, rsvps: 40, posts: 15 },
+  ];
+
+  const kpis = [
+    {
+      title: 'Total Event RSVPs',
+      value: totalRsvps,
+      change: '+34% this month',
+      icon: Calendar,
+      color: 'text-indigo-400',
+      bg: 'bg-indigo-500/15 border-indigo-500/25',
+    },
+    {
+      title: 'Club Memberships',
+      value: totalMemberships,
+      change: '+18% growth',
+      icon: Users,
+      color: 'text-cyan-400',
+      bg: 'bg-cyan-500/15 border-cyan-500/25',
+    },
+    {
+      title: 'Forum Interactions',
+      value: totalDiscussions,
+      change: '+52% engagement',
+      icon: MessageCircle,
+      color: 'text-emerald-400',
+      bg: 'bg-emerald-500/15 border-emerald-500/25',
+    },
+    {
+      title: 'Campus Broadcasts',
+      value: totalAnnouncements,
+      change: '100% reach',
+      icon: Megaphone,
+      color: 'text-amber-400',
+      bg: 'bg-amber-500/15 border-amber-500/25',
+    },
   ];
 
   return (
-    <div className="space-y-8 animate-fadeIn">
-      {/* Header */}
+    <div className="space-y-8 animate-fade-in-up pb-10">
+      {/* ── 1. HEADER ────────────────────────────────────── */}
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-white font-['Outfit']">
-          Campus Intelligence & Analytics
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-2">
+          <Sparkles size={13} className="text-indigo-400" />
+          <span>Executive Intelligence & Student Engagement</span>
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-['Outfit']">
+          Campus Analytics
         </h1>
-        <p className="text-text-secondary mt-1">
-          Monitor community participation, event registrations, and club growth metrics.
+        <p className="text-sm text-slate-400 mt-1">
+          Real-time metrics on student participation, event registrations, and departmental activity.
         </p>
       </div>
 
-      {/* KPI Stat Cards */}
+      {/* ── 2. KPI METRIC CARDS ──────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary-light">
-            <Users size={22} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-              Club Memberships
-            </p>
-            <h3 className="text-2xl font-bold text-white mt-0.5">{totalMemberships}</h3>
-          </div>
-        </div>
-
-        <div className="card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary">
-            <Calendar size={22} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-              Total Event RSVPs
-            </p>
-            <h3 className="text-2xl font-bold text-white mt-0.5">{totalRsvps}</h3>
-          </div>
-        </div>
-
-        <div className="card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-            <Megaphone size={22} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-              Official Notices
-            </p>
-            <h3 className="text-2xl font-bold text-white mt-0.5">{totalAnnouncements}</h3>
-          </div>
-        </div>
-
-        <div className="card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-success/10 border border-success/20 flex items-center justify-center text-success">
-            <MessageCircle size={22} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-              Discussions
-            </p>
-            <h3 className="text-2xl font-bold text-white mt-0.5">{totalDiscussions}</h3>
-          </div>
-        </div>
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.title}
+              className="glass p-5 rounded-3xl border border-white/10 hover:border-indigo-500/30 transition-all shadow-lg flex items-center justify-between"
+            >
+              <div>
+                <p className="text-xs font-semibold text-slate-400">{kpi.title}</p>
+                <p className="text-3xl font-black text-white mt-1 font-['Outfit']">{kpi.value}</p>
+                <p className="text-[11px] text-emerald-400 mt-1 flex items-center gap-1">
+                  <TrendingUp size={12} /> {kpi.change}
+                </p>
+              </div>
+              <div className={`w-12 h-12 rounded-2xl ${kpi.bg} border flex items-center justify-center shrink-0`}>
+                <Icon size={22} className={kpi.color} />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Charts Row 1: Area Activity Trend & Club Distribution */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Weekly Activity Trend Area Chart */}
-        <div className="card lg:col-span-2 space-y-4">
+      {/* ── 3. CHARTS GRID ───────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Main Area Chart: Weekly Active Users (8 cols) */}
+        <div className="lg:col-span-8 glass p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-white font-['Outfit']">
-                Weekly Engagement Velocity
+              <h3 className="text-base font-bold text-white flex items-center gap-2 font-['Outfit']">
+                <Activity size={18} className="text-indigo-400" /> Weekly Engagement & Traffic
               </h3>
-              <p className="text-xs text-text-muted">
-                Real-time active users and event participation
-              </p>
+              <p className="text-xs text-slate-400">Daily active student visits and event registrations</p>
             </div>
-            <span className="badge-primary text-xs inline-flex items-center gap-1">
-              <Activity size={12} /> Live Tracking
-            </span>
           </div>
 
-          <div className="h-64 w-full">
+          <div className="h-72 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={activityData}>
                 <defs>
-                  <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="userGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
                   </linearGradient>
-                  <linearGradient id="colorRsvps" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="rsvpGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} />
-                <XAxis dataKey="day" stroke="#94a3b8" fontSize={11} />
-                <YAxis stroke="#94a3b8" fontSize={11} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                <XAxis dataKey="day" stroke="#64748b" fontSize={11} tickLine={false} />
+                <YAxis stroke="#64748b" fontSize={11} tickLine={false} axisLine={false} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
+                    backgroundColor: '#080B12',
                     borderColor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '8px',
-                    color: '#fff',
+                    borderRadius: '12px',
                     fontSize: '12px',
+                    color: '#fff',
                   }}
                 />
                 <Area
                   type="monotone"
                   dataKey="activeUsers"
+                  name="Active Students"
                   stroke="#6366f1"
                   strokeWidth={2}
                   fillOpacity={1}
-                  fill="url(#colorUsers)"
-                  name="Active Users"
+                  fill="url(#userGradient)"
                 />
                 <Area
                   type="monotone"
                   dataKey="rsvps"
+                  name="Event RSVPs"
                   stroke="#06b6d4"
                   strokeWidth={2}
                   fillOpacity={1}
-                  fill="url(#colorRsvps)"
-                  name="RSVPs"
+                  fill="url(#rsvpGradient)"
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Club Membership Breakdown (Pie Chart) */}
-        <div className="card space-y-4">
-          <h3 className="text-base font-bold text-white font-['Outfit']">
-            Club Distribution
-          </h3>
-          <p className="text-xs text-text-muted">
-            Members by community category
-          </p>
-
-          <div className="h-48 w-full flex items-center justify-center">
-            {clubPieData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={clubPieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={75}
-                    paddingAngle={4}
-                    dataKey="value"
-                  >
-                    {clubPieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#1e293b',
-                      borderColor: 'rgba(255,255,255,0.1)',
-                      borderRadius: '8px',
-                      color: '#fff',
-                      fontSize: '12px',
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <p className="text-xs text-text-muted">No club data available</p>
-            )}
+        {/* Donut Chart: Club Distribution (4 cols) */}
+        <div className="lg:col-span-4 glass p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+          <div>
+            <h3 className="text-base font-bold text-white flex items-center gap-2 font-['Outfit']">
+              <PieIcon size={18} className="text-cyan-400" /> Club Category Share
+            </h3>
+            <p className="text-xs text-slate-400">Distribution by student memberships</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-glass-border">
-            {clubPieData.map((item, idx) => (
-              <div key={item.name} className="flex items-center gap-1.5 text-xs text-text-secondary truncate">
-                <div
-                  className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: COLORS[idx % COLORS.length] }}
+          <div className="h-56 w-full flex items-center justify-center">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={clubPieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={75}
+                  paddingAngle={4}
+                  dataKey="value"
+                >
+                  {clubPieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#080B12',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderRadius: '12px',
+                    fontSize: '12px',
+                    color: '#fff',
+                  }}
                 />
-                <span className="truncate">{item.name} ({item.value})</span>
-              </div>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="flex flex-wrap gap-2 pt-2 justify-center">
+            {clubPieData.map((entry, idx) => (
+              <span key={entry.name} className="flex items-center gap-1.5 text-[11px] text-slate-300">
+                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
+                {entry.name}
+              </span>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Charts Row 2: Event RSVPs by Category */}
-      <div className="card space-y-4">
-        <h3 className="text-base font-bold text-white font-['Outfit']">
-          Event Participation by Category
-        </h3>
-        <p className="text-xs text-text-muted">
-          Number of students registered across workshops, hackathons, and cultural fests
-        </p>
+      {/* ── 4. BAR CHART: EVENT RSVPs BY CATEGORY ───────── */}
+      <div className="glass p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+        <div>
+          <h3 className="text-base font-bold text-white flex items-center gap-2 font-['Outfit']">
+            <BarChart3 size={18} className="text-amber-400" /> Event Participation by Category
+          </h3>
+          <p className="text-xs text-slate-400">Total verified ticket registrations across workshop types</p>
+        </div>
 
-        <div className="h-64 w-full">
+        <div className="h-64 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={eventCategoryData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} />
-              <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
-              <YAxis stroke="#94a3b8" fontSize={11} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+              <XAxis dataKey="name" stroke="#64748b" fontSize={11} tickLine={false} />
+              <YAxis stroke="#64748b" fontSize={11} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#1e293b',
+                  backgroundColor: '#080B12',
                   borderColor: 'rgba(255,255,255,0.1)',
-                  borderRadius: '8px',
-                  color: '#fff',
+                  borderRadius: '12px',
                   fontSize: '12px',
+                  color: '#fff',
                 }}
               />
-              <Bar dataKey="registrations" fill="#6366f1" radius={[6, 6, 0, 0]} name="Registrations" />
+              <Bar dataKey="registrations" fill="#6366f1" radius={[8, 8, 0, 0]} barSize={36} />
             </BarChart>
           </ResponsiveContainer>
         </div>

@@ -13,6 +13,10 @@ import {
   Clock,
   MessageSquare,
   Award,
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+  Flame,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -74,7 +78,7 @@ const Discussions = () => {
         prev.map((d) => (d._id === discussionId ? res.data : d))
       );
       setReplyText((prev) => ({ ...prev, [discussionId]: '' }));
-      toast.success('Reply added!');
+      toast.success('Reply posted!');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to submit reply');
     }
@@ -98,7 +102,7 @@ const Discussions = () => {
       setFormData({ title: '', body: '', category: 'General', tags: '' });
       fetchDiscussions();
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to create discussion');
+      toast.error(err.response?.data?.message || 'Failed to create thread');
     }
   };
 
@@ -106,60 +110,65 @@ const Discussions = () => {
     const matchesCategory = selectedCategory === 'All' || d.category === selectedCategory;
     const matchesSearch =
       d.title.toLowerCase().includes(search.toLowerCase()) ||
-      d.body.toLowerCase().includes(search.toLowerCase()) ||
+      d.body?.toLowerCase().includes(search.toLowerCase()) ||
       d.tags?.some((t) => t.toLowerCase().includes(search.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
   return (
-    <div className="space-y-8 animate-fadeIn">
-      {/* Header */}
+    <div className="space-y-8 animate-fade-in-up pb-10">
+      {/* ── 1. HEADER ────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white font-['Outfit']">
-            Student Discussions & Q&A
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-2">
+            <Sparkles size={13} className="text-emerald-400" />
+            <span>Campus Knowledge Base & Peer Forum</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-['Outfit']">
+            Community Discussions
           </h1>
-          <p className="text-text-secondary mt-1">
-            Exchange project ideas, ask study queries, find teammates, and engage with peers.
+          <p className="text-sm text-slate-400 mt-1">
+            Ask academic questions, collaborate on projects, and receive verified faculty advice.
           </p>
         </div>
+
         <button
           onClick={() => setShowCreateModal(true)}
-          className="btn-primary inline-flex items-center gap-2 self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-lg shadow-indigo-600/25 cursor-pointer self-start sm:self-auto"
         >
-          <Plus size={18} />
-          Start Discussion
+          <Plus size={16} /> Start Discussion
         </button>
       </div>
 
-      {/* Filters Bar */}
-      <div className="glass p-4 rounded-2xl space-y-4">
+      {/* ── 2. SEARCH & CATEGORY FILTERS ─────────────────── */}
+      <div className="glass p-4 sm:p-5 rounded-2xl space-y-4 border border-white/10">
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
           <div className="relative w-full sm:w-96">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             <input
               type="text"
               placeholder="Search topics, questions, tags..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="input-field pl-10"
+              className="w-full bg-[#080B12] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
             />
           </div>
-          <div className="text-xs text-text-muted font-medium">
-            {filteredDiscussions.length} conversations active
+
+          <div className="text-xs text-slate-400 font-mono">
+            {filteredDiscussions.length} active threads
           </div>
         </div>
 
-        {/* Category Pills */}
+        {/* Category Chips */}
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-primary/20 text-primary-light border border-primary/40'
-                  : 'bg-surface-light text-text-secondary hover:bg-surface-lighter hover:text-text-primary'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                  : 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white border border-white/5'
               }`}
             >
               {cat}
@@ -168,163 +177,150 @@ const Discussions = () => {
         </div>
       </div>
 
-      {/* Discussions Feed */}
+      {/* ── 3. DISCUSSIONS LIST ──────────────────────────── */}
       {loading ? (
         <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-emerald-500"></div>
         </div>
       ) : filteredDiscussions.length === 0 ? (
-        <div className="glass p-12 text-center rounded-2xl">
-          <MessageCircle size={48} className="mx-auto text-text-muted mb-3 opacity-40" />
-          <h3 className="text-lg font-semibold text-text-primary">No discussions yet</h3>
-          <p className="text-text-secondary text-sm mt-1">Be the first to start a conversation on campus!</p>
+        <div className="glass p-12 text-center rounded-3xl border border-white/10">
+          <MessageCircle size={48} className="mx-auto text-slate-600 mb-3 opacity-50" />
+          <h3 className="text-lg font-bold text-white">No discussions found</h3>
+          <p className="text-slate-400 text-xs mt-1">Be the first to start a conversation on this topic.</p>
         </div>
       ) : (
         <div className="space-y-4">
-          {filteredDiscussions.map((d) => {
-            const hasUpvoted = d.upvotes?.includes(user?._id);
-            const isExpanded = expandedId === d._id;
+          {filteredDiscussions.map((disc) => {
+            const isExpanded = expandedId === disc._id;
+            const replyCount = disc.replies?.length || 0;
 
             return (
-              <div key={d._id} className="card transition-all duration-200">
-                {/* Header: Author & Category */}
+              <div
+                key={disc._id}
+                className="glass p-6 rounded-3xl border border-white/10 hover:border-indigo-500/30 transition-all duration-300 shadow-lg"
+              >
+                {/* Top: Author & Category */}
                 <div className="flex items-center justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center font-bold text-white shadow-sm text-sm">
-                      {d.author?.name?.charAt(0) || 'U'}
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center font-bold text-xs text-white shadow-sm">
+                      {disc.author?.name?.charAt(0) || 'U'}
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-white">
-                        {d.author?.name}
-                      </h4>
-                      <div className="flex items-center gap-2 text-xs text-text-muted">
-                        <span>{d.author?.department || 'Student'}</span>
-                        <span>•</span>
-                        <span>{new Date(d.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
-                      </div>
+                      <span className="text-xs font-bold text-white block leading-tight">
+                        {disc.author?.name || 'Campus Student'}
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        {disc.author?.department ? `${disc.author.department} Dept • ` : ''}
+                        {new Date(disc.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                      </span>
                     </div>
                   </div>
 
-                  <span className="badge-primary text-xs font-semibold">
-                    {d.category}
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-800 text-indigo-300 border border-indigo-500/20">
+                    {disc.category}
                   </span>
                 </div>
 
-                {/* Title & Body */}
+                {/* Title */}
                 <h3 className="text-lg font-bold text-white mb-2 font-['Outfit']">
-                  {d.title}
+                  {disc.title}
                 </h3>
-                <p className="text-text-secondary text-sm leading-relaxed mb-4 whitespace-pre-line">
-                  {d.body}
+
+                {/* Body */}
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4 whitespace-pre-line">
+                  {disc.body}
                 </p>
 
                 {/* Tags */}
-                {d.tags && d.tags.length > 0 && (
+                {disc.tags && disc.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mb-4">
-                    {d.tags.map((tag, i) => (
+                    {disc.tags.map((t) => (
                       <span
-                        key={i}
-                        className="inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-md bg-surface-light text-secondary font-medium"
+                        key={t}
+                        className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded-md border border-white/5"
                       >
-                        <Tag size={10} /> {tag}
+                        #{t}
                       </span>
                     ))}
                   </div>
                 )}
 
-                {/* Action Bar */}
-                <div className="flex items-center gap-4 border-t border-glass-border pt-3">
-                  <button
-                    onClick={() => handleUpvote(d._id)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                      hasUpvoted
-                        ? 'bg-primary/20 text-primary-light border border-primary/40'
-                        : 'bg-surface-light text-text-secondary hover:text-white hover:bg-surface-lighter'
-                    }`}
-                  >
-                    <ThumbsUp size={14} className={hasUpvoted ? 'fill-primary-light' : ''} />
-                    <span>{d.upvotes?.length || 0} Upvotes</span>
-                  </button>
+                {/* Actions Row */}
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => handleUpvote(disc._id)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-indigo-300 border border-white/5 transition-colors cursor-pointer"
+                    >
+                      <ThumbsUp size={13} className="text-indigo-400" />
+                      <span className="font-bold">{disc.upvotes || 0}</span>
+                    </button>
 
-                  <button
-                    onClick={() => setExpandedId(isExpanded ? null : d._id)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-surface-light text-text-secondary hover:text-white hover:bg-surface-lighter transition-all"
-                  >
-                    <MessageSquare size={14} />
-                    <span>{d.replies?.length || 0} Replies</span>
-                  </button>
+                    <button
+                      onClick={() => setExpandedId(isExpanded ? null : disc._id)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-white/5 transition-colors cursor-pointer"
+                    >
+                      <MessageSquare size={13} className="text-cyan-400" />
+                      <span>{replyCount} Replies</span>
+                      {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                    </button>
+                  </div>
+
+                  <span className="text-[11px] text-slate-400 font-mono">
+                    Thread ID: #{disc._id?.slice(-6)}
+                  </span>
                 </div>
 
-                {/* Expanded Replies Thread */}
+                {/* Threaded Replies Section */}
                 {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-glass-border space-y-4 animate-fadeIn">
-                    <h5 className="text-xs font-bold text-text-muted uppercase tracking-wider">
-                      Replies ({d.replies?.length || 0})
-                    </h5>
+                  <div className="mt-4 pt-4 border-t border-white/10 space-y-3 animate-fade-in-up">
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                      Thread Replies ({replyCount})
+                    </h4>
 
-                    {/* Replies list */}
-                    {d.replies?.length === 0 ? (
-                      <p className="text-xs text-text-muted italic py-2">
-                        No replies yet. Share your thoughts below!
-                      </p>
-                    ) : (
-                      <div className="space-y-3">
-                        {d.replies.map((reply, idx) => (
+                    {/* Replies List */}
+                    <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                      {replyCount === 0 ? (
+                        <p className="text-xs text-slate-500 py-2">No replies yet. Be the first to help out!</p>
+                      ) : (
+                        disc.replies.map((rep) => (
                           <div
-                            key={idx}
-                            className={`p-3 rounded-xl bg-surface-light/50 border ${
-                              reply.isFacultyEndorsed
-                                ? 'border-accent/40 bg-accent/5'
-                                : 'border-glass-border'
-                            }`}
+                            key={rep._id || Math.random()}
+                            className="p-3 rounded-2xl bg-slate-900/90 border border-white/5 space-y-1 text-xs"
                           >
-                            <div className="flex items-center justify-between mb-1.5">
-                              <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 rounded-full gradient-primary flex items-center justify-center text-white text-[10px] font-bold">
-                                  {reply.author?.name?.charAt(0) || 'U'}
-                                </div>
-                                <span className="text-xs font-semibold text-white">
-                                  {reply.author?.name || 'Member'}
-                                </span>
-                                <span className="text-[10px] text-text-muted">
-                                  {new Date(reply.createdAt).toLocaleDateString()}
-                                </span>
-                              </div>
-
-                              {reply.isFacultyEndorsed && (
-                                <span className="badge-warning text-[10px] inline-flex items-center gap-1">
-                                  <Award size={10} /> Faculty Endorsed
-                                </span>
-                              )}
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-slate-200">
+                                {rep.author?.name || 'Campus Student'}
+                              </span>
+                              <span className="text-[10px] text-slate-400">
+                                {new Date(rep.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                              </span>
                             </div>
-                            <p className="text-xs text-text-secondary leading-relaxed pl-8">
-                              {reply.content}
-                            </p>
+                            <p className="text-slate-300 leading-relaxed">{rep.content}</p>
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        ))
+                      )}
+                    </div>
 
-                    {/* Reply input box */}
+                    {/* Reply Input Box */}
                     <div className="flex gap-2 pt-2">
                       <input
                         type="text"
-                        placeholder="Write a constructive response..."
-                        value={replyText[d._id] || ''}
+                        placeholder="Write a helpful response..."
+                        value={replyText[disc._id] || ''}
                         onChange={(e) =>
-                          setReplyText({ ...replyText, [d._id]: e.target.value })
+                          setReplyText({ ...replyText, [disc._id]: e.target.value })
                         }
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') handleReplySubmit(d._id);
+                          if (e.key === 'Enter') handleReplySubmit(disc._id);
                         }}
-                        className="input-field text-xs flex-1"
+                        className="flex-1 bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                       />
                       <button
-                        onClick={() => handleReplySubmit(d._id)}
-                        className="btn-primary text-xs px-3.5 inline-flex items-center gap-1"
+                        onClick={() => handleReplySubmit(disc._id)}
+                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-indigo-600/20 flex items-center gap-1 cursor-pointer"
                       >
-                        <Send size={13} />
-                        Reply
+                        <Send size={13} /> Reply
                       </button>
                     </div>
                   </div>
@@ -335,48 +331,44 @@ const Discussions = () => {
         </div>
       )}
 
-      {/* Create Discussion Modal */}
+      {/* ── 4. CREATE DISCUSSION MODAL ───────────────────── */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className="glass max-w-lg w-full rounded-2xl p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
+          <div className="glass max-w-lg w-full rounded-3xl p-6 sm:p-7 relative max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
             <button
               onClick={() => setShowCreateModal(false)}
-              className="absolute top-4 right-4 text-text-muted hover:text-white"
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
 
-            <h2 className="text-2xl font-bold text-white mb-1 font-['Outfit']">New Discussion</h2>
-            <p className="text-xs text-text-secondary mb-6">
-              Ask a question or spark an academic/community dialogue.
+            <h2 className="text-2xl font-black text-white mb-1 font-['Outfit']">Start Community Thread</h2>
+            <p className="text-xs text-slate-400 mb-6">
+              Ask a question, share a project, or start a campus discussion.
             </p>
 
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-text-secondary mb-1">
-                  Topic Title *
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">Topic / Question Title *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Best resources for Machine Learning hackathons?"
+                  placeholder="e.g. Best resources for learning Next.js and Cloud Native?"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="input-field"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-text-secondary mb-1">
-                  Category *
-                </label>
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">Category *</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="input-field"
+                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500"
                 >
                   {categories.filter((c) => c !== 'All').map((cat) => (
-                    <option key={cat} value={cat} className="bg-surface">
+                    <option key={cat} value={cat} className="bg-slate-900 text-white">
                       {cat}
                     </option>
                   ))}
@@ -384,42 +376,41 @@ const Discussions = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-text-secondary mb-1">
-                  Tags (comma separated)
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Python, AI, Projects, FirstYear"
-                  value={formData.tags}
-                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  className="input-field"
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">Discussion Content *</label>
+                <textarea
+                  rows="4"
+                  required
+                  placeholder="Provide background details, code snippets, or what you've tried..."
+                  value={formData.body}
+                  onChange={(e) => setFormData({ ...formData, body: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-text-secondary mb-1">
-                  Discussion Content *
-                </label>
-                <textarea
-                  rows="5"
-                  required
-                  placeholder="Explain your context, question, or thought in detail..."
-                  value={formData.body}
-                  onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                  className="input-field resize-none"
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">Tags (comma-separated)</label>
+                <input
+                  type="text"
+                  placeholder="react, webdev, placements, ai"
+                  value={formData.tags}
+                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                  className="w-full bg-[#080B12] border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-glass-border">
+              <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="btn-outline text-xs"
+                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 cursor-pointer"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="btn-primary text-xs">
-                  Post Discussion
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 cursor-pointer"
+                >
+                  Publish Thread
                 </button>
               </div>
             </form>
