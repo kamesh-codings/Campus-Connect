@@ -32,27 +32,45 @@ A full-stack centralized college community platform connecting students, student
 
 ### 💻 How to Open the Webpage via New Terminal
 
-#### Step 1: Terminal 1 — Start the Backend API Server
-Open a new terminal window:
-```powershell
-cd "c:\Users\kamesh\OneDrive\Desktop\Campus Connect"
-npm run dev:backend
-```
-*(Runs the Express REST API and Socket.io server on `http://localhost:5000`)*
+#### 🌟 Method 1: Direct Folder Navigation (Recommended)
 
-#### Step 2: Terminal 2 — Start the Frontend & Open in Browser
-Open a second terminal window:
-```powershell
-cd "c:\Users\kamesh\OneDrive\Desktop\Campus Connect"
-npm run dev:frontend -- --open
-```
-*(Starts the Vite dev server and automatically launches the webpage in your default browser at `http://localhost:5173`)*
+1. **Terminal 1 — Start Backend Server:**
+   ```powershell
+   cd backend
+   npm install      # (only needed first time)
+   npm run dev
+   ```
+   *(Express REST API & Socket.io server runs on `http://localhost:5000`)*
+
+2. **Terminal 2 — Start Frontend & Open in Browser:**
+   ```powershell
+   cd frontend
+   npm install      # (only needed first time)
+   npm run dev -- --open
+   ```
+   *(Starts Vite and automatically launches the webpage in your default browser at `http://localhost:5173`)*
+
+---
+
+#### ⚡ Method 2: From Project Root Directory
+
+Open terminals at the project root (`Campus Connect/`):
+
+1. **Terminal 1 (Backend):**
+   ```powershell
+   npm run dev:backend
+   ```
+
+2. **Terminal 2 (Frontend & Auto-Open Browser):**
+   ```powershell
+   npm run dev:frontend -- --open
+   ```
 
 ---
 
 ### 🌐 Instant Browser Launch (If Servers Are Already Running)
 
-If the backend and frontend are already running in the background, open the website immediately with:
+If the backend and frontend are already active in the background, open the website instantly with:
 
 - **Windows PowerShell:**
   ```powershell
