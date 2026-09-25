@@ -1,0 +1,23 @@
+{
+  "name": "campusconnect-database",
+  "version": "1.0.0",
+  "description": "Database models, schemas, and seeding scripts for CampusConnect",
+  "main": "models/index.js",
+  "scripts": {
+    "seed": "node seed/seedTamil.js",
+    "seed:basic": "node seed/seed.js",
+    "seed:resources": "node seed/seedResources.js"
+  },
+  "keywords": [
+    "mongodb",
+    "mongoose",
+    "database",
+    "seeds",
+    "schemas"
+  ],
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.3.1",
+    "mongoose": "^9.2.3"
+  }
+}

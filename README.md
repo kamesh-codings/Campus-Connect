@@ -22,62 +22,110 @@ A full-stack centralized college community platform connecting students, student
 
 - **Frontend:** React 18, Vite, React Router v6, Tailwind CSS, Lucide React, Recharts, React Hot Toast
 - **Backend:** Node.js, Express.js, Socket.io, JWT Authentication, bcryptjs
-- **Database:** MongoDB with Mongoose ODM
+- **Database:** MongoDB with Mongoose ODM (models, schemas, seeders)
 - **Design:** Modern glassmorphism, responsive dark theme, and micro-animations
+
+---
+
+## 📁 Repository Structure
+
+The project is cleanly structured into dedicated folders:
+
+```text
+Campus Connect/
+├── frontend/                    # Client Application (React 18 + Vite)
+│   ├── src/
+│   │   ├── components/common/   # Navbar, Sidebar, Layout, Modals
+│   │   ├── context/             # AuthContext, SocketContext
+│   │   ├── pages/               # Feed, Events, Clubs, Announcements,
+│   │   │                        # Discussions, Profile, Analytics, Admin,
+│   │   │                        # Login, Register
+│   │   ├── services/            # Axios API client with JWT interceptor
+│   │   ├── App.jsx              # Routing & role guards
+│   │   ├── index.css            # Dark glassmorphic design system
+│   │   └── main.jsx             # React DOM entry point
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/                     # API & WebSocket Server (Node.js + Express)
+│   ├── config/                  # Cloudinary, database delegator
+│   ├── controllers/             # Auth, User, Club, Event, Announcement,
+│   │                            # Discussion, Notification, Upload
+│   ├── middleware/              # JWT auth & role authorization
+│   ├── models/                  # Backend model proxies referencing database/models
+│   ├── routes/                  # Express REST route handlers
+│   ├── socket/                  # Real-time Socket.io handlers
+│   ├── server.js                # Server entry point
+│   └── package.json
+│
+├── database/                    # Database Schemas, Models & Seeding
+│   ├── models/                  # Canonical Mongoose Schemas (User, Club, Event, etc.)
+│   ├── seed/                    # Database seed scripts & comprehensive datasets
+│   │   ├── seedTamil.js         # 100+ realistic Tamil & Indian campus records
+│   │   ├── seedResources.js     # Extracurriculars & resource uploads
+│   │   └── seed.js              # Standard initial seed
+│   ├── config/                  # MongoDB connection configuration (db.js)
+│   ├── package.json             # Database helper scripts
+│   └── README.md                # Schema documentation & collections guide
+│
+├── package.json                 # Root convenience scripts
+├── implementation.md            # Detailed technical blueprint
+└── README.md                    # Project documentation & quickstart
+```
 
 ---
 
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-- **Node.js** (v16 or above)
+- **Node.js** (v18 or above recommended)
 - **npm** (v8 or above)
-- **MongoDB** running locally (`mongodb://localhost:27017/campusconnect`) or MongoDB Atlas connection string in `server/.env`.
+- **MongoDB** running locally (`mongodb://localhost:27017/campusconnect`) or MongoDB Atlas URI in `backend/.env`.
 
 ---
 
-### 2. Backend Setup & Seeding
+### 2. Root Quickstart Commands
 
-1. Navigate to the `server` directory:
-   ```bash
-   cd server
-   ```
-2. Verify environment settings in `.env`:
-   ```env
-   PORT=5000
-   NODE_ENV=development
-   MONGO_URI=mongodb://localhost:27017/campusconnect
-   JWT_SECRET=campusconnect_jwt_secret_2024_hackathon
-   JWT_EXPIRE=7d
-   ```
-3. Populate demo campus data (users, clubs, events, announcements, discussions):
-   ```bash
-   npm run seed
-   ```
-4. Start the backend server:
-   ```bash
-   npm run dev
-   # or
-   npm start
-   ```
-   *The server will run on `http://localhost:5000` with WebSocket handlers active.*
+From the workspace root directory:
+
+```bash
+# Start backend server (port 5000)
+npm run dev:backend
+
+# Start frontend application (port 5173)
+npm run dev:frontend
+
+# Build frontend for production
+npm run build:frontend
+
+# Seed database with realistic Indian & Tamil campus records (100+ items)
+npm run seed:db
+```
 
 ---
 
-### 3. Frontend Setup
+### 3. Individual Folder Setup
 
-1. Open a new terminal and navigate to the `client` directory:
-   ```bash
-   cd client
-   ```
-2. Start the Vite development server:
-   ```bash
-   npm run dev
-   ```
-3. Open your browser and navigate to:
-   ```
-   http://localhost:5173
-   ```
+#### Backend (`/backend`)
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+#### Frontend (`/frontend`)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+#### Database (`/database`)
+```bash
+cd database
+npm run seed
+```
 
 ---
 
@@ -93,38 +141,3 @@ The database seed provides pre-configured accounts across all campus roles:
 | **Student** | `priya.patel@campus.edu` | `Student@123` | RSVP to events, join clubs, ask in forums, edit profile |
 
 *Quick-fill demo buttons are also integrated into the Login page for one-click testing.*
-
----
-
-## 📁 Project Architecture
-
-```
-Campus Connect/
-├── client/                      # React Frontend (Vite)
-│   ├── src/
-│   │   ├── components/common/   # Navbar, Sidebar, Layout
-│   │   ├── context/             # AuthContext, SocketContext
-│   │   ├── pages/               # Feed, Events, Clubs, Announcements,
-│   │   │                        # Discussions, Profile, Analytics, Admin,
-│   │   │                        # Login, Register
-│   │   ├── services/            # Axios API client with JWT interceptor
-│   │   ├── App.jsx              # Routing & role guards
-│   │   ├── index.css            # Dark glassmorphic design system
-│   │   └── main.jsx             # React DOM entry point
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-├── server/                      # Node.js / Express Backend
-│   ├── config/                  # MongoDB connection
-│   ├── controllers/             # Auth, User, Club, Event, Announcement,
-│   │                            # Discussion, Notification controllers
-│   ├── middleware/              # JWT auth & role authorization
-│   ├── models/                  # Mongoose schemas (User, Club, Event, etc.)
-│   ├── routes/                  # Express REST routes
-│   ├── seed/                    # Database seeder with realistic campus data
-│   ├── socket/                  # Real-time Socket.io event triggers
-│   ├── server.js                # Server entry point
-│   └── package.json
-├── implementation.md            # Comprehensive system blueprint
-└── README.md                    # Project documentation & quickstart
-```

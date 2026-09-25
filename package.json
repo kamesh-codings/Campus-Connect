@@ -1,0 +1,21 @@
+{
+  "name": "campus-connect-workspace",
+  "version": "1.0.0",
+  "description": "Campus Connect - Next-Generation College Community & Club Management Portal",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "seed:db": "npm --prefix database run seed",
+    "seed:resources": "npm --prefix database run seed:resources"
+  },
+  "keywords": [
+    "campus-connect",
+    "college-portal",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "author": "CampusConnect Team",
+  "license": "ISC"
+}
