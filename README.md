@@ -28,20 +28,55 @@ A full-stack centralized college community platform connecting students, student
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started & Terminal Commands
+
+### 💻 How to Open the Webpage via New Terminal
+
+#### Step 1: Terminal 1 — Start the Backend API Server
+Open a new terminal window:
+```powershell
+cd "c:\Users\kamesh\OneDrive\Desktop\Campus Connect"
+npm run dev:backend
+```
+*(Runs the Express REST API and Socket.io server on `http://localhost:5000`)*
+
+#### Step 2: Terminal 2 — Start the Frontend & Open in Browser
+Open a second terminal window:
+```powershell
+cd "c:\Users\kamesh\OneDrive\Desktop\Campus Connect"
+npm run dev:frontend -- --open
+```
+*(Starts the Vite dev server and automatically launches the webpage in your default browser at `http://localhost:5173`)*
+
+---
+
+### 🌐 Instant Browser Launch (If Servers Are Already Running)
+
+If the backend and frontend are already running in the background, open the website immediately with:
+
+- **Windows PowerShell:**
+  ```powershell
+  Start-Process "http://localhost:5173"
+  ```
+- **Windows Command Prompt (CMD):**
+  ```cmd
+  start http://localhost:5173
+  ```
+
+---
 
 ### 1. Prerequisites
 - **Node.js** (v18 or above recommended)
 - **npm** (v8 or above)
-- **MongoDB** running locally (`mongodb://localhost:27017/campusconnect`) or MongoDB Atlas connection string in `server/.env`.
+- **MongoDB** running locally (`mongodb://localhost:27017/campusconnect`) or MongoDB Atlas connection string in `backend/.env`.
 
 ---
 
 ### 2. Backend Setup & Seeding
 
-1. Navigate to the `server` directory:
+1. Navigate to the `backend` directory:
    ```bash
-   cd server
+   cd backend
    ```
 2. Install server dependencies:
    ```bash
@@ -56,17 +91,15 @@ A full-stack centralized college community platform connecting students, student
    JWT_SECRET=campusconnect_jwt_secret_2024_hackathon
    JWT_EXPIRE=7d
    ```
-4. Populate demo campus dataset (users, clubs, events, announcements, discussions, resources):
+4. Populate demo campus dataset (100+ Indian & Tamil campus records):
    ```bash
    npm run seed:tamil
-   # or for standard dataset:
-   npm run seed
+   # or from database directory:
+   # cd ../database && npm run seed
    ```
 5. Start the backend server:
    ```bash
    npm run dev
-   # or
-   npm start
    ```
    *The server will run on `http://localhost:5000` with WebSocket handlers active.*
 
@@ -85,9 +118,11 @@ A full-stack centralized college community platform connecting students, student
 3. Start the Vite development server:
    ```bash
    npm run dev
+   # or to auto-open in browser:
+   npm run dev -- --open
    ```
 4. Open your browser and navigate to:
-   ```
+   ```text
    http://localhost:5173
    ```
 
